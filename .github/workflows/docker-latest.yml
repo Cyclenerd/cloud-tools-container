@@ -1,0 +1,114 @@
+name: "Latest image"
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  docker:
+    name: Build container image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx 🔧
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers 💾
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Login to GitHub container registry 🏭
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image 🧪
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+      # Temp fix
+      # https://github.com/docker/build-push-action/issues/252
+      # https://github.com/moby/buildkit/issues/1896
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  docker-test:
+    name: Test container image
+    needs: [docker]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      # Run test
+      - name: Pull test image 💿
+        run: |
+          docker pull ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test
+          docker tag ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test google-cloud-gcp-tools-container
+      # Tests
+      - name: Test gcloud 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+            gcloud --version
+      - name: Test terraform 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+            terraform --version
+      - name: Test ansible 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+            ansible --version
+
+  github-registry-latest:
+    name: Push image to GitHub
+    runs-on: ubuntu-latest
+    needs: [docker-test]
+    steps:
+      - name: Login to GitHub container registry 🏭
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Pull latest test image from GitHub container registry 📦
+        run: docker pull ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test
+      - name: Push image to GitHub container registry as latest version 🚢
+        run: |
+          docker tag ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test ghcr.io/cyclenerd/google-cloud-gcp-tools-container:latest
+          docker push ghcr.io/cyclenerd/google-cloud-gcp-tools-container:latest
+
+  docker-hub-latest:
+    name: Push image to Docker Hub
+    runs-on: ubuntu-latest
+    needs: [docker-test]
+    steps:
+      - name: Login to Docker Hub registry 🏭
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      - name: Pull latest test image from GitHub container registry 📦
+        run: docker pull ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test
+      - name: Push image to Docker Hub registry as latest version 🚢
+        run: |
+          docker tag ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test cyclenerd/google-cloud-gcp-tools-container:latest
+          docker push cyclenerd/google-cloud-gcp-tools-container:latest
