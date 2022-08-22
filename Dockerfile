@@ -30,34 +30,34 @@ LABEL org.opencontainers.image.source        "https://github.com/Cyclenerd/googl
 
 RUN set -eux; \
 # Install base packages
-    apt-get update -yqq; \
-    apt-get install -yqq apt-transport-https apt-utils build-essential ca-certificates curl gettext-base git gnupg jq lsb-release tar unzip zip; \
+	apt-get update -yqq; \
+	apt-get install -yqq apt-transport-https apt-utils build-essential ca-certificates curl gettext-base git gnupg jq lsb-release tar unzip zip; \
 # Add Google Cloud repo
-    curl "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | apt-key --keyring "/usr/share/keyrings/cloud.google.gpg" add -; \
-    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a "/etc/apt/sources.list.d/google-cloud-sdk.list"; \
+	curl "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | apt-key --keyring "/usr/share/keyrings/cloud.google.gpg" add -; \
+	echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a "/etc/apt/sources.list.d/google-cloud-sdk.list"; \
 # Add Hashicorp/Terraform repo
-    curl -fsSL "https://apt.releases.hashicorp.com/gpg" | apt-key --keyring "/usr/share/keyrings/releases-hashicorp.gpg" add -; \
-    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/releases-hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee -a "/etc/apt/sources.list.d/releases-hashicorp.list"; \
+	curl -fsSL "https://apt.releases.hashicorp.com/gpg" | apt-key --keyring "/usr/share/keyrings/releases-hashicorp.gpg" add -; \
+	echo "deb [arch=amd64 signed-by=/usr/share/keyrings/releases-hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee -a "/etc/apt/sources.list.d/releases-hashicorp.list"; \
 # Add Helm
-    curl -fsSL "https://baltocdn.com/helm/signing.asc" | apt-key --keyring "/usr/share/keyrings/baltocdn-helm.gpg" add -; \
-    echo "deb [signed-by=/usr/share/keyrings/baltocdn-helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee -a "/etc/apt/sources.list.d/helm-stable-debian.list" ;\
+	curl -fsSL "https://baltocdn.com/helm/signing.asc" | apt-key --keyring "/usr/share/keyrings/baltocdn-helm.gpg" add -; \
+	echo "deb [signed-by=/usr/share/keyrings/baltocdn-helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee -a "/etc/apt/sources.list.d/helm-stable-debian.list" ;\
 # Install other tools
-    apt-get update -yqq; \
-    apt-get install -yqq \
-        google-cloud-cli\
-        google-cloud-sdk-gke-gcloud-auth-plugin \
-        terraform; \
-        ansible \
-        kubectl \
-        helm \
+	apt-get update -yqq; \
+	apt-get install -yqq \
+		google-cloud-cli\
+		google-cloud-sdk-gke-gcloud-auth-plugin \
+		terraform; \
+		ansible \
+		kubectl \
+		helm \
 # Basic smoke test
-    lsb_release -a; \
-    gcloud --version; \
-    terraform --version; \
-    ansible --version; \
+	lsb_release -a; \
+	gcloud --version; \
+	terraform --version; \
+	ansible --version; \
 # Delete apt cache
-    apt-get clean; \
-    rm -rf /var/lib/apt/lists/*
+	apt-get clean; \
+	rm -rf /var/lib/apt/lists/*
 
 # If you're reading this and have any feedback on how this image could be
 # improved, please open an issue or a pull request so we can discuss it!
