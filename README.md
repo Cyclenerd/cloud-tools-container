@@ -49,7 +49,10 @@ The following software is included and tested:
 * Terraform (`terraform`)
 * Ansible (`ansible` and `ansible-playbook`)
 * Base
-	* bash
+	* GNU bash 5 (`bash`)
+	* Perl 5 (`perl`)
+	* Python 3 (`python3`)
+	* OpenSSL 3 (`openssl`)
 	* apt-utils
 	* build-essential
 	* ca-certificates

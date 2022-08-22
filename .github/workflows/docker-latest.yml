@@ -67,6 +67,21 @@ jobs:
           docker run \
             google-cloud-gcp-tools-container \
             bash --version
+      - name: Test perl 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+            perl --version
+      - name: Test python3 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+            python3 --version
+      - name: Test openssl 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+            openssl version
       - name: Test gcloud 📏
         run: |
           docker run \
