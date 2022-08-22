@@ -62,11 +62,26 @@ jobs:
           docker pull ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test
           docker tag ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test google-cloud-gcp-tools-container
       # Tests
+      - name: Test bash 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+            bash --version
       - name: Test gcloud 📏
         run: |
           docker run \
             google-cloud-gcp-tools-container \
             gcloud --version
+      - name: Test gsutil 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+            gsutil --version
+      - name: Test bq 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+            bq version
       - name: Test terraform 📏
         run: |
           docker run \
@@ -77,7 +92,31 @@ jobs:
           docker run \
             google-cloud-gcp-tools-container \
             ansible --version
-
+      - name: Test ansible-playbook 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+            ansible-playbook --version
+      - name: Test curl 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+          curl --version
+      - name: Test git 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+          git --version
+      - name: Test tar 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+          tar --version
+      - name: Test jq 📏
+        run: |
+          docker run \
+            google-cloud-gcp-tools-container \
+          jq --version
   github-registry-latest:
     name: Push image to GitHub
     runs-on: ubuntu-latest

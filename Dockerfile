@@ -31,7 +31,7 @@ LABEL org.opencontainers.image.source        "https://github.com/Cyclenerd/googl
 RUN set -eux; \
 # Install base packages
 	apt-get update -yqq; \
-	apt-get install -yqq apt-transport-https apt-utils build-essential ca-certificates curl gettext-base git gnupg jq lsb-release tar unzip zip; \
+	apt-get install -yqq apt-transport-https apt-utils build-essential ca-certificates curl git jq lsb-release tar; \
 # Add Google Cloud repo
 	curl "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | apt-key --keyring "/usr/share/keyrings/cloud.google.gpg" add -; \
 	echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a "/etc/apt/sources.list.d/google-cloud-sdk.list"; \
