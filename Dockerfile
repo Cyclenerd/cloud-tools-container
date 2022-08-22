@@ -28,6 +28,9 @@ LABEL org.opencontainers.image.authors       "https://github.com/Cyclenerd/googl
 LABEL org.opencontainers.image.documentation "https://github.com/Cyclenerd/google-cloud-gcp-tools-container/blob/master/README.md"
 LABEL org.opencontainers.image.source        "https://github.com/Cyclenerd/google-cloud-gcp-tools-container"
 
+# Disable any healthcheck inherited from the base image
+HEALTHCHECK NONE
+
 RUN set -eux; \
 # Install base packages
 	apt-get update -yqq; \
