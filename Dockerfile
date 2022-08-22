@@ -44,12 +44,12 @@ RUN set -eux; \
 # Install other tools
 	apt-get update -yqq; \
 	apt-get install -yqq \
-		google-cloud-cli\
+		google-cloud-cli \
 		google-cloud-sdk-gke-gcloud-auth-plugin \
-		terraform; \
+		terraform \
 		ansible \
 		kubectl \
-		helm \
+		helm; \
 # Basic smoke test
 	lsb_release -a; \
 	gcloud --version; \
