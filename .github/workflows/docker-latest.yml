@@ -2,6 +2,8 @@ name: "Latest image"
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '32 5 15 * *' # At 05:32 on day-of-month 15.
 
 jobs:
 
@@ -183,3 +185,13 @@ jobs:
         run: |
           docker tag ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test cyclenerd/google-cloud-gcp-tools-container:latest
           docker push cyclenerd/google-cloud-gcp-tools-container:latest
+
+  readme:
+    name: Update README
+    runs-on: ubuntu-latest
+    needs: [docker-hub-latest, github-registry-latest]
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Update 📰
+        run: bash readme.sh
