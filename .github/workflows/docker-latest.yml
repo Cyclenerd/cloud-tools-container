@@ -64,83 +64,67 @@ jobs:
       # Tests
       - name: Test bash 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
-            bash --version
+          docker run google-cloud-gcp-tools-container \
+          bash --version
       - name: Test perl 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
-            perl --version
+          docker run google-cloud-gcp-tools-container \
+          perl --version
       - name: Test python3 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
+          docker run google-cloud-gcp-tools-container \
             python3 --version
       - name: Test openssl 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
-            openssl version
+          docker run google-cloud-gcp-tools-container \
+          openssl version
       - name: Test gcloud 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
-            gcloud --version
+          docker run google-cloud-gcp-tools-container \
+          gcloud --version
       - name: Test gsutil 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
-            gsutil --version
+          docker run google-cloud-gcp-tools-container \
+          gsutil --version
       - name: Test bq 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
-            bq version
+          docker run google-cloud-gcp-tools-container \
+          bq version
       - name: Test terraform 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
-            terraform --version
+          docker run google-cloud-gcp-tools-container \
+          terraform --version
       - name: Test ansible 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
-            ansible --version
+          docker run google-cloud-gcp-tools-container \
+          ansible --version
       - name: Test ansible-playbook 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
-            ansible-playbook --version
+          docker run google-cloud-gcp-tools-container \
+          ansible-playbook --version
       - name: Test kubectl 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
-            kubectl help
+          docker run google-cloud-gcp-tools-container \
+          kubectl help
       - name: Test helm 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
+          docker run google-cloud-gcp-tools-container \
             helm version
       - name: Test curl 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
+          docker run google-cloud-gcp-tools-container \
           curl --version
       - name: Test git 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
+          docker run google-cloud-gcp-tools-container \
           git --version
       - name: Test tar 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
+          docker run google-cloud-gcp-tools-container \
           tar --version
       - name: Test jq 📏
         run: |
-          docker run \
-            google-cloud-gcp-tools-container \
+          docker run google-cloud-gcp-tools-container \
           jq --version
 
   container-scan:
