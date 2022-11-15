@@ -158,7 +158,6 @@ jobs:
           sarif_file: ${{ steps.scan.outputs.sarif }}
       - name: Scan again and fail 🧐
         uses: anchore/scan-action@v3
-        id: scan
         with:
           image: "ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test"
           registry-username: ${{ github.repository_owner }}
