@@ -150,18 +150,12 @@ jobs:
           registry-username: ${{ github.repository_owner }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           fail-build: true
-          severity-cutoff: critical
+          severity-cutoff: high
           output-format: sarif
       - name: Upload SARIF report 📤
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
-      - name: Upload 📤
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.scan.outputs.sarif }}
-          path: ${{ steps.scan.outputs.sarif }}
-          retention-days: 14
 
   github-registry-latest:
     name: Push image to GitHub
