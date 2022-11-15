@@ -149,14 +149,24 @@ jobs:
           image: "ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test"
           registry-username: ${{ github.repository_owner }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
-          fail-build: true
-          # fail if vulnerabilities with level 'critical' or higher found
-          severity-cutoff: critical
+          # Do not fail to upload the SARIF report in the next step...
+          fail-build: false
           output-format: sarif
       - name: Upload SARIF report 📤
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
+      - name: Scan again and fail 🧐
+        uses: anchore/scan-action@v3
+        id: scan
+        with:
+          image: "ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test"
+          registry-username: ${{ github.repository_owner }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          # Fail if vulnerabilities with level 'critical' or higher found
+          fail-build: true
+          severity-cutoff: critical
+          output-format: table
 
   github-registry-latest:
     name: Push image to GitHub
