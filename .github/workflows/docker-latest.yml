@@ -150,7 +150,8 @@ jobs:
           registry-username: ${{ github.repository_owner }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           fail-build: true
-          severity-cutoff: high
+          # fail if vulnerabilities with level 'critical' or higher found
+          severity-cutoff: critical
           output-format: sarif
       - name: Upload SARIF report 📤
         uses: github/codeql-action/upload-sarif@v2

@@ -1,0 +1,4 @@
+ignore:
+  # https://ubuntu.com/security/CVE-2019-19814
+  # New rating: low
+  - vulnerability: CVE-2019-19814
