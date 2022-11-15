@@ -1,4 +1,7 @@
 general:
+  vulnerabilities:
+    # only for Arm Cortex and Neoverse processors
+    - CVE-2022-23960
   bestPracticeViolations:
     - CIS-DI-0010
     - CIS-DI-0001
