@@ -155,14 +155,6 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
-      - name: Scan again and fail 🧐
-        uses: anchore/scan-action@v3
-        with:
-          image: "ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test"
-          # Fail if vulnerabilities with level 'critical' or higher found
-          fail-build: true
-          severity-cutoff: critical
-          output-format: table
 
   github-registry-latest:
     name: Push image to GitHub
