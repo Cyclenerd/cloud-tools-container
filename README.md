@@ -60,6 +60,7 @@ The following software is included and tested:
 	* Perl 5 (`perl`)
 	* Python 3 (`python3`)
 	* OpenSSL 3 (`openssl`)
+	* Mutt command line email client (`mutt`)
 	* apt-utils
 	* build-essential
 	* ca-certificates
