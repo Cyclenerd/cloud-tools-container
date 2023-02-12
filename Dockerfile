@@ -1,4 +1,4 @@
-# Copyright 2022 Nils Knieling. All Rights Reserved.
+# Copyright 2022-2023 Nils Knieling. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,10 @@
 # limitations under the License.
 
 FROM ubuntu:22.04
+
+# Download URLs
+ENV GCR_CLEANER_URL "https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v0.11.1/gcr-cleaner-cli_0.11.1_linux_amd64.tar.gz"
+ENV FUEGO_URL       "https://github.com/sgarciac/fuego/releases/download/0.33.0/fuego_0.33.0_Linux_64-bit.tar.gz"
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
@@ -32,8 +36,11 @@ LABEL org.opencontainers.image.source        "https://github.com/Cyclenerd/googl
 HEALTHCHECK NONE
 
 RUN set -eux; \
-# Install base packages
+# Update list of available packages
 	apt-get update -yqq; \
+# Upgrade
+	apt-get upgrade -yqq; \
+# Install base packages
 	apt-get install -yqq apt-transport-https apt-utils build-essential ca-certificates curl git jq lsb-release tar mutt; \
 # Add Google Cloud repo
 	curl "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | apt-key --keyring "/usr/share/keyrings/cloud.google.gpg" add -; \
@@ -53,11 +60,34 @@ RUN set -eux; \
 		ansible \
 		kubectl \
 		helm; \
+# GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
+	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz"; \
+	tar -xvf gcr-cleaner-cli.tar.gz gcr-cleaner-cli; \
+	mv gcr-cleaner-cli /usr/bin/gcr-cleaner-cli; \
+	rm gcr-cleaner-cli.tar.gz; \
+	#git clone "https://github.com/GoogleCloudPlatform/gcr-cleaner.git"; \
+	#cd gcr-cleaner; \
+	#go build -a \
+	#	-trimpath \
+	#	-ldflags "-s -w -extldflags '-static'" \
+	#	-tags 'osusergo netgo static_build' \
+	#	-o /usr/bin/gcrcleaner \
+	#	./cmd/gcr-cleaner-cli; \
+	#cd .. ; \
+	#rm -rf gcr-cleaner; \
+# Fuego (https://github.com/sgarciac/fuego)
+	curl -L "$FUEGO_URL" -o "fuego.tar.gz"; \
+	tar -xvf fuego.tar.gz fuego; \
+	mv fuego /usr/bin/fuego; \
+	rm fuego.tar.gz; \
 # Basic smoke test
 	lsb_release -a; \
 	gcloud --version; \
 	terraform --version; \
 	ansible --version; \
+	mutt -v; \
+	gcr-cleaner-cli -vesion; \
+	fuego --version; \
 # Delete apt cache
 	apt-get clean; \
 	rm -rf /var/lib/apt/lists/*

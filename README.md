@@ -49,12 +49,14 @@ This [Docker container image](https://hub.docker.com/r/cyclenerd/google-cloud-gc
 
 The following software is included and tested:
 
-* Google Cloud CLI (`gcloud`, `gsutil` and `bq`)
+* [Google Cloud CLI](https://cloud.google.com/cli) (`gcloud`, `gsutil` and `bq`)
 * Kubernetes
-	* Kubernetes cluster manager (`kubectl`)
+	* [Kubernetes cluster manager](https://kubernetes.io/docs/reference/kubectl/) (`kubectl`)
 	* [Helm](https://helm.sh/) (`helm`)
-* Terraform (`terraform`)
-* Ansible (`ansible` and `ansible-playbook`)
+* [Terraform](https://developer.hashicorp.com/terraform/cli) (`terraform`)
+* [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) (`ansible` and `ansible-playbook`)
+* [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) (`gcr-cleaner-cli`)
+* [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
 * Base
 	* GNU bash 5 (`bash`)
 	* Perl 5 (`perl`)
