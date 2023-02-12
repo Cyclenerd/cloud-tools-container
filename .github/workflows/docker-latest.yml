@@ -132,6 +132,18 @@ jobs:
         run: |
           docker run google-cloud-gcp-tools-container \
           jq --version
+      - name: Test mutt 📏
+        run: |
+          docker run google-cloud-gcp-tools-container \
+          mutt -v
+      - name: Test gcr-cleaner-cli 📏
+        run: |
+          docker run google-cloud-gcp-tools-container \
+          gcr-cleaner-cli -vesion
+      - name: Test gcr-cleaner-cli 📏
+        run: |
+          docker run google-cloud-gcp-tools-container \
+          fuego --vesion
 
   container-scan:
     name: Container image scan
