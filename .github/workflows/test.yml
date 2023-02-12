@@ -29,7 +29,3 @@ jobs:
           file: ./Dockerfile
           push: false
           tags: google-cloud-gcp-tools-container:test
-
-      - name: Image 📏
-        run: |
-          docker images google-cloud-gcp-tools-container:test
