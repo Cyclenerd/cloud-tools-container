@@ -1,4 +1,4 @@
-name: "Latest image"
+name: "Test"
 
 on:
   push:
