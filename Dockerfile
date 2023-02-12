@@ -36,10 +36,8 @@ LABEL org.opencontainers.image.source        "https://github.com/Cyclenerd/googl
 HEALTHCHECK NONE
 
 RUN set -eux; \
-# Update list of available packages
-	apt-get update -yqq; \
-# Upgrade
-	apt-get upgrade -yqq; \
+# Update list of available packages and upgrade
+	apt-get update -yqq && apt-get upgrade -yqq; \
 # Install base packages
 	apt-get install -yqq apt-transport-https apt-utils build-essential ca-certificates curl git jq lsb-release tar mutt; \
 # Add Google Cloud repo
@@ -50,10 +48,9 @@ RUN set -eux; \
 	echo "deb [arch=amd64 signed-by=/usr/share/keyrings/releases-hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee -a "/etc/apt/sources.list.d/releases-hashicorp.list"; \
 # Add Helm
 	curl -fsSL "https://baltocdn.com/helm/signing.asc" | apt-key --keyring "/usr/share/keyrings/baltocdn-helm.gpg" add -; \
-	echo "deb [signed-by=/usr/share/keyrings/baltocdn-helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee -a "/etc/apt/sources.list.d/helm-stable-debian.list" ;\
+	echo "deb [signed-by=/usr/share/keyrings/baltocdn-helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee -a "/etc/apt/sources.list.d/helm-stable-debian.list"; \
 # Install other tools
-	apt-get update -yqq; \
-	apt-get install -yqq \
+	apt-get update -yqq && apt-get install -yqq \
 		google-cloud-cli \
 		google-cloud-sdk-gke-gcloud-auth-plugin \
 		terraform \
@@ -62,9 +59,9 @@ RUN set -eux; \
 		helm; \
 # GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
 	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz"; \
-	tar -xvf gcr-cleaner-cli.tar.gz gcr-cleaner-cli; \
-	mv gcr-cleaner-cli /usr/bin/gcr-cleaner-cli; \
-	rm gcr-cleaner-cli.tar.gz; \
+	tar -xvf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli"; \
+	mv "gcr-cleaner-cli" "/usr/bin/gcr-cleaner-cli"; \
+	rm "gcr-cleaner-cli.tar.gz"; \
 	#git clone "https://github.com/GoogleCloudPlatform/gcr-cleaner.git"; \
 	#cd gcr-cleaner; \
 	#go build -a \
@@ -77,16 +74,16 @@ RUN set -eux; \
 	#rm -rf gcr-cleaner; \
 # Fuego (https://github.com/sgarciac/fuego)
 	curl -L "$FUEGO_URL" -o "fuego.tar.gz"; \
-	tar -xvf fuego.tar.gz fuego; \
-	mv fuego /usr/bin/fuego; \
-	rm fuego.tar.gz; \
+	tar -xvf "fuego.tar.gz" "fuego"; \
+	mv "fuego" "/usr/bin/fuego"; \
+	rm "fuego.tar.gz"; \
 # Basic smoke test
 	lsb_release -a; \
 	gcloud --version; \
 	terraform --version; \
 	ansible --version; \
 	mutt -v; \
-	gcr-cleaner-cli -vesion; \
+	gcr-cleaner-cli -version; \
 	fuego --version; \
 # Delete apt cache
 	apt-get clean; \

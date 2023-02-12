@@ -139,11 +139,11 @@ jobs:
       - name: Test gcr-cleaner-cli 📏
         run: |
           docker run google-cloud-gcp-tools-container \
-          gcr-cleaner-cli -vesion
-      - name: Test gcr-cleaner-cli 📏
+          gcr-cleaner-cli -version
+      - name: Test fuego 📏
         run: |
           docker run google-cloud-gcp-tools-container \
-          fuego --vesion
+          fuego --version
 
   container-scan:
     name: Container image scan
