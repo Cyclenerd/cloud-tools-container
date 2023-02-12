@@ -20,7 +20,7 @@ jobs:
         # https://github.com/marketplace/actions/docker-setup-buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build image 🧪
+      - name: Build 🧪
         id: docker_build
         # https://github.com/marketplace/actions/build-and-push-docker-images
         uses: docker/build-push-action@v3
@@ -29,3 +29,7 @@ jobs:
           file: ./Dockerfile
           push: false
           tags: google-cloud-gcp-tools-container:test
+
+      - name: Image 📏
+        run: |
+          docker images google-cloud-gcp-tools-container:test
