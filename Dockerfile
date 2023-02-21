@@ -77,6 +77,10 @@ RUN set -eux; \
 	tar -xvf "fuego.tar.gz" "fuego"; \
 	mv "fuego" "/usr/bin/fuego"; \
 	rm "fuego.tar.gz"; \
+# Google Cloud CLI config
+	gcloud config set "core/disable_usage_reporting" "true"; \
+	gcloud config set "component_manager/disable_update_check" "true"; \
+	gcloud config set "survey/disable_prompts" "true"; \
 # Basic smoke test
 	lsb_release -a; \
 	gcloud --version; \
