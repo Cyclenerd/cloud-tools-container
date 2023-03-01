@@ -45,7 +45,7 @@ gcloud-version:
 
 ## Software
 
-This [Docker container image](https://hub.docker.com/r/cyclenerd/google-cloud-gcp-tools-container) based is on **Ubuntu GNU/Linux 22.04 LTS** (`ubuntu:22.04`).
+This [Docker container image](https://hub.docker.com/r/cyclenerd/google-cloud-gcp-tools-container) is based on **Ubuntu GNU/Linux 22.04 LTS** (`ubuntu:22.04`).
 
 The following software is included and tested:
 
