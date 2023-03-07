@@ -111,7 +111,8 @@ The following software is included and tested:
 	* [Helm](https://helm.sh/) (`helm`)
 * [Terraform](https://developer.hashicorp.com/terraform/cli) (`terraform`)
 * [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) (`ansible` and `ansible-playbook`)
-* [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) (`gcr-cleaner-cli`)
+* [skopeo](https://github.com/containers/skopeo) command line utility that performs various operations on container images and repositories (`skopeo`)
+* [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) deletes old container images on registries (`gcr-cleaner-cli`)
 * [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
 * Base
 	* GNU bash 5 (`bash`)

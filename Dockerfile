@@ -39,7 +39,7 @@ RUN set -eux; \
 # Update list of available packages and upgrade
 	apt-get update -yqq && apt-get upgrade -yqq; \
 # Install base packages
-	apt-get install -yqq apt-transport-https apt-utils build-essential ca-certificates curl git jq lsb-release tar mutt dnsutils; \
+	apt-get install -yqq apt-transport-https apt-utils build-essential ca-certificates curl git jq lsb-release tar mutt dnsutils skopeo; \
 # Add Google Cloud repo
 	curl "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | apt-key --keyring "/usr/share/keyrings/cloud.google.gpg" add -; \
 	echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a "/etc/apt/sources.list.d/google-cloud-sdk.list"; \
@@ -88,6 +88,7 @@ RUN set -eux; \
 	ansible --version; \
 	mutt -v; \
 	dig -v; \
+	skopeo -v; \
 	gcr-cleaner-cli -version; \
 	fuego --version; \
 # Delete apt cache

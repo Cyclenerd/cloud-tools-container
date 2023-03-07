@@ -143,6 +143,10 @@ jobs:
         run: |
           docker run google-cloud-gcp-tools-container \
           dig -v
+      - name: Test skopeo 📏
+        run: |
+          docker run google-cloud-gcp-tools-container \
+          skopeo -v
       - name: Test gcr-cleaner-cli 📏
         run: |
           docker run google-cloud-gcp-tools-container \
