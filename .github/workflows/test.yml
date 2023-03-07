@@ -10,7 +10,7 @@ on:
 jobs:
 
   docker:
-    name: Build container image
+    name: Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
