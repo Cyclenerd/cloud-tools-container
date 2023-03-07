@@ -63,6 +63,7 @@ The following software is included and tested:
 	* Python 3 (`python3`)
 	* OpenSSL 3 (`openssl`)
 	* Mutt command line email client (`mutt`)
+	* DiG DNS lookup utility (`dig`)
 	* apt-utils
 	* build-essential
 	* ca-certificates
