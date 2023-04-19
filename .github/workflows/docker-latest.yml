@@ -38,7 +38,7 @@ jobs:
       - name: Build and push image 🧪
         id: docker_build
         # https://github.com/marketplace/actions/build-and-push-docker-images
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
