@@ -13,92 +13,6 @@
 
 Ready-to-use Docker container image for Google Cloud Build and GitLab runner jobs.
 
-
-<details>
-<summary><b>➨ Docker</b></summary>
-
-Docker:
-```shell
-docker pull cyclenerd/google-cloud-gcp-tools-container:latest && \
-docker run cyclenerd/google-cloud-gcp-tools-container:latest gcloud --version
-```
-
-</details> <!-- // Docker  -->
-
-
-<details>
-<summary><b>➨ Google Cloud Build</b></summary>
-
-Google Cloud Build (`cloudbuild.yml`) configuration file:
-```yml
- - name: 'cyclenerd/google-cloud-gcp-tools-container:latest'
-   entrypoint: 'gcloud'
-   args: ['--version']
-```
-
-</details><!-- // Google Cloud Build -->
-
-<details>
-<summary><b>➨ GitLab CI/CD</b></summary>
-
-<details>
-<summary><b>➥ Service Account Key</b></summary>
-
-GitLab CI/CD (`.gitlab-ci.yml`) configuration with Service Account Key:
-```yml
-variables:
-  GOOGLE_APPLICATION_CREDENTIALS: "/tmp/service_account_key.json"
-
-default:
-  image: cyclenerd/google-cloud-gcp-tools-container:latest
-  before_script:
-    # Login
-    - echo "$YOUR_GOOGLE_CLOUD_SERVICE_ACCOUNT_KEY" > "$GOOGLE_APPLICATION_CREDENTIALS"
-    - gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
-
-stages:
-  - auth
-
-gcloud-auth-list:
-  stage: auth
-  script:
-    - gcloud auth list
-```
-
-</details>
-
-<details>
-<summary><b>➥ Workload Identity Federation</b></summary>
-
-GitLab CI/CD (`.gitlab-ci.yml`) configuration with [Workload Identity Federation](https://github.com/Cyclenerd/google-workload-identity-federation) login:
-```yml
-variables:
-  WIF_PROVIDER: projects/1057256049272/locations/global/workloadIdentityPools/gitlab-com/providers/gitlab-com-oidc
-  SERVICE_ACCOUNT: gitlab-ci@nkn-it-wif-demo.iam.gserviceaccount.com
-  GOOGLE_CREDENTIALS: gcp_temp_cred.json
-
-default:
-  image: cyclenerd/google-cloud-gcp-tools-container:latest
-  before_script:
-    # Login
-    - echo "${CI_JOB_JWT_V2}" > gitlab_jwt_token.txt
-    - gcloud iam workload-identity-pools create-cred-config "${WIF_PROVIDER}"
-      --service-account="${SERVICE_ACCOUNT}"
-      --output-file=${GOOGLE_CREDENTIALS}
-      --credential-source-file=gitlab_jwt_token.txt
-    - gcloud config set auth/credential_file_override "${GOOGLE_CREDENTIALS}"
-stages:
-  - auth
-
-gcloud-auth-list:
-  stage: auth
-  script:
-    - gcloud auth list
-```
-
-</details>
-</details><!-- // GitLab -->
-
 ## Software
 
 This [Docker container image](https://hub.docker.com/r/cyclenerd/google-cloud-gcp-tools-container) is based on **Ubuntu GNU/Linux 22.04 LTS** (`ubuntu:22.04`).
@@ -128,6 +42,84 @@ The following software is included and tested:
 	* git
 	* jq
 	* tar
+
+## HOWTO
+
+Docker pull command:
+```shell
+docker pull cyclenerd/google-cloud-gcp-tools-container:latest
+```
+
+Example run command:
+```shell
+docker run cyclenerd/google-cloud-gcp-tools-container:latest gcloud
+```
+
+## Examples
+
+### Google Cloud Build
+
+Google Cloud Build (`cloudbuild.yml`) configuration file:
+```yml
+ - name: 'cyclenerd/google-cloud-gcp-tools-container:latest'
+   entrypoint: 'gcloud'
+   args: ['--version']
+```
+
+### GitLab CI/CD
+
+#### Service Account Key
+
+GitLab CI/CD (`.gitlab-ci.yml`) configuration with Service Account Key:
+```yml
+variables:
+  GOOGLE_APPLICATION_CREDENTIALS: "/tmp/service_account_key.json"
+
+default:
+  image: cyclenerd/google-cloud-gcp-tools-container:latest
+  before_script:
+    # Login
+    - echo "$YOUR_GOOGLE_CLOUD_SERVICE_ACCOUNT_KEY" > "$GOOGLE_APPLICATION_CREDENTIALS"
+    - gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
+
+stages:
+  - auth
+
+gcloud-auth-list:
+  stage: auth
+  script:
+    - gcloud auth list
+```
+
+#### Workload Identity Federation
+
+GitLab CI/CD (`.gitlab-ci.yml`) configuration with [Workload Identity Federation](https://github.com/Cyclenerd/google-workload-identity-federation) login:
+```yml
+variables:
+  WIF_PROVIDER: projects/1057256049272/locations/global/workloadIdentityPools/gitlab-com/providers/gitlab-com-oidc
+  SERVICE_ACCOUNT: gitlab-ci@nkn-it-wif-demo.iam.gserviceaccount.com
+  GOOGLE_CREDENTIALS: gcp_temp_cred.json
+
+default:
+  image: cyclenerd/google-cloud-gcp-tools-container:latest
+  before_script:
+    # Login
+    - echo "${CI_JOB_JWT_V2}" > gitlab_jwt_token.txt
+    - gcloud iam workload-identity-pools create-cred-config "${WIF_PROVIDER}"
+      --service-account="${SERVICE_ACCOUNT}"
+      --output-file=${GOOGLE_CREDENTIALS}
+      --credential-source-file=gitlab_jwt_token.txt
+    - gcloud config set auth/credential_file_override "${GOOGLE_CREDENTIALS}"
+stages:
+  - auth
+
+gcloud-auth-list:
+  stage: auth
+  script:
+    - gcloud auth list
+```
+
+
 
 ## Contributing
 
