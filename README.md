@@ -28,6 +28,7 @@ The following software is included and tested:
 * [skopeo](https://github.com/containers/skopeo) command line utility that performs various operations on container images and repositories (`skopeo`)
 * [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) deletes old container images on registries (`gcr-cleaner-cli`)
 * [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
+* [ShellCheck](https://www.shellcheck.net/) analysis and linting tool for Shell/Bash scripts (`shellcheck`)
 * Base
 	* GNU bash 5 (`bash`)
 	* Perl 5 (`perl`)
