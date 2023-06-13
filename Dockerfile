@@ -91,6 +91,7 @@ RUN set -eux; \
 	skopeo -v; \
 	gcr-cleaner-cli -version; \
 	fuego --version; \
+	shellcheck --version; \
 # Delete apt cache
 	apt-get clean; \
 	rm -rf /var/lib/apt/lists/*
