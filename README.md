@@ -24,6 +24,7 @@ The following software is included and tested:
 	* [Kubernetes cluster manager](https://kubernetes.io/docs/reference/kubectl/) (`kubectl`)
 	* [Helm](https://helm.sh/) (`helm`)
 * [Terraform](https://developer.hashicorp.com/terraform/cli) (`terraform`)
+	* [tfsec](https://github.com/aquasecurity/tfsec#readme) analysis security scanner for Terraform code (`tfsec`)
 * [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) (`ansible` and `ansible-playbook`)
 * [skopeo](https://github.com/containers/skopeo) command line utility that performs various operations on container images and repositories (`skopeo`)
 * [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) deletes old container images on registries (`gcr-cleaner-cli`)

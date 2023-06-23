@@ -17,6 +17,7 @@ FROM ubuntu:22.04
 # Download URLs
 ENV GCR_CLEANER_URL "https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v0.11.1/gcr-cleaner-cli_0.11.1_linux_amd64.tar.gz"
 ENV FUEGO_URL       "https://github.com/sgarciac/fuego/releases/download/0.33.0/fuego_0.33.0_Linux_64-bit.tar.gz"
+ENV TFSEC_URL       "https://github.com/aquasecurity/tfsec/releases/download/v1.28.1/tfsec_1.28.1_linux_amd64.tar.gz"
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
@@ -77,6 +78,11 @@ RUN set -eux; \
 	tar -xvf "fuego.tar.gz" "fuego"; \
 	mv "fuego" "/usr/bin/fuego"; \
 	rm "fuego.tar.gz"; \
+# tfsec (https://github.com/aquasecurity/tfsec)
+	curl -L "$TFSEC_URL" -o "tfsec.tar.gz"; \
+	tar -xvf "tfsec.tar.gz" "tfsec"; \
+	mv "tfsec" "/usr/bin/tfsec"; \
+	rm "tfsec.tar.gz"; \
 # Google Cloud CLI config
 	gcloud config set "core/disable_usage_reporting" "true"; \
 	gcloud config set "component_manager/disable_update_check" "true"; \
@@ -92,6 +98,7 @@ RUN set -eux; \
 	gcr-cleaner-cli -version; \
 	fuego --version; \
 	shellcheck --version; \
+	tfsec --version; \
 # Delete apt cache
 	apt-get clean; \
 	rm -rf /var/lib/apt/lists/*
