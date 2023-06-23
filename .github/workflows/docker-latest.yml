@@ -163,6 +163,10 @@ jobs:
         run: |
           docker run google-cloud-gcp-tools-container \
           tfsec --version
+      - name: Test tflint 📏
+        run: |
+          docker run google-cloud-gcp-tools-container \
+          tflint --version
 
   container-scan:
     name: Container image scan

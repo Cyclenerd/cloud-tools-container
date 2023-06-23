@@ -25,25 +25,28 @@ The following software is included and tested:
 	* [Helm](https://helm.sh/) (`helm`)
 * [Terraform](https://developer.hashicorp.com/terraform/cli) (`terraform`)
 	* [tfsec](https://github.com/aquasecurity/tfsec#readme) analysis security scanner for Terraform code (`tfsec`)
+	* [tflint](https://github.com/terraform-linters/tflint) linting tool for Terraform code (`tflint`)
 * [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) (`ansible` and `ansible-playbook`)
 * [skopeo](https://github.com/containers/skopeo) command line utility that performs various operations on container images and repositories (`skopeo`)
 * [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) deletes old container images on registries (`gcr-cleaner-cli`)
 * [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
 * [ShellCheck](https://www.shellcheck.net/) analysis and linting tool for Shell/Bash scripts (`shellcheck`)
 * Base
-	* GNU bash 5 (`bash`)
-	* Perl 5 (`perl`)
-	* Python 3 (`python3`)
-	* OpenSSL 3 (`openssl`)
-	* Mutt command line email client (`mutt`)
-	* DiG DNS lookup utility (`dig`)
 	* apt-utils
 	* build-essential
 	* ca-certificates
 	* curl
+	* DiG DNS lookup utility (`dig`)
 	* git
+	* GNU bash 5 (`bash`)
 	* jq
+	* Mutt command line email client (`mutt`)
+	* OpenSSL 3 (`openssl`)
+	* Perl 5 (`perl`)
+	* Python 3 (`python3`)
 	* tar
+	* unzip
+	* zip
 
 ## HOWTO
 

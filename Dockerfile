@@ -18,6 +18,7 @@ FROM ubuntu:22.04
 ENV GCR_CLEANER_URL "https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v0.11.1/gcr-cleaner-cli_0.11.1_linux_amd64.tar.gz"
 ENV FUEGO_URL       "https://github.com/sgarciac/fuego/releases/download/0.33.0/fuego_0.33.0_Linux_64-bit.tar.gz"
 ENV TFSEC_URL       "https://github.com/aquasecurity/tfsec/releases/download/v1.28.1/tfsec_1.28.1_linux_amd64.tar.gz"
+ENV TFLINT_URL      "https://github.com/terraform-linters/tflint/releases/download/v0.47.0/tflint_linux_amd64.zip"
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
@@ -40,7 +41,7 @@ RUN set -eux; \
 # Update list of available packages and upgrade
 	apt-get update -yqq && apt-get upgrade -yqq; \
 # Install base packages
-	apt-get install -yqq apt-transport-https apt-utils build-essential ca-certificates curl git jq lsb-release tar mutt dnsutils skopeo shellcheck python3-pip; \
+	apt-get install -yqq apt-transport-https apt-utils build-essential ca-certificates curl git jq lsb-release tar unzip zip mutt dnsutils skopeo shellcheck python3-pip; \
 # Add Google Cloud repo
 	curl "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | apt-key --keyring "/usr/share/keyrings/cloud.google.gpg" add -; \
 	echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a "/etc/apt/sources.list.d/google-cloud-sdk.list"; \
@@ -83,6 +84,12 @@ RUN set -eux; \
 	tar -xvf "tfsec.tar.gz" "tfsec"; \
 	mv "tfsec" "/usr/bin/tfsec"; \
 	rm "tfsec.tar.gz"; \
+# tfsec (https://github.com/aquasecurity/tfsec)
+	curl -L "$TFSEC_URL" -o "tflint.zip"; \
+	unzip "tflint.zip"; \
+	chmod +x "tflint"; \
+	mv "tflint" "/usr/bin/tflint"; \
+	rm "tflint.zip"; \
 # Google Cloud CLI config
 	gcloud config set "core/disable_usage_reporting" "true"; \
 	gcloud config set "component_manager/disable_update_check" "true"; \
@@ -99,6 +106,7 @@ RUN set -eux; \
 	fuego --version; \
 	shellcheck --version; \
 	tfsec --version; \
+	tflint --version; \
 # Delete apt cache
 	apt-get clean; \
 	rm -rf /var/lib/apt/lists/*
