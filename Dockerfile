@@ -85,7 +85,7 @@ RUN set -eux; \
 	mv "tfsec" "/usr/bin/tfsec"; \
 	rm "tfsec.tar.gz"; \
 # tflint (https://github.com/terraform-linters/tflint)
-	curl -L "$TFSEC_URL" -o "tflint.zip"; \
+	curl -L "$TFLINT_URL" -o "tflint.zip"; \
 	unzip "tflint.zip"; \
 	chmod +x "tflint"; \
 	mv "tflint" "/usr/bin/tflint"; \
