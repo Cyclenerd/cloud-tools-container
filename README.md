@@ -14,11 +14,11 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/cyclenerd/google-cloud-gcp-tools-container)](https://hub.docker.com/r/cyclenerd/google-cloud-gcp-tools-container)
 [![GitHub](https://img.shields.io/github/license/cyclenerd/google-cloud-gcp-tools-container)](https://github.com/Cyclenerd/google-cloud-gcp-tools-container/blob/master/LICENSE)
 
-Ready-to-use Docker container image for Google Cloud Build and GitLab runner jobs.
+Ready-to-use Docker container image for Google Cloud Build, Bitbucket Pipelines and GitLab runner jobs.
 
 ## Software
 
-This [Docker container image](https://hub.docker.com/r/cyclenerd/google-cloud-gcp-tools-container) is based on **Ubuntu GNU/Linux 22.04 LTS** (`ubuntu:22.04`).
+This [Docker container image](https://hub.docker.com/r/cyclenerd/google-cloud-gcp-tools-container) is based on **Ubuntu 22.04 LTS (Jammy Jellyfish)** (`ubuntu:22.04`).
 
 The following software is included and tested:
 
@@ -36,14 +36,17 @@ The following software is included and tested:
 * [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
 * [ShellCheck](https://www.shellcheck.net/) analysis and linting tool for Shell/Bash scripts (`shellcheck`)
 * Base
-	* apt-utils
-	* build-essential
-	* ca-certificates
-	* curl
-	* DiG DNS lookup utility (`dig`)
-	* [FIGlet](http://www.figlet.org/) prints its input using large characters (`figlet`)
-	* git
 	* GNU bash 5 (`bash`)
+	* [apt-utils](https://packages.ubuntu.com/jammy/apt-utils)
+		* [Advanced Packaging Tool](https://ubuntu.com/server/docs/package-management) package manager (`apt`, `apt-get`)
+	* [build-essential](https://packages.ubuntu.com/jammy/build-essential)
+		* GNU C compiler `gcc`
+		* [make](https://www.gnu.org/software/make/) utility for directing compilation (`make`)
+	* [Common CA certificates](https://ubuntu.com/server/docs/security-trust-store)
+	* [curl](https://curl.se/docs/manpage.html) tool for transferring data with URL syntax (`curl`)
+	* [DiG](https://en.wikipedia.org/wiki/Dig_(command)) DNS lookup utility (`dig`)
+	* [FIGlet](http://www.figlet.org/) prints its input using large characters (`figlet`)
+	* [git](https://git-scm.com/) distributed revision control system (`git`)
 	* [jq](https://jqlang.github.io/jq/) JSON processor (`jq`)
 	* [Mutt](https://wiki.archlinux.org/title/Mutt) command line email client (`mutt`)
 	* [OpenSSL](https://www.openssl.org/) cryptography toolkit (`openssl`)
@@ -52,9 +55,9 @@ The following software is included and tested:
 		* [cpanm](https://metacpan.org/dist/App-cpanminus/view/bin/cpanm) modules installer for Perl (`cpanm`)
 	* Python 3 (`python3`)
 		* [pip](https://pypi.org/project/pip/) package installer for Python (`pip3`)
-	* tar
-	* unzip
-	* zip
+	* GNU tar archiving utility (`tar`)
+	* De-archiver for .zip files (`unzip`)
+	* Archiver for .zip files (`zip`)
 
 ## HOWTO
 
