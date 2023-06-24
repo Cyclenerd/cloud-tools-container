@@ -44,7 +44,9 @@ The following software is included and tested:
 	* Mutt command line email client (`mutt`)
 	* OpenSSL 3 (`openssl`)
 	* Perl 5 (`perl`)
+		* [cpanm](https://metacpan.org/dist/App-cpanminus/view/bin/cpanm) modules installer for Perl (`cpanm`)
 	* Python 3 (`python3`)
+		* [pip](https://pypi.org/project/pip/) package installer for Python (`pip3`)
 	* tar
 	* unzip
 	* zip
