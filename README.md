@@ -24,6 +24,7 @@ The following software is included and tested:
 	* [Kubernetes cluster manager](https://kubernetes.io/docs/reference/kubectl/) (`kubectl`)
 	* [Helm](https://helm.sh/) (`helm`)
 * [Terraform](https://developer.hashicorp.com/terraform/cli) (`terraform`)
+	* [terraform-docs](https://github.com/terraform-docs/terraform-docs#readme) generates documentation from Terraform modules (`terraform-docs`)
 	* [tfsec](https://github.com/aquasecurity/tfsec#readme) analysis security scanner for Terraform code (`tfsec`)
 	* [tflint](https://github.com/terraform-linters/tflint) linting tool for Terraform code (`tflint`)
 * [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) (`ansible` and `ansible-playbook`)

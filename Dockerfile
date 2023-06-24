@@ -15,10 +15,16 @@
 FROM ubuntu:22.04
 
 # Download URLs
+# https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
 ENV GCR_CLEANER_URL "https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v0.11.1/gcr-cleaner-cli_0.11.1_linux_amd64.tar.gz"
-ENV FUEGO_URL       "https://github.com/sgarciac/fuego/releases/download/0.33.0/fuego_0.33.0_Linux_64-bit.tar.gz"
-ENV TFSEC_URL       "https://github.com/aquasecurity/tfsec/releases/download/v1.28.1/tfsec_1.28.1_linux_amd64.tar.gz"
-ENV TFLINT_URL      "https://github.com/terraform-linters/tflint/releases/download/v0.47.0/tflint_linux_amd64.zip"
+# https://github.com/sgarciac/fuego/releases
+ENV FUEGO_URL "https://github.com/sgarciac/fuego/releases/download/0.33.0/fuego_0.33.0_Linux_64-bit.tar.gz"
+# https://github.com/terraform-docs/terraform-docs/releases
+ENV TFDOC_URL "https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz"
+# https://github.com/aquasecurity/tfsec/releases
+ENV TFSEC_URL "https://github.com/aquasecurity/tfsec/releases/download/v1.28.1/tfsec_1.28.1_linux_amd64.tar.gz"
+# https://github.com/terraform-linters/tflint/releases
+ENV TFLINT_URL "https://github.com/terraform-linters/tflint/releases/download/v0.47.0/tflint_linux_amd64.zip"
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
@@ -79,6 +85,11 @@ RUN set -eux; \
 	tar -xvf "fuego.tar.gz" "fuego"; \
 	mv "fuego" "/usr/bin/fuego"; \
 	rm "fuego.tar.gz"; \
+# terraform-docs (https://github.com/terraform-docs/terraform-docs)
+	curl -L "$TFDOC_URL" -o "terraform-docs.tar.gz"; \
+	tar -xvf "terraform-docs.tar.gz" "terraform-docs"; \
+	mv "terraform-docs" "/usr/bin/terraform-docs"; \
+	rm "terraform-docs.tar.gz"; \
 # tfsec (https://github.com/aquasecurity/tfsec)
 	curl -L "$TFSEC_URL" -o "tfsec.tar.gz"; \
 	tar -xvf "tfsec.tar.gz" "tfsec"; \
@@ -105,6 +116,7 @@ RUN set -eux; \
 	gcr-cleaner-cli -version; \
 	fuego --version; \
 	shellcheck --version; \
+	terraform-docs --version; \
 	tfsec --version; \
 	tflint --version; \
 # Delete apt cache
