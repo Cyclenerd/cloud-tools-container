@@ -52,7 +52,7 @@ RUN set -eux; \
 		apt-utils \
 		build-essential \
 		ca-certificates \
-		cpanm \
+		cpanminus \
 		curl \
 		dnsutils \
 		git \
