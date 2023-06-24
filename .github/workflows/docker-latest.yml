@@ -177,8 +177,8 @@ jobs:
           tflint --version
       - name: Test figlet 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
-          figlet GitHub && figlet -v
+          docker run google-cloud-gcp-tools-container figlet GitHub && \
+          docker run google-cloud-gcp-tools-container figlet -v
 
   container-scan:
     name: Container image scan
