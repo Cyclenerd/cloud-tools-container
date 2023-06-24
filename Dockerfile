@@ -123,19 +123,25 @@ RUN set -eux; \
 	gcloud config set "component_manager/disable_update_check" "true"; \
 	gcloud config set "survey/disable_prompts" "true"; \
 # Basic smoke test
-	lsb_release -a; \
-	gcloud --version; \
-	terraform --version; \
 	ansible --version; \
-	mutt -v; \
+	bash --version; \
+	cpanm --version; \
 	dig -v; \
-	skopeo -v; \
-	gcr-cleaner-cli -version; \
 	fuego --version; \
+	gcloud --version; \
+	gcr-cleaner-cli -version; \
+	lsb_release -a; \
+	mutt -v; \
+	openssl version; \
+	perl --version; \
+	python3 --version; \
 	shellcheck --version; \
+	skopeo -v; \
+	ssh -V; \
+	terraform --version; \
 	terraform-docs --version; \
-	tfsec --version; \
 	tflint --version; \
+	tfsec --version; \
 # Delete apt cache
 	apt-get clean; \
 	rm -rf /var/lib/apt/lists/*

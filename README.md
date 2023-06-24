@@ -43,9 +43,10 @@ The following software is included and tested:
 	* DiG DNS lookup utility (`dig`)
 	* git
 	* GNU bash 5 (`bash`)
-	* jq
-	* Mutt command line email client (`mutt`)
-	* OpenSSL 3 (`openssl`)
+	* [jq](https://jqlang.github.io/jq/) JSON processor (`jq`)
+	* [Mutt](https://wiki.archlinux.org/title/Mutt) command line email client (`mutt`)
+	* [OpenSSL](https://www.openssl.org/) cryptography toolkit (`openssl`)
+	* [OpenSSH](https://www.openssh.com/) remote login client (`ssh`)
 	* Perl 5 (`perl`)
 		* [cpanm](https://metacpan.org/dist/App-cpanminus/view/bin/cpanm) modules installer for Perl (`cpanm`)
 	* Python 3 (`python3`)
