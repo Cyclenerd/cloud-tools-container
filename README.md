@@ -41,6 +41,7 @@ The following software is included and tested:
 	* ca-certificates
 	* curl
 	* DiG DNS lookup utility (`dig`)
+	* [FIGlet](http://www.figlet.org/) prints its input using large characters (`figlet`)
 	* git
 	* GNU bash 5 (`bash`)
 	* [jq](https://jqlang.github.io/jq/) JSON processor (`jq`)

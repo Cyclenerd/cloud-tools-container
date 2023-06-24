@@ -55,6 +55,7 @@ RUN set -eux; \
 		cpanminus \
 		curl \
 		dnsutils \
+		figlet \
 		git \
 		jq \
 		lsb-release \
@@ -127,6 +128,7 @@ RUN set -eux; \
 	bash --version; \
 	cpanm --version; \
 	dig -v; \
+	figlet -v; \
 	fuego --version; \
 	gcloud --version; \
 	gcr-cleaner-cli -version; \
