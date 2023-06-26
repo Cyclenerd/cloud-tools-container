@@ -60,10 +60,13 @@ RUN set -eux; \
 		git \
 		jq \
 		libapp-options-perl \
+		libyaml-libyaml-perl \
 		lsb-release \
 		mutt \
 		python3-click \
 		python3-pip \
+		python3-pytest \
+		python3-yaml \
 		shellcheck \
 		skopeo \
 		tar \
@@ -126,6 +129,8 @@ RUN set -eux; \
 	gcloud config set "core/disable_usage_reporting" "true"; \
 	gcloud config set "component_manager/disable_update_check" "true"; \
 	gcloud config set "survey/disable_prompts" "true"; \
+# Ubuntu release
+	lsb_release -a; \
 # Basic smoke test
 	ansible --version; \
 	bash --version; \
@@ -135,7 +140,6 @@ RUN set -eux; \
 	fuego --version; \
 	gcloud --version; \
 	gcr-cleaner-cli -version; \
-	lsb_release -a; \
 	mutt -v; \
 	openssl version; \
 	perl --version; \

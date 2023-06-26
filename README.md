@@ -18,7 +18,7 @@ Ready-to-use Docker container image for Google Cloud Build, Bitbucket Pipelines 
 
 ## Software
 
-This [Docker container image](https://hub.docker.com/r/cyclenerd/google-cloud-gcp-tools-container) is based on **Ubuntu 22.04 LTS (Jammy Jellyfish)** (`ubuntu:22.04`).
+This [Docker container image](https://hub.docker.com/r/cyclenerd/google-cloud-gcp-tools-container) is based on the latest **Ubuntu** release (regardless of LTS status) (`ubuntu:rolling`).
 
 The following software is included and tested:
 
@@ -37,9 +37,9 @@ The following software is included and tested:
 * [ShellCheck](https://www.shellcheck.net/) analysis and linting tool for Shell/Bash scripts (`shellcheck`)
 * Base
 	* GNU bash 5 (`bash`)
-	* [apt-utils](https://packages.ubuntu.com/jammy/apt-utils)
+	* [apt-utils](https://packages.ubuntu.com/lunar/apt-utils)
 		* [Advanced Packaging Tool](https://ubuntu.com/server/docs/package-management) package manager (`apt`, `apt-get`)
-	* [build-essential](https://packages.ubuntu.com/jammy/build-essential)
+	* [build-essential](https://packages.ubuntu.com/lunar/build-essential)
 		* GNU C compiler `gcc`
 		* [make](https://www.gnu.org/software/make/) utility for directing compilation (`make`)
 	* [Common CA certificates](https://ubuntu.com/server/docs/security-trust-store)
@@ -53,10 +53,18 @@ The following software is included and tested:
 	* [OpenSSH](https://www.openssh.com/) remote login client (`ssh`)
 	* Perl 5 (`perl`)
 		* [cpanm](https://metacpan.org/dist/App-cpanminus/view/bin/cpanm) modules installer for Perl (`cpanm`)
-		* [App::Options](https://metacpan.org/pod/App::Options) Perl module for creating command line interfaces (`use App::Options`)
+		<!-- https://packages.ubuntu.com/lunar/libapp-options-perl -->
+		* [App::Options](https://metacpan.org/pod/App::Options) (v1.12) Perl module for creating command line interfaces (`use App::Options`)
+		<!-- https://packages.ubuntu.com/lunar/libyaml-libyaml-perl -->
+		* [YAML::XS](https://metacpan.org/pod/YAML::XS) (v0.86) YAML parser for Perl (`use YAML::XS`)
 	* Python 3 (`python3`)
 		* [pip](https://pypi.org/project/pip/) package installer for Python (`pip3`)
-		* [click](https://click.palletsprojects.com/) Python package for creating command line interfaces (`import click`)
+		<!-- https://packages.ubuntu.com/lunar/python3-click -->
+		* [click](https://click.palletsprojects.com/) (v8.1.3) Python package for creating command line interfaces (`import click`)
+		<!-- https://packages.ubuntu.com/lunar/python3-pytest -->
+		* [pytest](https://docs.pytest.org/en/7.2.x/) (v7.2.1) Python package to write unit tests (`import pytest`)
+		<!-- https://packages.ubuntu.com/lunar/python3-yaml -->
+		* [PyYAML](https://github.com/yaml/pyyaml#readme) (v6.0) YAML parser for Python (`import yaml`)
 	* GNU tar archiving utility (`tar`)
 	* De-archiver for .zip files (`unzip`)
 	* Archiver for .zip files (`zip`)
