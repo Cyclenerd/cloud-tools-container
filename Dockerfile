@@ -61,6 +61,7 @@ RUN set -eux; \
 		lsb-release \
 		mutt \
 		python3-pip \
+		python3-click \
 		shellcheck \
 		skopeo \
 		tar \

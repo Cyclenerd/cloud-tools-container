@@ -55,6 +55,7 @@ The following software is included and tested:
 		* [cpanm](https://metacpan.org/dist/App-cpanminus/view/bin/cpanm) modules installer for Perl (`cpanm`)
 	* Python 3 (`python3`)
 		* [pip](https://pypi.org/project/pip/) package installer for Python (`pip3`)
+		* [click](https://click.palletsprojects.com/) Python package for creating command line interfaces (`import click`)
 	* GNU tar archiving utility (`tar`)
 	* De-archiver for .zip files (`unzip`)
 	* Archiver for .zip files (`zip`)
