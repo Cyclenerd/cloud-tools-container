@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ubuntu:22.04
+# The ubuntu:rolling tag points to the latest release (regardless of LTS status)
+FROM ubuntu:rolling
 
 # Download URLs
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
@@ -58,11 +59,11 @@ RUN set -eux; \
 		figlet \
 		git \
 		jq \
+		libapp-options-perl \
 		lsb-release \
 		mutt \
-		python3-pip \
 		python3-click \
-		libapp-options-perl \
+		python3-pip \
 		shellcheck \
 		skopeo \
 		tar \
