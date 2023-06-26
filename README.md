@@ -53,6 +53,7 @@ The following software is included and tested:
 	* [OpenSSH](https://www.openssh.com/) remote login client (`ssh`)
 	* Perl 5 (`perl`)
 		* [cpanm](https://metacpan.org/dist/App-cpanminus/view/bin/cpanm) modules installer for Perl (`cpanm`)
+		* [App::Options](https://metacpan.org/pod/App::Options) Perl module for creating command line interfaces (`use App::Options`)
 	* Python 3 (`python3`)
 		* [pip](https://pypi.org/project/pip/) package installer for Python (`pip3`)
 		* [click](https://click.palletsprojects.com/) Python package for creating command line interfaces (`import click`)

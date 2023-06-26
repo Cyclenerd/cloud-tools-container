@@ -62,6 +62,7 @@ RUN set -eux; \
 		mutt \
 		python3-pip \
 		python3-click \
+		libapp-options-perl \
 		shellcheck \
 		skopeo \
 		tar \
