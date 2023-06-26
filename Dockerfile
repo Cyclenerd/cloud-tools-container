@@ -59,14 +59,9 @@ RUN set -eux; \
 		figlet \
 		git \
 		jq \
-		libapp-options-perl \
-		libyaml-libyaml-perl \
 		lsb-release \
 		mutt \
-		python3-click \
 		python3-pip \
-		python3-pytest \
-		python3-yaml \
 		shellcheck \
 		skopeo \
 		tar \
