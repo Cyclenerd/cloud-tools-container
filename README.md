@@ -82,9 +82,10 @@ docker run cyclenerd/google-cloud-gcp-tools-container:latest gcloud
 Google Cloud Build (`cloudbuild.yml`) configuration file:
 
 ```yml
- - name: 'cyclenerd/google-cloud-gcp-tools-container:latest'
-   entrypoint: 'gcloud'
-   args: ['--version']
+steps:
+  - name: 'cyclenerd/google-cloud-gcp-tools-container:latest'
+    entrypoint: 'gcloud'
+    args: ['--version']
 ```
 
 ### GitLab CI/CD
