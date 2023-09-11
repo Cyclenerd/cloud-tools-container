@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx 🔧
         # https://github.com/marketplace/actions/docker-setup-buildx
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       # Run test
       - name: Pull test image 💿
         run: |
@@ -186,7 +186,7 @@ jobs:
     needs: [docker-test]
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       # Scan with Grype vulnerability scanner
       # https://github.com/anchore/scan-action
       - name: Scan 🧐
@@ -244,6 +244,6 @@ jobs:
     needs: [docker-hub-latest, github-registry-latest]
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Update 📰
         run: bash readme.sh
