@@ -18,7 +18,7 @@ jobs:
 
       - name: Set up Docker Buildx 🔧
         # https://github.com/marketplace/actions/docker-setup-buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Build 🧪
         id: docker_build
