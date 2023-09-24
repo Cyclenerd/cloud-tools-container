@@ -103,6 +103,10 @@ jobs:
         run: |
           docker run google-cloud-gcp-tools-container \
           terraform --version
+      - name: Test packer 📏
+        run: |
+          docker run google-cloud-gcp-tools-container \
+          packer --version
       - name: Test ansible 📏
         run: |
           docker run google-cloud-gcp-tools-container \

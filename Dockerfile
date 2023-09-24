@@ -81,6 +81,7 @@ RUN set -eux; \
 		google-cloud-cli \
 		google-cloud-sdk-gke-gcloud-auth-plugin \
 		terraform \
+		packer \
 		ansible \
 		kubectl \
 		helm; \
@@ -146,6 +147,7 @@ RUN set -eux; \
 	terraform-docs --version; \
 	tflint --version; \
 	tfsec --version; \
+	packer --version; \
 # Delete apt cache
 	apt-get clean; \
 	rm -rf /var/lib/apt/lists/*
