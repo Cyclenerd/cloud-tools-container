@@ -179,6 +179,10 @@ jobs:
         run: |
           docker run google-cloud-gcp-tools-container \
           tflint --version
+      - name: Test vault 📏
+        run: |
+          docker run google-cloud-gcp-tools-container \
+          vault --version
       - name: Test figlet 📏
         run: |
           docker run google-cloud-gcp-tools-container figlet GitHub && \

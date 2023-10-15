@@ -12,20 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# The ubuntu:rolling tag points to the latest release (regardless of LTS status)
-FROM ubuntu:rolling
+# See supported Ubuntu version of HashiCorp:
+# https://www.hashicorp.com/official-packaging-guide?product_intent=terraform
+# The ubuntu:lunar tag points to the 23.04 release
+FROM ubuntu:lunar
 
 # Download URLs
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
 ENV GCR_CLEANER_URL "https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v0.11.1/gcr-cleaner-cli_0.11.1_linux_amd64.tar.gz"
 # https://github.com/sgarciac/fuego/releases
-ENV FUEGO_URL "https://github.com/sgarciac/fuego/releases/download/0.33.0/fuego_0.33.0_Linux_64-bit.tar.gz"
+ENV FUEGO_URL "https://github.com/sgarciac/fuego/releases/download/0.34.0/fuego_0.34.0_Linux_64-bit.tar.gz"
 # https://github.com/terraform-docs/terraform-docs/releases
 ENV TFDOC_URL "https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz"
 # https://github.com/aquasecurity/tfsec/releases
-ENV TFSEC_URL "https://github.com/aquasecurity/tfsec/releases/download/v1.28.1/tfsec_1.28.1_linux_amd64.tar.gz"
+ENV TFSEC_URL "https://github.com/aquasecurity/tfsec/releases/download/v1.28.4/tfsec_1.28.4_linux_amd64.tar.gz"
 # https://github.com/terraform-linters/tflint/releases
-ENV TFLINT_URL "https://github.com/terraform-linters/tflint/releases/download/v0.47.0/tflint_linux_amd64.zip"
+ENV TFLINT_URL "https://github.com/terraform-linters/tflint/releases/download/v0.48.0/tflint_linux_amd64.zip"
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
@@ -44,9 +46,8 @@ LABEL org.opencontainers.image.source        "https://github.com/Cyclenerd/googl
 # Disable any healthcheck inherited from the base image
 HEALTHCHECK NONE
 
-RUN set -eux; \
-# Update list of available packages and upgrade
-	apt-get update -yqq && apt-get upgrade -yqq; \
+RUN apt-get update -yq && \
+	apt-get upgrade -yq && \
 # Install base packages
 	apt-get install -yqq \
 		apt-transport-https \
@@ -58,6 +59,7 @@ RUN set -eux; \
 		dnsutils \
 		figlet \
 		git \
+		gpg \
 		jq \
 		lsb-release \
 		mutt \
@@ -66,90 +68,82 @@ RUN set -eux; \
 		skopeo \
 		tar \
 		unzip \
-		zip; \
+		zip && \
 # Add Google Cloud repo
-	curl "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | apt-key --keyring "/usr/share/keyrings/cloud.google.gpg" add -; \
-	echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a "/etc/apt/sources.list.d/google-cloud-sdk.list"; \
+	curl -fsSL "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | gpg --dearmor -o "/usr/share/keyrings/cloud.google.gpg" && \
+	echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a "/etc/apt/sources.list.d/google-cloud-sdk.list" && \
 # Add Hashicorp/Terraform repo
-	curl -fsSL "https://apt.releases.hashicorp.com/gpg" | apt-key --keyring "/usr/share/keyrings/releases-hashicorp.gpg" add -; \
-	echo "deb [arch=amd64 signed-by=/usr/share/keyrings/releases-hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee -a "/etc/apt/sources.list.d/releases-hashicorp.list"; \
+	curl -fsSL "https://apt.releases.hashicorp.com/gpg" | gpg --dearmor -o "/usr/share/keyrings/releases-hashicorp.gpg" && \
+	echo "deb [arch=amd64 signed-by=/usr/share/keyrings/releases-hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee -a "/etc/apt/sources.list.d/releases-hashicorp.list" && \
 # Add Helm
-	curl -fsSL "https://baltocdn.com/helm/signing.asc" | apt-key --keyring "/usr/share/keyrings/baltocdn-helm.gpg" add -; \
-	echo "deb [signed-by=/usr/share/keyrings/baltocdn-helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee -a "/etc/apt/sources.list.d/helm-stable-debian.list"; \
+	curl -fsSL "https://baltocdn.com/helm/signing.asc" | gpg --dearmor -o "/usr/share/keyrings/baltocdn-helm.gpg" && \
+	echo "deb [signed-by=/usr/share/keyrings/baltocdn-helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee -a "/etc/apt/sources.list.d/helm-stable-debian.list" && \
 # Install other tools
-	apt-get update -yqq && apt-get install -yqq \
+	apt-get update -yq && \
+	apt-get install -yqq \
 		google-cloud-cli \
 		google-cloud-sdk-gke-gcloud-auth-plugin \
 		terraform \
 		packer \
+		vault \
 		ansible \
 		kubectl \
-		helm; \
+		helm && \
 # GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
-	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz"; \
-	tar -xvf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli"; \
-	mv "gcr-cleaner-cli" "/usr/bin/gcr-cleaner-cli"; \
-	rm "gcr-cleaner-cli.tar.gz"; \
-	#git clone "https://github.com/GoogleCloudPlatform/gcr-cleaner.git"; \
-	#cd gcr-cleaner; \
-	#go build -a \
-	#	-trimpath \
-	#	-ldflags "-s -w -extldflags '-static'" \
-	#	-tags 'osusergo netgo static_build' \
-	#	-o /usr/bin/gcrcleaner \
-	#	./cmd/gcr-cleaner-cli; \
-	#cd .. ; \
-	#rm -rf gcr-cleaner; \
+	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz" && \
+	tar -xvf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli"    && \
+	mv "gcr-cleaner-cli" "/usr/bin/gcr-cleaner-cli"        && \
+	rm "gcr-cleaner-cli.tar.gz"                            && \
 # Fuego (https://github.com/sgarciac/fuego)
-	curl -L "$FUEGO_URL" -o "fuego.tar.gz"; \
-	tar -xvf "fuego.tar.gz" "fuego"; \
-	mv "fuego" "/usr/bin/fuego"; \
-	rm "fuego.tar.gz"; \
+	curl -L "$FUEGO_URL" -o "fuego.tar.gz" && \
+	tar -xvf "fuego.tar.gz" "fuego"        && \
+	mv "fuego" "/usr/bin/fuego"            && \
+	rm "fuego.tar.gz"                      && \
 # terraform-docs (https://github.com/terraform-docs/terraform-docs)
-	curl -L "$TFDOC_URL" -o "terraform-docs.tar.gz"; \
-	tar -xvf "terraform-docs.tar.gz" "terraform-docs"; \
-	mv "terraform-docs" "/usr/bin/terraform-docs"; \
-	rm "terraform-docs.tar.gz"; \
+	curl -L "$TFDOC_URL" -o "terraform-docs.tar.gz"   && \
+	tar -xvf "terraform-docs.tar.gz" "terraform-docs" && \
+	mv "terraform-docs" "/usr/bin/terraform-docs"     && \
+	rm "terraform-docs.tar.gz"                        && \
 # tfsec (https://github.com/aquasecurity/tfsec)
-	curl -L "$TFSEC_URL" -o "tfsec.tar.gz"; \
-	tar -xvf "tfsec.tar.gz" "tfsec"; \
-	mv "tfsec" "/usr/bin/tfsec"; \
-	rm "tfsec.tar.gz"; \
+	curl -L "$TFSEC_URL" -o "tfsec.tar.gz" && \
+	tar -xvf "tfsec.tar.gz" "tfsec"        && \
+	mv "tfsec" "/usr/bin/tfsec"            && \
+	rm "tfsec.tar.gz"                      && \
 # tflint (https://github.com/terraform-linters/tflint)
-	curl -L "$TFLINT_URL" -o "tflint.zip"; \
-	unzip "tflint.zip"; \
-	chmod +x "tflint"; \
-	mv "tflint" "/usr/bin/tflint"; \
-	rm "tflint.zip"; \
+	curl -L "$TFLINT_URL" -o "tflint.zip" && \
+	unzip "tflint.zip"                    && \
+	chmod +x "tflint"                     && \
+	mv "tflint" "/usr/bin/tflint"         && \
+	rm "tflint.zip"                       && \
 # Google Cloud CLI config
-	gcloud config set "core/disable_usage_reporting" "true"; \
-	gcloud config set "component_manager/disable_update_check" "true"; \
-	gcloud config set "survey/disable_prompts" "true"; \
-# Ubuntu release
-	lsb_release -a; \
+	gcloud config set "core/disable_usage_reporting" "true"           && \
+	gcloud config set "component_manager/disable_update_check" "true" && \
+	gcloud config set "survey/disable_prompts" "true"                 && \
 # Basic smoke test
-	ansible --version; \
-	bash --version; \
-	cpanm --version; \
-	dig -v; \
-	figlet -v; \
-	fuego --version; \
-	gcloud --version; \
-	gcr-cleaner-cli -version; \
-	mutt -v; \
-	openssl version; \
-	perl --version; \
-	python3 --version; \
-	shellcheck --version; \
-	skopeo -v; \
-	ssh -V; \
-	terraform --version; \
-	terraform-docs --version; \
-	tflint --version; \
-	tfsec --version; \
-	packer --version; \
+	ansible --version        && \
+	bash --version           && \
+	cpanm --version          && \
+	dig -v                   && \
+	figlet -v                && \
+	fuego --version          && \
+	gcloud --version         && \
+	gcr-cleaner-cli -version && \
+	lsb_release -a           && \
+	mutt -v                  && \
+	openssl version          && \
+	packer --version         && \
+	perl --version           && \
+	python3 --version        && \
+	shellcheck --version     && \
+	skopeo -v                && \
+	ssh -V                   && \
+	terraform --version      && \
+	terraform-docs --version && \
+	tflint --version         && \
+	tfsec --version          && \
+	vault --version          && \
 # Delete apt cache
-	apt-get clean; \
+	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
 # If you're reading this and have any feedback on how this image could be
