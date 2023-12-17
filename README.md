@@ -1,4 +1,4 @@
-# Google Cloud Tools Container
+# Cloud Tools Container
 
 [![Bagde: AWS](https://img.shields.io/badge/AWS-%23232F3E.svg?logo=amazonaws&logoColor=white)](#readme)
 [![Bagde: Google Cloud](https://img.shields.io/badge/Google%20Cloud-%234285F4.svg?logo=google-cloud&logoColor=white)](#readme)
@@ -96,7 +96,7 @@ AWS CodeBuild configuration:
 {
   "environment": {
     "type": "LINUX_CONTAINER",
-    "image": "cyclenerd/aws-tools-container:latest",
+    "image": "cyclenerd/cloud-tools-container:latest",
     "computeType": "BUILD_GENERAL1_SMALL"
   },
 }
