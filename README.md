@@ -1,5 +1,6 @@
 # Google Cloud Tools Container
 
+[![Bagde: AWS](https://img.shields.io/badge/AWS-%23232F3E.svg?logo=amazonaws&logoColor=white)](#readme)
 [![Bagde: Google Cloud](https://img.shields.io/badge/Google%20Cloud-%234285F4.svg?logo=google-cloud&logoColor=white)](#readme)
 [![Bagde: Ubuntu](https://img.shields.io/badge/Ubuntu-E95420.svg?logo=ubuntu&logoColor=white)](#readme)
 [![Badge: Terraform](https://img.shields.io/badge/Terraform-%235835CC.svg?logo=terraform&logoColor=white)](#readme)
@@ -13,19 +14,23 @@
 [![Bagde: Python](https://img.shields.io/badge/Python-3670A0?logo=python&logoColor=ffdd54)](#readme)
 [![Badge: GitLab](https://img.shields.io/badge/GitLab-FC6D26.svg?logo=gitlab&logoColor=white)](#readme)
 [![Badge: Bitbucket](https://img.shields.io/badge/Bitbucket-0052CC.svg?logo=bitbucket&logoColor=white)](#readme)
-[![Latest image](https://github.com/Cyclenerd/google-cloud-gcp-tools-container/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/google-cloud-gcp-tools-container/actions/workflows/docker-latest.yml)
-[![Latest build](https://img.shields.io/badge/Last%20build-2023--12--15-blue)](https://github.com/Cyclenerd/google-cloud-gcp-tools-container/actions/workflows/docker-latest.yml)
-[![Docker Pulls](https://img.shields.io/docker/pulls/cyclenerd/google-cloud-gcp-tools-container)](https://hub.docker.com/r/cyclenerd/google-cloud-gcp-tools-container)
-[![License](https://img.shields.io/github/license/cyclenerd/google-cloud-gcp-tools-container)](https://github.com/Cyclenerd/google-cloud-gcp-tools-container/blob/master/LICENSE)
+[![Latest image](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
+[![Latest build](https://img.shields.io/badge/Last%20build-2023--12--15-blue)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
+[![License](https://img.shields.io/github/license/cyclenerd/cloud-tools-container)](https://github.com/Cyclenerd/cloud-tools-container/blob/master/LICENSE)
 
-Ready-to-use Docker container image for Google Cloud Build, Bitbucket Pipelines and GitLab runner jobs.
+Ready-to-use Docker container image for
+AWS CodeBuild/CodePipeline,
+Google Cloud Build,
+Bitbucket Pipelines and
+GitLab runner jobs.
 
 ## Software
 
-This [Docker container image](https://hub.docker.com/r/cyclenerd/google-cloud-gcp-tools-container) is based on the **Ubuntu 23.04** release (`ubuntu:lunar`).
+This [Docker container image](https://hub.docker.com/r/cyclenerd/cloud-tools-container) is based on the **Ubuntu 23.04** release (`ubuntu:lunar`).
 
 The following software is included and tested:
 
+* [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) (`aws`)
 * [Google Cloud CLI](https://cloud.google.com/cli) (`gcloud`, `gsutil` and `bq`)
 * Kubernetes
 	* [Kubernetes cluster manager](https://kubernetes.io/docs/reference/kubectl/) (`kubectl`)
@@ -70,16 +75,32 @@ The following software is included and tested:
 Docker pull command:
 
 ```shell
-docker pull cyclenerd/google-cloud-gcp-tools-container:latest
+docker pull cyclenerd/cloud-tools-container:latest
 ```
 
 Example run command:
 
 ```shell
-docker run cyclenerd/google-cloud-gcp-tools-container:latest gcloud
+docker run cyclenerd/cloud-tools-container:latest gcloud
 ```
 
 ## Examples
+
+Examples of various CI/CD tools.
+
+### AWS CodeBuild
+
+AWS CodeBuild configuration:
+
+```json
+{
+  "environment": {
+    "type": "LINUX_CONTAINER",
+    "image": "cyclenerd/aws-tools-container:latest",
+    "computeType": "BUILD_GENERAL1_SMALL"
+  },
+}
+```
 
 ### Google Cloud Build
 
@@ -87,23 +108,23 @@ Google Cloud Build (`cloudbuild.yml`) configuration file:
 
 ```yml
 steps:
-  - name: 'cyclenerd/google-cloud-gcp-tools-container:latest'
+  - name: 'cyclenerd/cloud-tools-container:latest'
     entrypoint: 'gcloud'
     args: ['--version']
 ```
 
 ### GitLab CI/CD
 
-#### Service Account Key
+#### Google Cloud Service Account Key
 
-GitLab CI/CD (`.gitlab-ci.yml`) configuration with Service Account Key:
+GitLab CI/CD (`.gitlab-ci.yml`) configuration with Google Cloud Service Account Key:
 
 ```yml
 variables:
   GOOGLE_APPLICATION_CREDENTIALS: "/tmp/service_account_key.json"
 
 default:
-  image: cyclenerd/google-cloud-gcp-tools-container:latest
+  image: cyclenerd/cloud-tools-container:latest
   before_script:
     # Login
     - echo "$YOUR_GOOGLE_CLOUD_SERVICE_ACCOUNT_KEY" > "$GOOGLE_APPLICATION_CREDENTIALS"
@@ -118,9 +139,9 @@ gcloud-auth-list:
     - gcloud auth list
 ```
 
-#### Workload Identity Federation
+#### Google Cloud Workload Identity Federation
 
-GitLab CI/CD (`.gitlab-ci.yml`) configuration with [Workload Identity Federation](https://github.com/Cyclenerd/google-workload-identity-federation) login:
+GitLab CI/CD (`.gitlab-ci.yml`) configuration with Google Cloud [Workload Identity Federation](https://github.com/Cyclenerd/google-workload-identity-federation) login:
 
 ```yml
 variables:
@@ -129,7 +150,7 @@ variables:
   GOOGLE_CREDENTIALS: gcp_temp_cred.json
 
 default:
-  image: cyclenerd/google-cloud-gcp-tools-container:latest
+  image: cyclenerd/cloud-tools-container:latest
   before_script:
     # Login
     - echo "${CI_JOB_JWT_V2}" > gitlab_jwt_token.txt
@@ -150,12 +171,12 @@ gcloud-auth-list:
 
 ### Bitbucket Pipelines
 
-#### Workload Identity Federation
+#### Google Cloud Workload Identity Federation
 
-Bitbucket pipeline configuration (`bitbucket-pipelines.yml`) with [Workload Identity Federation](https://github.com/Cyclenerd/google-workload-identity-federation) login:
+Bitbucket pipeline configuration (`bitbucket-pipelines.yml`) with Google Cloud [Workload Identity Federation](https://github.com/Cyclenerd/google-workload-identity-federation) login:
 
 ```yml
-image: cyclenerd/google-cloud-gcp-tools-container:latest
+image: cyclenerd/cloud-tools-container:latest
 
 pipelines:
   default:

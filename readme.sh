@@ -3,7 +3,7 @@
 #
 # Update shield in README.md with date of last build
 #
-# [![Latest build](https://img.shields.io/badge/Last%20build-1900--01--01-blue)](https://github.com/Cyclenerd/google-cloud-gcp-tools-container/actions/workflows/docker-latest.yml)
+# [![Latest build](https://img.shields.io/badge/Last%20build-1900--01--01-blue)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
 #
 
 # GitHub Action runner

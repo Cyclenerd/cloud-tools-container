@@ -28,4 +28,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: false
-          tags: google-cloud-gcp-tools-container:test
+          tags: cloud-tools-container:test

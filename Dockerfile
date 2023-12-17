@@ -18,6 +18,8 @@
 FROM ubuntu:lunar
 
 # Download URLs
+# https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+ENV AWS_CLI_URL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
 ENV GCR_CLEANER_URL "https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v0.11.1/gcr-cleaner-cli_0.11.1_linux_amd64.tar.gz"
 # https://github.com/sgarciac/fuego/releases
@@ -36,12 +38,12 @@ ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
 # Labels
-LABEL org.opencontainers.image.title         "Docker Container with Tools optimized for Google Cloud"
-LABEL org.opencontainers.image.description   "The following software and tools are included: gcloud, terraform, ansible, kubectl, helm"
-LABEL org.opencontainers.image.url           "https://hub.docker.com/r/cyclenerd/google-cloud-gcp-tools-container"
-LABEL org.opencontainers.image.authors       "https://github.com/Cyclenerd/google-cloud-gcp-tools-container/graphs/contributors"
-LABEL org.opencontainers.image.documentation "https://github.com/Cyclenerd/google-cloud-gcp-tools-container/blob/master/README.md"
-LABEL org.opencontainers.image.source        "https://github.com/Cyclenerd/google-cloud-gcp-tools-container"
+LABEL org.opencontainers.image.title         "Docker Container with Tools (AWS CLI, Google Cloud CLI, Terraform, Packer, Ansible)"
+LABEL org.opencontainers.image.description   "The following software and tools are included: aws, gcloud, terraform, ansible, kubectl, helm"
+LABEL org.opencontainers.image.url           "https://hub.docker.com/r/cyclenerd/cloud-tools-container"
+LABEL org.opencontainers.image.authors       "https://github.com/Cyclenerd/cloud-tools-container/graphs/contributors"
+LABEL org.opencontainers.image.documentation "https://github.com/Cyclenerd/cloud-tools-container/blob/master/README.md"
+LABEL org.opencontainers.image.source        "https://github.com/Cyclenerd/cloud-tools-container"
 
 # Disable any healthcheck inherited from the base image
 HEALTHCHECK NONE
@@ -89,6 +91,12 @@ RUN apt-get update -yq && \
 		ansible \
 		kubectl \
 		helm && \
+# AWS CLI (https://github.com/GoogleCloudPlatform/gcr-cleaner)
+	curl -L "$AWS_CLI_URL" -o "awscliv2.zip"                  && \
+	unzip "awscliv2.zip"                                      && \
+	./aws/install -b "/usr/local/bin" -i "/usr/local/aws-cli" && \
+	rm -rf "aws"                                              && \
+	rm "awscliv2.zip"                                         && \
 # GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
 	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz" && \
 	tar -xvf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli"    && \
@@ -121,6 +129,7 @@ RUN apt-get update -yq && \
 	gcloud config set "survey/disable_prompts" "true"                 && \
 # Basic smoke test
 	ansible --version        && \
+	aws --version            && \
 	bash --version           && \
 	cpanm --version          && \
 	dig -v                   && \
@@ -149,4 +158,4 @@ RUN apt-get update -yq && \
 # If you're reading this and have any feedback on how this image could be
 # improved, please open an issue or a pull request so we can discuss it!
 #
-#   https://github.com/Cyclenerd/google-cloud-gcp-tools-container
+#   https://github.com/Cyclenerd/cloud-tools-container

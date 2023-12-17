@@ -43,7 +43,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test
+          tags: ghcr.io/cyclenerd/cloud-tools-container:test
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -65,128 +65,132 @@ jobs:
       # Run test
       - name: Pull test image 💿
         run: |
-          docker pull ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test
-          docker tag ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test google-cloud-gcp-tools-container
+          docker pull ghcr.io/cyclenerd/cloud-tools-container:test
+          docker tag ghcr.io/cyclenerd/cloud-tools-container:test cloud-tools-container
       - name: Images 📏
         run: |
           docker images
       # Tests
+      - name: Test aws 📏
+        run: |
+          docker run cloud-tools-container \
+          aws --version
       - name: Test bash 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           bash --version
       - name: Test perl 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           perl --version
       - name: Test python3 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
-            python3 --version
+          docker run cloud-tools-container \
+          python3 --version
       - name: Test openssl 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           openssl version
       - name: Test gcloud 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           gcloud --version
       - name: Test gsutil 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           gsutil --version
       - name: Test bq 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           bq version
       - name: Test terraform 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           terraform --version
       - name: Test packer 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           packer --version
       - name: Test ansible 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           ansible --version
       - name: Test ansible-playbook 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           ansible-playbook --version
       - name: Test kubectl 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           kubectl help
       - name: Test helm 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
-            helm version
+          docker run cloud-tools-container \
+          helm version
       - name: Test curl 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           curl --version
       - name: Test git 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           git --version
       - name: Test tar 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           tar --version
       - name: Test jq 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           jq --version
       - name: Test mutt 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           mutt -v
       - name: Test dig 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           dig -v
       - name: Test ssh 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           ssh -V
       - name: Test skopeo 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           skopeo -v
       - name: Test gcr-cleaner-cli 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           gcr-cleaner-cli -version
       - name: Test fuego 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           fuego --version
       - name: Test shellcheck 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           shellcheck --version
       - name: Test terraform-docs 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           terraform-docs --version
       - name: Test tfsec 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           tfsec --version
       - name: Test tflint 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           tflint --version
       - name: Test vault 📏
         run: |
-          docker run google-cloud-gcp-tools-container \
+          docker run cloud-tools-container \
           vault --version
       - name: Test figlet 📏
         run: |
-          docker run google-cloud-gcp-tools-container figlet GitHub && \
-          docker run google-cloud-gcp-tools-container figlet -v
+          docker run cloud-tools-container figlet GitHub && \
+          docker run cloud-tools-container figlet -v
 
   container-scan:
     name: Container image scan
@@ -201,7 +205,7 @@ jobs:
         uses: anchore/scan-action@v3
         id: scan
         with:
-          image: "ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test"
+          image: "ghcr.io/cyclenerd/cloud-tools-container:test"
           # Do not fail to upload the SARIF report in the next step...
           fail-build: false
           severity-cutoff: critical
@@ -223,11 +227,11 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Pull latest test image from GitHub container registry 📦
-        run: docker pull ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test
+        run: docker pull ghcr.io/cyclenerd/cloud-tools-container:test
       - name: Push image to GitHub container registry as latest version 🚢
         run: |
-          docker tag ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test ghcr.io/cyclenerd/google-cloud-gcp-tools-container:latest
-          docker push ghcr.io/cyclenerd/google-cloud-gcp-tools-container:latest
+          docker tag ghcr.io/cyclenerd/cloud-tools-container:test ghcr.io/cyclenerd/cloud-tools-container:latest
+          docker push ghcr.io/cyclenerd/cloud-tools-container:latest
 
   docker-hub-latest:
     name: Push image to Docker Hub
@@ -240,11 +244,11 @@ jobs:
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
       - name: Pull latest test image from GitHub container registry 📦
-        run: docker pull ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test
+        run: docker pull ghcr.io/cyclenerd/cloud-tools-container:test
       - name: Push image to Docker Hub registry as latest version 🚢
         run: |
-          docker tag ghcr.io/cyclenerd/google-cloud-gcp-tools-container:test cyclenerd/google-cloud-gcp-tools-container:latest
-          docker push cyclenerd/google-cloud-gcp-tools-container:latest
+          docker tag ghcr.io/cyclenerd/cloud-tools-container:test cyclenerd/cloud-tools-container:latest
+          docker push cyclenerd/cloud-tools-container:latest
 
   readme:
     name: Update README
