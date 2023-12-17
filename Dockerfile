@@ -36,7 +36,7 @@ ENV LANG C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
 # Labels
-LABEL org.opencontainers.image.title         "Docker Container with Tools optimized Google Cloud"
+LABEL org.opencontainers.image.title         "Docker Container with Tools optimized for Google Cloud"
 LABEL org.opencontainers.image.description   "The following software and tools are included: gcloud, terraform, ansible, kubectl, helm"
 LABEL org.opencontainers.image.url           "https://hub.docker.com/r/cyclenerd/google-cloud-gcp-tools-container"
 LABEL org.opencontainers.image.authors       "https://github.com/Cyclenerd/google-cloud-gcp-tools-container/graphs/contributors"
