@@ -15,7 +15,7 @@
 [![Badge: GitLab](https://img.shields.io/badge/GitLab-FC6D26.svg?logo=gitlab&logoColor=white)](#readme)
 [![Badge: Bitbucket](https://img.shields.io/badge/Bitbucket-0052CC.svg?logo=bitbucket&logoColor=white)](#readme)
 [![Latest image](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
-[![Latest build](https://img.shields.io/badge/Last%20build-2023--12--15-blue)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
+[![Latest build](https://img.shields.io/badge/Last%20build-2023--12--17-blue)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
 [![License](https://img.shields.io/github/license/cyclenerd/cloud-tools-container)](https://github.com/Cyclenerd/cloud-tools-container/blob/master/LICENSE)
 
 Ready-to-use Docker container image for
