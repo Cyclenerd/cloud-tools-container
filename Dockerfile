@@ -27,7 +27,7 @@ ENV TFDOC_URL "https://github.com/terraform-docs/terraform-docs/releases/downloa
 # https://github.com/aquasecurity/tfsec/releases
 ENV TFSEC_URL "https://github.com/aquasecurity/tfsec/releases/download/v1.28.4/tfsec_1.28.4_linux_amd64.tar.gz"
 # https://github.com/terraform-linters/tflint/releases
-ENV TFLINT_URL "https://github.com/terraform-linters/tflint/releases/download/v0.48.0/tflint_linux_amd64.zip"
+ENV TFLINT_URL "https://github.com/terraform-linters/tflint/releases/download/v0.49.0/tflint_linux_amd64.zip"
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
