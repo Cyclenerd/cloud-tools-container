@@ -127,6 +127,9 @@ RUN apt-get update -yq && \
 	gcloud config set "core/disable_usage_reporting" "true"           && \
 	gcloud config set "component_manager/disable_update_check" "true" && \
 	gcloud config set "survey/disable_prompts" "true"                 && \
+# Delete apt cache
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/* && \
 # Basic smoke test
 	ansible --version        && \
 	aws --version            && \
@@ -150,10 +153,7 @@ RUN apt-get update -yq && \
 	terraform-docs --version && \
 	tflint --version         && \
 	tfsec --version          && \
-	vault --version          && \
-# Delete apt cache
-	apt-get clean && \
-	rm -rf /var/lib/apt/lists/*
+	vault --version
 
 # If you're reading this and have any feedback on how this image could be
 # improved, please open an issue or a pull request so we can discuss it!
