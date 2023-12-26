@@ -14,6 +14,11 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
+      # Add support for more platforms with QEMU
+      # https://github.com/marketplace/actions/docker-setup-qemu
+      - name: Set up QEMU 🔧
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx 🔧
         # https://github.com/marketplace/actions/docker-setup-buildx
         uses: docker/setup-buildx-action@v3
@@ -40,12 +45,18 @@ jobs:
         # https://github.com/marketplace/actions/build-and-push-docker-images
         uses: docker/build-push-action@v5
         with:
+          platforms: linux/amd64,linux/arm64/v8
+          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Cloud tools
           context: .
           file: ./Dockerfile
           push: true
           tags: ghcr.io/cyclenerd/cloud-tools-container:test
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          # Fix unsupported MIME type for compression: application/vnd.in-toto+json
+          # https://github.com/docker/buildx/releases/tag/v0.10.0
+          provenance: false
+          sbom: false
 
       # Temp fix
       # https://github.com/docker/build-push-action/issues/252
@@ -62,135 +73,17 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
+      # Inspect
+      - name: Inspect test image 💿
+        run: skopeo inspect --raw ghcr.io/cyclenerd/cloud-tools-container:test | jq
       # Run test
       - name: Pull test image 💿
         run: |
           docker pull ghcr.io/cyclenerd/cloud-tools-container:test
           docker tag ghcr.io/cyclenerd/cloud-tools-container:test cloud-tools-container
-      - name: Images 📏
-        run: |
-          docker images
       # Tests
-      - name: Test aws 📏
-        run: |
-          docker run cloud-tools-container \
-          aws --version
-      - name: Test bash 📏
-        run: |
-          docker run cloud-tools-container \
-          bash --version
-      - name: Test perl 📏
-        run: |
-          docker run cloud-tools-container \
-          perl --version
-      - name: Test python3 📏
-        run: |
-          docker run cloud-tools-container \
-          python3 --version
-      - name: Test openssl 📏
-        run: |
-          docker run cloud-tools-container \
-          openssl version
-      - name: Test gcloud 📏
-        run: |
-          docker run cloud-tools-container \
-          gcloud --version
-      - name: Test gsutil 📏
-        run: |
-          docker run cloud-tools-container \
-          gsutil --version
-      - name: Test bq 📏
-        run: |
-          docker run cloud-tools-container \
-          bq version
-      - name: Test terraform 📏
-        run: |
-          docker run cloud-tools-container \
-          terraform --version
-      - name: Test packer 📏
-        run: |
-          docker run cloud-tools-container \
-          packer --version
-      - name: Test ansible 📏
-        run: |
-          docker run cloud-tools-container \
-          ansible --version
-      - name: Test ansible-playbook 📏
-        run: |
-          docker run cloud-tools-container \
-          ansible-playbook --version
-      - name: Test kubectl 📏
-        run: |
-          docker run cloud-tools-container \
-          kubectl help
-      - name: Test helm 📏
-        run: |
-          docker run cloud-tools-container \
-          helm version
-      - name: Test curl 📏
-        run: |
-          docker run cloud-tools-container \
-          curl --version
-      - name: Test git 📏
-        run: |
-          docker run cloud-tools-container \
-          git --version
-      - name: Test tar 📏
-        run: |
-          docker run cloud-tools-container \
-          tar --version
-      - name: Test jq 📏
-        run: |
-          docker run cloud-tools-container \
-          jq --version
-      - name: Test mutt 📏
-        run: |
-          docker run cloud-tools-container \
-          mutt -v
-      - name: Test dig 📏
-        run: |
-          docker run cloud-tools-container \
-          dig -v
-      - name: Test ssh 📏
-        run: |
-          docker run cloud-tools-container \
-          ssh -V
-      - name: Test skopeo 📏
-        run: |
-          docker run cloud-tools-container \
-          skopeo -v
-      - name: Test gcr-cleaner-cli 📏
-        run: |
-          docker run cloud-tools-container \
-          gcr-cleaner-cli -version
-      - name: Test fuego 📏
-        run: |
-          docker run cloud-tools-container \
-          fuego --version
-      - name: Test shellcheck 📏
-        run: |
-          docker run cloud-tools-container \
-          shellcheck --version
-      - name: Test terraform-docs 📏
-        run: |
-          docker run cloud-tools-container \
-          terraform-docs --version
-      - name: Test tfsec 📏
-        run: |
-          docker run cloud-tools-container \
-          tfsec --version
-      - name: Test tflint 📏
-        run: |
-          docker run cloud-tools-container \
-          tflint --version
-      - name: Test vault 📏
-        run: |
-          docker run cloud-tools-container \
-          vault --version
-      - name: Test figlet 📏
-        run: |
-          docker run cloud-tools-container figlet GitHub && \
-          docker run cloud-tools-container figlet -v
+      - name: Test 📏
+        run: bash test.sh
 
   container-scan:
     name: Container image scan
@@ -226,12 +119,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Pull latest test image from GitHub container registry 📦
-        run: docker pull ghcr.io/cyclenerd/cloud-tools-container:test
       - name: Push image to GitHub container registry as latest version 🚢
-        run: |
-          docker tag ghcr.io/cyclenerd/cloud-tools-container:test ghcr.io/cyclenerd/cloud-tools-container:latest
-          docker push ghcr.io/cyclenerd/cloud-tools-container:latest
+        run: skopeo copy --all docker://ghcr.io/cyclenerd/cloud-tools-container:test docker://ghcr.io/cyclenerd/cloud-tools-container:latest
 
   docker-hub-latest:
     name: Push image to Docker Hub
@@ -243,12 +132,8 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-      - name: Pull latest test image from GitHub container registry 📦
-        run: docker pull ghcr.io/cyclenerd/cloud-tools-container:test
       - name: Push image to Docker Hub registry as latest version 🚢
-        run: |
-          docker tag ghcr.io/cyclenerd/cloud-tools-container:test cyclenerd/cloud-tools-container:latest
-          docker push cyclenerd/cloud-tools-container:latest
+        run: skopeo copy --all docker://ghcr.io/cyclenerd/cloud-tools-container:test docker://cyclenerd/cloud-tools-container:latest
 
   readme:
     name: Update README

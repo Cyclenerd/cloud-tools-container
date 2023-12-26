@@ -1,19 +1,21 @@
 # Cloud Tools Container
 
-[![Badge: AWS](https://img.shields.io/badge/AWS-%23232F3E.svg?logo=amazonaws&logoColor=white)](#readme)
-[![Badge: Google Cloud](https://img.shields.io/badge/Google%20Cloud-%234285F4.svg?logo=google-cloud&logoColor=white)](#readme)
-[![Badge: Ubuntu](https://img.shields.io/badge/Ubuntu-E95420.svg?logo=ubuntu&logoColor=white)](#readme)
-[![Badge: Terraform](https://img.shields.io/badge/Terraform-%235835CC.svg?logo=terraform&logoColor=white)](#readme)
-[![Badge: Packer](https://img.shields.io/badge/Packer-02A8EF.svg?logo=packer&logoColor=white)](#readme)
-[![Badge: Vault](https://img.shields.io/badge/Vault-FFEC6E.svg?logo=vault&logoColor=black)](#readme)
 [![Badge: Ansible](https://img.shields.io/badge/Ansible-%231A1918.svg?logo=ansible&logoColor=white)](#readme)
+[![Badge: AWS](https://img.shields.io/badge/AWS-%23232F3E.svg?logo=amazonaws&logoColor=white)](#readme)
+[![Badge: Bitbucket](https://img.shields.io/badge/Bitbucket-0052CC.svg?logo=bitbucket&logoColor=white)](#readme)
 [![Badge: Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?logo=docker&logoColor=white)](#readme)
-[![Badge: Kubernetes](https://img.shields.io/badge/Kubernetes-%23326ce5.svg?logo=kubernetes&logoColor=white)](#readme)
+[![Badge: GitLab](https://img.shields.io/badge/GitLab-FC6D26.svg?logo=gitlab&logoColor=white)](#readme)
 [![Badge: GNU Bash](https://img.shields.io/badge/GNU%20Bash-4EAA25.svg?logo=gnubash&logoColor=white)](#readme)
+[![Badge: Go](https://img.shields.io/badge/Go-%2300ADD8.svg?logo=go&logoColor=white)](#readme)
+[![Badge: Google Cloud](https://img.shields.io/badge/Google%20Cloud-%234285F4.svg?logo=google-cloud&logoColor=white)](#readme)
+[![Badge: Kubernetes](https://img.shields.io/badge/Kubernetes-%23326ce5.svg?logo=kubernetes&logoColor=white)](#readme)
+[![Badge: Packer](https://img.shields.io/badge/Packer-02A8EF.svg?logo=packer&logoColor=white)](#readme)
 [![Badge: Perl](https://img.shields.io/badge/Perl-%2339457E.svg?logo=perl&logoColor=white)](#readme)
 [![Badge: Python](https://img.shields.io/badge/Python-3670A0?logo=python&logoColor=ffdd54)](#readme)
-[![Badge: GitLab](https://img.shields.io/badge/GitLab-FC6D26.svg?logo=gitlab&logoColor=white)](#readme)
-[![Badge: Bitbucket](https://img.shields.io/badge/Bitbucket-0052CC.svg?logo=bitbucket&logoColor=white)](#readme)
+[![Badge: Python](https://img.shields.io/badge/Python-3670A0?logo=python&logoColor=ffdd54)](#readme)
+[![Badge: Terraform](https://img.shields.io/badge/Terraform-%235835CC.svg?logo=terraform&logoColor=white)](#readme)
+[![Badge: Ubuntu](https://img.shields.io/badge/Ubuntu-E95420.svg?logo=ubuntu&logoColor=white)](#readme)
+[![Badge: Vault](https://img.shields.io/badge/Vault-FFEC6E.svg?logo=vault&logoColor=black)](#readme)
 [![Latest image](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
 [![Latest build](https://img.shields.io/badge/Last%20build-2023--12--17-blue)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
 [![License](https://img.shields.io/github/license/cyclenerd/cloud-tools-container)](https://github.com/Cyclenerd/cloud-tools-container/blob/master/LICENSE)
@@ -23,6 +25,10 @@ AWS CodeBuild/CodePipeline,
 Google Cloud Build,
 Bitbucket Pipelines and
 GitLab runner jobs.
+
+**Multiarch:**
+  * `amd64` : Intel or AMD 64-Bit CPU (x86-64)
+  * `arm64` : Arm-based 64-Bit CPU (i.e. Apple silicon, AWS Graviton, Ampere Altra)
 
 ## Software
 
@@ -46,7 +52,7 @@ The following software is included and tested:
 * [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) deletes old container images on registries (`gcr-cleaner-cli`)
 * [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
 * [ShellCheck](https://www.shellcheck.net/) analysis and linting tool for Shell/Bash scripts (`shellcheck`)
-* Base
+* Base packages
 	* GNU bash 5 (`bash`)
 	* [apt-utils](https://packages.ubuntu.com/lunar/apt-utils)
 		* [Advanced Packaging Tool](https://ubuntu.com/server/docs/package-management) package manager (`apt`, `apt-get`)
@@ -66,6 +72,7 @@ The following software is included and tested:
 		* [cpanm](https://metacpan.org/dist/App-cpanminus/view/bin/cpanm) modules installer for Perl (`cpanm`)
 	* Python 3 (`python3`)
 		* [pip](https://pypi.org/project/pip/) package installer for Python (`pip3`)
+	* Go programming language (`go`)
 	* GNU tar archiving utility (`tar`)
 	* De-archiver for .zip files (`unzip`)
 	* Archiver for .zip files (`zip`)
@@ -200,7 +207,6 @@ pipelines:
           # Now you can run gcloud commands authenticated as the impersonated service account.
 ```
 
-
 ## Contributing
 
 Have a patch that will benefit this project?
@@ -211,7 +217,6 @@ Awesome! Follow these steps to have it accepted.
 1. Create a Pull Request.
 1. Incorporate review feedback to your changes.
 1. Accepted!
-
 
 ## License
 

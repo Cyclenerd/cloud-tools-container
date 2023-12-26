@@ -13,7 +13,8 @@ if [ -v GITHUB_RUN_ID ]; then
 	git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 fi
 
-export MY_DATE=$(date --utc +'%Y--%m--%d')
+MY_DATE=$(date --utc +'%Y--%m--%d')
+export MY_DATE
 
 perl -i -pe's|\d{4}--\d{2}--\d{2}|$ENV{MY_DATE}|' "README.md"
 
