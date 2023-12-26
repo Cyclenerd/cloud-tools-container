@@ -18,6 +18,8 @@ jobs:
       # https://github.com/marketplace/actions/docker-setup-qemu
       - name: Set up QEMU 🔧
         uses: docker/setup-qemu-action@v3
+        with:
+          platforms: 'arm64'
 
       - name: Set up Docker Buildx 🔧
         # https://github.com/marketplace/actions/docker-setup-buildx
@@ -45,7 +47,7 @@ jobs:
         # https://github.com/marketplace/actions/build-and-push-docker-images
         uses: docker/build-push-action@v5
         with:
-          platforms: linux/amd64,linux/arm64/v8
+          platforms: linux/amd64,linux/arm64
           outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Cloud tools
           context: .
           file: ./Dockerfile
