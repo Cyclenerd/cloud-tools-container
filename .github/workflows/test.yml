@@ -16,6 +16,13 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
+      # Add support for more platforms with QEMU
+      # https://github.com/marketplace/actions/docker-setup-qemu
+      - name: Set up QEMU 🔧
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: 'arm64'
+
       - name: Build 🧪
         id: docker_build
         run: |
