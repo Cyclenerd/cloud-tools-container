@@ -19,7 +19,6 @@ jobs:
       - name: Build 🧪
         id: docker_build
         run: |
-          podman buildx build . \
+          podman build . \
           --platform linux/amd64,linux/arm64 \
-          --output type=image,name=target,annotation-index.org.opencontainers.image.description=Cloud tools \
           --tag cloud-tools-container:test
