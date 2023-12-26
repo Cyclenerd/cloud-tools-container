@@ -16,27 +16,10 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
-      # Add support for more platforms with QEMU
-      # https://github.com/marketplace/actions/docker-setup-qemu
-      - name: Set up QEMU 🔧
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: 'arm64'
-
-      - name: Set up Docker Buildx 🔧
-        # https://github.com/marketplace/actions/docker-setup-buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          platforms: linux/amd64,linux/arm64
-
       - name: Build 🧪
         id: docker_build
-        # https://github.com/marketplace/actions/build-and-push-docker-images
-        uses: docker/build-push-action@v5
-        with:
-          platforms: linux/amd64,linux/arm64
-          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Cloud tools
-          context: .
-          file: ./Dockerfile
-          push: false
-          tags: cloud-tools-container:test
+        run: |
+          podman buildx build . \
+          --platform linux/amd64,linux/arm64 \
+          --output type=image,name=target,annotation-index.org.opencontainers.image.description=Cloud tools \
+          --tag cloud-tools-container:test
