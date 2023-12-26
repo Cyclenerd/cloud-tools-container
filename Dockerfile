@@ -21,38 +21,36 @@ ARG TARGETARCH
 # The ubuntu:lunar tag points to the 23.04 release
 FROM ubuntu:lunar AS base
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
-ENV GCR_CLEANER_VERSION "0.11.1"
+ENV GCR_CLEANER_VERSION="0.11.1"
 # https://github.com/sgarciac/fuego/releases
-ENV FUEGO_VERSION "0.34.0"
-ENV FUEGO_URL "https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz"
+ENV FUEGO_VERSION="0.34.0"
+ENV FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz"
 # https://github.com/terraform-docs/terraform-docs/releases
-ENV TFDOC_VERSION "0.16.0"
+ENV TFDOC_VERSION="0.16.0"
 # https://github.com/aquasecurity/tfsec/releases
-ENV TFSEC_VERSION "1.28.4"
+ENV TFSEC_VERSION="1.28.4"
 # https://github.com/terraform-linters/tflint/releases
-ENV TFLINT_VERSION "0.50.0"
+ENV TFLINT_VERSION="0.50.0"
 # Default to UTF-8 file.encoding
-ENV LANG "C.UTF-8"
+ENV LANG="C.UTF-8"
 # Set debconf frontend to noninteractive
-ENV DEBIAN_FRONTEND "noninteractive"
-# Disable any healthcheck inherited from the base image
-HEALTHCHECK NONE
+ENV DEBIAN_FRONTEND="noninteractive"
 
 FROM base AS amd64
 # Download URLs for AMD64 (X86/64)
-ENV AWS_CLI_URL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
-ENV GCR_CLEANER_URL "https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_amd64.tar.gz"
-ENV TFDOC_URL "https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-amd64.tar.gz"
-ENV TFSEC_URL "https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec_${TFSEC_VERSION}_linux_amd64.tar.gz"
-ENV TFLINT_URL "https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_amd64.zip"
+ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+ENV GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_amd64.tar.gz"
+ENV TFDOC_URL="https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-amd64.tar.gz"
+ENV TFSEC_URL="https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec_${TFSEC_VERSION}_linux_amd64.tar.gz"
+ENV TFLINT_URL="https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_amd64.zip"
 
 FROM base AS arm64
 # Download URLs for ARM64
-ENV AWS_CLI_URL "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip"
-ENV GCR_CLEANER_URL "https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_arm64.tar.gz"
-ENV TFDOC_URL "https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-arm64.tar.gz"
-ENV TFSEC_URL "https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec_${TFSEC_VERSION}_linux_arm64.tar.gz"
-ENV TFLINT_URL "https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_arm64.zip"
+ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip"
+ENV GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_arm64.tar.gz"
+ENV TFDOC_URL="https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-arm64.tar.gz"
+ENV TFSEC_URL="https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec_${TFSEC_VERSION}_linux_arm64.tar.gz"
+ENV TFLINT_URL="https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_arm64.zip"
 
 FROM ${TARGETARCH} AS tools
 # Install tools
