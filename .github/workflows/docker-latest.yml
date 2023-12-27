@@ -72,6 +72,8 @@ jobs:
         run: |
           docker pull "ghcr.io/cyclenerd/cloud-tools-container:test"
           docker tag "ghcr.io/cyclenerd/cloud-tools-container:test" "cloud-tools-container"
+      - name: Images 📏
+        run: docker images
       # Tests
       - name: Test 📏
         run: bash test.sh
