@@ -54,7 +54,8 @@ ENV TFLINT_URL="https://github.com/terraform-linters/tflint/releases/download/v$
 
 FROM ${TARGETARCH} AS tools
 # Install tools
-RUN apt-get update -yq && \
+RUN uname -m && \
+	apt-get update -yq && \
 	apt-get upgrade -yq && \
 	apt-get install -yqq \
 		apt-transport-https \
@@ -104,6 +105,7 @@ RUN apt-get update -yq && \
 # https://github.com/hashicorp/vault/issues/10924
 	setcap -r "/usr/bin/vault" && \
 # AWS CLI (https://github.com/GoogleCloudPlatform/gcr-cleaner)
+	echo "AWS CLI URL: '$AWS_CLI_URL'"                        && \
 	curl -L "$AWS_CLI_URL" -o "awscliv2.zip"                  && \
 	unzip -qq "awscliv2.zip"                                  && \
 	./aws/install -b "/usr/local/bin" -i "/usr/local/aws-cli" && \
