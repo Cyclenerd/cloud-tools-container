@@ -20,8 +20,7 @@ jobs:
           curl -fsSL https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/Debian_Testing/Release.key \
             | gpg --dearmor \
             | sudo tee /etc/apt/keyrings/devel_kubic_libcontainers_unstable.gpg > /dev/null
-          echo "deb [signed-by=/etc/apt/keyrings/devel_kubic_libcontainers_unstable.gpg] \
-            https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/Debian_Testing/ /" \
+          echo "deb [signed-by=/etc/apt/keyrings/devel_kubic_libcontainers_unstable.gpg] https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/Debian_Testing/ /" \
             | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:unstable.list > /dev/null
           sudo apt-get update
       - name: Install dependencies 🔧
@@ -52,4 +51,6 @@ jobs:
             --platform "linux/amd64,linux/arm64" \
             --tag "ghcr.io/cyclenerd/cloud-tools-container:test" \
             . && \
+          podman manifest inspect "cloud-tools-container" | grep -o "amd64" && \
+          podman manifest inspect "cloud-tools-container" | grep -o "arm64" && \
           podman manifest push --all "cloud-tools-container" "docker://ghcr.io/cyclenerd/cloud-tools-container:test"

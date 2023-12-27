@@ -3,6 +3,7 @@
 # Test container
 
 MY_COMMANDS=(
+	"uname -m"
 	"ansible --version"
 	"ansible-playbook --version"
 	"aws --version"

@@ -11,62 +11,47 @@ jobs:
     name: Build container image
     runs-on: ubuntu-latest
     steps:
+      # Add repository
+      # https://podman.io/docs/installation#linux-distributions
+      - name: Podman repository 🔧
+        run: |
+          curl -fsSL https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/Debian_Testing/Release.key \
+            | gpg --dearmor \
+            | sudo tee /etc/apt/keyrings/devel_kubic_libcontainers_unstable.gpg > /dev/null
+          echo "deb [signed-by=/etc/apt/keyrings/devel_kubic_libcontainers_unstable.gpg] https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/Debian_Testing/ /" \
+            | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:unstable.list > /dev/null
+          sudo apt-get update
+      - name: Install dependencies 🔧
+        run: |
+          sudo apt-get -y install podman
+          podman version
       - name: Checkout 🛎️
         uses: actions/checkout@v4
-
       # Add support for more platforms with QEMU
       # https://github.com/marketplace/actions/docker-setup-qemu
       - name: Set up QEMU 🔧
         uses: docker/setup-qemu-action@v3
         with:
           platforms: 'arm64'
-
-      - name: Set up Docker Buildx 🔧
-        # https://github.com/marketplace/actions/docker-setup-buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Cache Docker layers 💾
-        # https://github.com/marketplace/actions/cache
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
+      # Login
+      # https://github.com/marketplace/actions/docker-login
       - name: Login to GitHub container registry 🏭
-        # https://github.com/marketplace/actions/docker-login
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push image 🧪
-        id: docker_build
-        # https://github.com/marketplace/actions/build-and-push-docker-images
-        uses: docker/build-push-action@v5
-        with:
-          platforms: linux/amd64,linux/arm64
-          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Cloud tools
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ghcr.io/cyclenerd/cloud-tools-container:test
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-          # Fix unsupported MIME type for compression: application/vnd.in-toto+json
-          # https://github.com/docker/buildx/releases/tag/v0.10.0
-          provenance: false
-          sbom: false
-
-      # Temp fix
-      # https://github.com/docker/build-push-action/issues/252
-      # https://github.com/moby/buildkit/issues/1896
-      - name: Move cache
+      - name: Build 🧪
         run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          podman manifest create "cloud-tools-container" && \
+          podman build \
+            --manifest "cloud-tools-container" \
+            --platform "linux/amd64,linux/arm64" \
+            --tag "ghcr.io/cyclenerd/cloud-tools-container:test" \
+            . && \
+          podman manifest inspect "cloud-tools-container" | grep -o "amd64" && \
+          podman manifest inspect "cloud-tools-container" | grep -o "arm64" && \
+          podman manifest push --all "cloud-tools-container" "docker://ghcr.io/cyclenerd/cloud-tools-container:test"
 
   docker-test:
     name: Test container image
@@ -77,12 +62,15 @@ jobs:
         uses: actions/checkout@v4
       # Inspect
       - name: Inspect test image 💿
-        run: skopeo inspect --raw ghcr.io/cyclenerd/cloud-tools-container:test | jq
+        run: |
+          skopeo inspect --raw "docker://ghcr.io/cyclenerd/cloud-tools-container:test" | jq && \
+          skopeo inspect --raw "docker://ghcr.io/cyclenerd/cloud-tools-container:test" | grep -o "amd64" && \
+          skopeo inspect --raw "docker://ghcr.io/cyclenerd/cloud-tools-container:test" | grep -o "arm64"
       # Run test
       - name: Pull test image 💿
         run: |
-          docker pull ghcr.io/cyclenerd/cloud-tools-container:test
-          docker tag ghcr.io/cyclenerd/cloud-tools-container:test cloud-tools-container
+          docker pull "ghcr.io/cyclenerd/cloud-tools-container:test"
+          docker tag "ghcr.io/cyclenerd/cloud-tools-container:test" "cloud-tools-container"
       # Tests
       - name: Test 📏
         run: bash test.sh
@@ -122,7 +110,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push image to GitHub container registry as latest version 🚢
-        run: skopeo copy --all docker://ghcr.io/cyclenerd/cloud-tools-container:test docker://ghcr.io/cyclenerd/cloud-tools-container:latest
+        run: skopeo copy --all "docker://ghcr.io/cyclenerd/cloud-tools-container:test" "docker://ghcr.io/cyclenerd/cloud-tools-container:latest"
 
   docker-hub-latest:
     name: Push image to Docker Hub
@@ -135,7 +123,7 @@ jobs:
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
       - name: Push image to Docker Hub registry as latest version 🚢
-        run: skopeo copy --all docker://ghcr.io/cyclenerd/cloud-tools-container:test docker://cyclenerd/cloud-tools-container:latest
+        run: skopeo copy --all "docker://ghcr.io/cyclenerd/cloud-tools-container:test" "docker://cyclenerd/cloud-tools-container:latest"
 
   readme:
     name: Update README
