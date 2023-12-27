@@ -9,23 +9,32 @@ on:
 
 jobs:
 
-  docker:
-    name: Test
+  amd64:
+    name: AMD64
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
+      - name: Build 🧪
+        run: |
+          podman build . \
+          --platform linux/amd64 \
+          --tag cloud-tools-container:test
 
+  arm64:
+    name: ARM64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
       # Add support for more platforms with QEMU
       # https://github.com/marketplace/actions/docker-setup-qemu
       - name: Set up QEMU 🔧
         uses: docker/setup-qemu-action@v3
         with:
           platforms: 'arm64'
-
       - name: Build 🧪
-        id: docker_build
         run: |
           podman build . \
-          --platform linux/amd64,linux/arm64 \
+          --platform linux/arm64 \
           --tag cloud-tools-container:test
