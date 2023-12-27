@@ -42,5 +42,5 @@ MY_COMMANDS=(
 for MY_COMMAND in "${MY_COMMANDS[@]}"
 do
 	# shellcheck disable=SC2086
-	podman run cloud-tools-container $MY_COMMAND || exit 9
+	docker run cloud-tools-container $MY_COMMAND || exit 9
 done
