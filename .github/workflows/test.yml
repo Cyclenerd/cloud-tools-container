@@ -51,6 +51,7 @@ jobs:
             --platform "linux/amd64,linux/arm64" \
             --tag "ghcr.io/cyclenerd/cloud-tools-container:test" \
             . && \
+          podman manifest inspect "cloud-tools-container" | jq && \
           podman manifest inspect "cloud-tools-container" | grep -o "amd64" && \
           podman manifest inspect "cloud-tools-container" | grep -o "arm64" && \
           podman manifest push --all "cloud-tools-container" "docker://ghcr.io/cyclenerd/cloud-tools-container:test"
