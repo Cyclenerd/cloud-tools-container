@@ -46,7 +46,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build 🧪
         run: |
-          podman build . \
+          podman buildx build \
+          --push \
           --platform "linux/amd64,linux/arm64" \
-          --tag "ghcr.io/cyclenerd/cloud-tools-container:test" && \
-          podman push "ghcr.io/cyclenerd/cloud-tools-container:test"
+          --tag "ghcr.io/cyclenerd/cloud-tools-container:test" \
+          .
