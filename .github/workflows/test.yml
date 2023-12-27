@@ -9,23 +9,49 @@ on:
 
 jobs:
 
-  docker:
+  test:
     name: Test
     runs-on: ubuntu-latest
     steps:
+      # Add repository
+      # https://podman.io/docs/installation#linux-distributions
+      - name: Podman repository 🔧
+        run: |
+          curl -fsSL https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/Debian_Testing/Release.key \
+            | gpg --dearmor \
+            | sudo tee /etc/apt/keyrings/devel_kubic_libcontainers_unstable.gpg > /dev/null
+          echo "deb [signed-by=/etc/apt/keyrings/devel_kubic_libcontainers_unstable.gpg] https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/Debian_Testing/ /" \
+            | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:unstable.list > /dev/null
+          sudo apt-get update
+      - name: Install dependencies 🔧
+        run: |
+          sudo apt-get -y install podman
+          podman version
       - name: Checkout 🛎️
         uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx 🔧
-        # https://github.com/marketplace/actions/docker-setup-buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build 🧪
-        id: docker_build
-        # https://github.com/marketplace/actions/build-and-push-docker-images
-        uses: docker/build-push-action@v5
+      # Add support for more platforms with QEMU
+      # https://github.com/marketplace/actions/docker-setup-qemu
+      - name: Set up QEMU 🔧
+        uses: docker/setup-qemu-action@v3
         with:
-          context: .
-          file: ./Dockerfile
-          push: false
-          tags: cloud-tools-container:test
+          platforms: 'arm64'
+      # Login
+      # https://github.com/marketplace/actions/docker-login
+      - name: Login to GitHub container registry 🏭
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build 🧪
+        run: |
+          podman manifest create "cloud-tools-container" && \
+          podman build \
+            --manifest "cloud-tools-container" \
+            --platform "linux/amd64,linux/arm64" \
+            --tag "ghcr.io/cyclenerd/cloud-tools-container:test" \
+            . && \
+          podman manifest inspect "cloud-tools-container" | jq && \
+          podman manifest inspect "cloud-tools-container" | grep -o "amd64" && \
+          podman manifest inspect "cloud-tools-container" | grep -o "arm64" && \
+          podman manifest push --all "cloud-tools-container" "docker://ghcr.io/cyclenerd/cloud-tools-container:test"
