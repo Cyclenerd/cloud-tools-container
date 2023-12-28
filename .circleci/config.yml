@@ -1,0 +1,40 @@
+version: 2.1
+jobs:
+
+  amd64:
+    docker:
+      - image: cyclenerd/cloud-tools-container:latest
+    resource_class: small
+    steps:
+      - run:
+          name: Test some tools
+          command: |
+            uname -m && \
+            ansible --version && \
+            aws --version && \
+            gcloud --version && \
+            packer --version && \
+            terraform --version && \
+            vault --version
+
+  arm64:
+    docker:
+      - image: cyclenerd/cloud-tools-container:latest
+    resource_class: arm.medium
+    steps:
+      - run:
+          name: Test some tools
+          command: |
+            uname -m && \
+            ansible --version && \
+            aws --version && \
+            gcloud --version && \
+            packer --version && \
+            terraform --version && \
+            vault --version
+
+workflows:
+  test:
+    jobs:
+      - amd64
+      - arm64
