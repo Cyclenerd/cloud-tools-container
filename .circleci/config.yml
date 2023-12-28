@@ -1,0 +1,56 @@
+version: 2.1
+
+parameters:
+  GHA_Actor:
+    type: string
+    default: ""
+  GHA_Action:
+    type: string
+    default: ""
+  GHA_Event:
+    type: string
+    default: ""
+  GHA_Meta:
+    type: string
+    default: ""
+
+jobs:
+
+  amd64:
+    docker:
+      - image: cyclenerd/cloud-tools-container:latest
+    resource_class: small
+    steps:
+      - run:
+          name: Test some tools
+          command: |
+            uname -m && \
+            ansible --version && \
+            aws --version && \
+            gcloud --version && \
+            packer --version && \
+            terraform --version && \
+            vault --version
+
+  arm64:
+    docker:
+      - image: cyclenerd/cloud-tools-container:latest
+    resource_class: arm.medium
+    steps:
+      - run:
+          name: Test some tools
+          command: |
+            uname -m && \
+            ansible --version && \
+            aws --version && \
+            gcloud --version && \
+            packer --version && \
+            terraform --version && \
+            vault --version
+
+workflows:
+  test:
+    when: << pipeline.parameters.GHA_Action >>
+    jobs:
+      - amd64
+      - arm64
