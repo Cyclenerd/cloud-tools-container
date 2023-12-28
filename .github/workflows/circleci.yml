@@ -3,11 +3,21 @@ name: "CircleCI"
 on:
   workflow_dispatch:
 
+# For projects that use GitLab or GitHub App,
+# use circleci as the vcs-slug,
+# replace org-name with the organization ID (found in Organization Settings),
+# and replace repo-name with the project ID (found in Project Settings).
+env:
+  CCI_ORG_ID: 2e29ef25-137f-4914-83ac-f85f476a23fe
+  CCI_PROJECT_ID: 8c97c394-5d90-4afd-b079-80ced7e72f92
+
 jobs:
   trigger-circleci:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger 👉
         uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
+        with:
+          target-slug: "circleci/${CCI_ORG_ID}/${CCI_PROJECT_ID}"
         env:
           CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
