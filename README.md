@@ -3,6 +3,7 @@
 [![Badge: Ansible](https://img.shields.io/badge/Ansible-%231A1918.svg?logo=ansible&logoColor=white)](#readme)
 [![Badge: AWS](https://img.shields.io/badge/AWS-%23232F3E.svg?logo=amazonaws&logoColor=white)](#readme)
 [![Badge: Bitbucket](https://img.shields.io/badge/Bitbucket-0052CC.svg?logo=bitbucket&logoColor=white)](#readme)
+[![Badge: CircleCI](https://img.shields.io/badge/CircleCI-343434.svg?logo=circleci&logoColor=white)](#readme)
 [![Badge: Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?logo=docker&logoColor=white)](#readme)
 [![Badge: GitLab](https://img.shields.io/badge/GitLab-FC6D26.svg?logo=gitlab&logoColor=white)](#readme)
 [![Badge: GNU Bash](https://img.shields.io/badge/GNU%20Bash-4EAA25.svg?logo=gnubash&logoColor=white)](#readme)
@@ -21,9 +22,10 @@
 
 Ready-to-use Docker container image for
 AWS CodeBuild/CodePipeline,
-Google Cloud Build,
-Bitbucket Pipelines and
-GitLab runner jobs.
+Bitbucket Pipelines,
+CircleCI,
+GitLab runner jobs and
+Google Cloud Build.
 
 **Multiarch:**
   * `amd64` : Intel or AMD 64-Bit CPU (x86-64)
@@ -204,6 +206,21 @@ pipelines:
             --credential-source-file=.ci_job_jwt_file
           - gcloud config set auth/credential_file_override "${GOOGLE_CREDENTIALS}"
           # Now you can run gcloud commands authenticated as the impersonated service account.
+```
+
+### CircleCI
+
+CircleCI configuration:
+
+```yml
+jobs:
+  cloud-tools:
+    docker:
+      - image: cyclenerd/cloud-tools-container:latest
+    steps:
+      - run:
+          name: Google Cloud CLI
+          command: gcloud --version
 ```
 
 ## Contributing

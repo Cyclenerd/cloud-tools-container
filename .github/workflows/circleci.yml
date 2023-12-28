@@ -1,0 +1,13 @@
+name: "CircleCI"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  trigger-circleci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger 👉
+        uses: CircleCI-Public/trigger-circleci-pipeline-action@v1.1.0
+        env:
+          CCI_TOKEN: ${{ secrets.CCI_TOKEN }}
