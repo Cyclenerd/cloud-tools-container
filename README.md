@@ -85,7 +85,7 @@ The following software is included and tested:
 
 ## Run
 
-Runs a command in a the container, pulling the image if needed and starting the container.
+Runs a command in the container, pulling the image if needed and starting the container.
 
 ### Docker 🐳
 
