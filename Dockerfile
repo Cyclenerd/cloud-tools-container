@@ -98,7 +98,7 @@ RUN uname -m && \
 		terraform \
 		packer \
 		vault \
-		ansible-core \
+		ansible \
 		kubectl \
 		helm && \
 # Fix "vault: Operation not permitted" error
