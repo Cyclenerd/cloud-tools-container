@@ -19,7 +19,7 @@ ARG TARGETARCH
 # See supported Ubuntu version of HashiCorp:
 # https://www.hashicorp.com/official-packaging-guide?product_intent=terraform
 # The ubuntu:lunar tag points to the 23.04 release
-FROM ubuntu:lunar AS base
+FROM docker.io/library/ubuntu:lunar AS base
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
 ENV GCR_CLEANER_VERSION="0.11.1"
 # https://github.com/sgarciac/fuego/releases
