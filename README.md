@@ -27,7 +27,12 @@ CircleCI,
 GitLab runner jobs and
 Google Cloud Build.
 
-**Multiarch:**
+**Image:**
+```text
+cyclenerd/cloud-tools-container:latest
+```
+
+**Multiarch support:**
   * `amd64` : Intel or AMD 64-Bit CPU (x86-64)
   * `arm64` : Arm-based 64-Bit CPU (i.e. Apple silicon, AWS Graviton, Ampere Altra)
 
@@ -78,23 +83,29 @@ The following software is included and tested:
 	* De-archiver for .zip files (`unzip`)
 	* Archiver for .zip files (`zip`)
 
-## HOWTO
+## Run
 
-Docker pull command:
+Runs a command in a the container, pulling the image if needed and starting the container.
+
+### Docker 🐳
+
+Docker run command:
 
 ```shell
-docker pull cyclenerd/cloud-tools-container:latest
+docker run cyclenerd/cloud-tools-container:latest aws --version
 ```
 
-Example run command:
+### Podman 🦭
+
+Podman run command:
 
 ```shell
-docker run cyclenerd/cloud-tools-container:latest gcloud
+podman run docker.io/cyclenerd/cloud-tools-container:latest aws --version
 ```
 
 ## Examples
 
-Examples of various CI/CD tools.
+Example configurations for various CI/CD tools.
 
 ### AWS CodeBuild
 
