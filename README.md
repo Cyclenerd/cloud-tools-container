@@ -24,6 +24,7 @@ Ready-to-use Docker container image for
 AWS CodeBuild/CodePipeline,
 Bitbucket Pipelines,
 CircleCI,
+GitHub Actions,
 GitLab runner jobs and
 Google Cloud Build.
 
@@ -219,13 +220,29 @@ pipelines:
           # Now you can run gcloud commands authenticated as the impersonated service account.
 ```
 
+### GitHub Actions
+
+GitHub Actions configuration:
+
+```yaml
+jobs:
+  cloud-tools-container:
+    runs-on: 'ubuntu-latest'
+    # Use container to run the steps in a job
+    container:
+      image: 'docker://cyclenerd/cloud-tools-container:latest'
+    steps:
+      - name: "Terraform"
+        run: terraform --version
+```
+
 ### CircleCI
 
 CircleCI configuration:
 
 ```yml
 jobs:
-  cloud-tools:
+  cloud-tools-container:
     docker:
       - image: cyclenerd/cloud-tools-container:latest
     steps:
