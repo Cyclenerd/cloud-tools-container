@@ -1,0 +1,19 @@
+name: "Action"
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  cloud-tools-container:
+    runs-on: 'ubuntu-latest'
+    # Use container to run the steps in a job
+    container:
+      image: 'docker://cyclenerd/cloud-tools-container:latest'
+    steps:
+      - name: "AWS CLI"
+        run: aws --version
+      - name: "Google Cloud CLI"
+        run: gcloud --version
+      - name: "Terraform"
+        run: terraform --version
