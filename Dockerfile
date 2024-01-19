@@ -151,6 +151,8 @@ RUN uname -m && \
 	go clean -modcache          && \
 	go clean -testcache         && \
 	go clean -fuzzcache         && \
+# Disable Python virtual environments warning
+	rm "/usr/lib/python3.11/EXTERNALLY-MANAGED" \
 # Basic smoke test
 	ansible --version          && \
 	ansible-playbook --version && \
