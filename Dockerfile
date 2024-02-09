@@ -30,7 +30,7 @@ ENV TFDOC_VERSION="0.17.0"
 # https://github.com/aquasecurity/tfsec/releases
 ENV TFSEC_VERSION="1.28.5"
 # https://github.com/terraform-linters/tflint/releases
-ENV TFLINT_VERSION="0.50.2"
+ENV TFLINT_VERSION="0.50.3"
 # Default to UTF-8 file.encoding
 ENV LANG="C.UTF-8"
 # Set debconf frontend to noninteractive
