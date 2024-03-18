@@ -1,4 +1,4 @@
-# Copyright 2022-2023 Nils Knieling. All Rights Reserved.
+# Copyright 2022-2024 Nils Knieling. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,11 @@ ARG TARGETARCH
 
 # See supported Ubuntu version of HashiCorp:
 # https://www.hashicorp.com/official-packaging-guide?product_intent=terraform
-# The ubuntu:lunar tag points to the 23.04 release
-FROM docker.io/library/ubuntu:lunar AS base
+# The ubuntu:mantic tag points to the 23.10 release
+# https://releases.ubuntu.com/mantic/
+FROM docker.io/library/ubuntu:mantic AS base
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
-ENV GCR_CLEANER_VERSION="0.11.1"
+ENV GCR_CLEANER_VERSION="0.12.0"
 # https://github.com/sgarciac/fuego/releases
 ENV FUEGO_VERSION="0.34.0"
 ENV FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz"
@@ -56,7 +57,6 @@ FROM ${TARGETARCH} AS tools
 # Install tools
 RUN uname -m && \
 	apt-get update -yq && \
-	apt-get upgrade -yq && \
 	apt-get install -yqq \
 		apt-transport-https \
 		apt-utils \
