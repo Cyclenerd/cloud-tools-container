@@ -22,7 +22,7 @@ ARG TARGETARCH
 # https://releases.ubuntu.com/mantic/
 FROM docker.io/library/ubuntu:mantic AS base
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
-ENV GCR_CLEANER_VERSION="0.11.1"
+ENV GCR_CLEANER_VERSION="0.12.0"
 # https://github.com/sgarciac/fuego/releases
 ENV FUEGO_VERSION="0.34.0"
 ENV FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz"
