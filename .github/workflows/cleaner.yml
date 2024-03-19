@@ -1,0 +1,35 @@
+name: "Cleaner"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '32 5 16 * *' # At 05:32 on day-of-month 16.
+
+jobs:
+
+  # Deletes old container images
+  ghcr-cleaner:
+    name: Registry
+    runs-on: 'ubuntu-latest'
+    steps:
+      # As per documentation, the authentication to the GHCR registry must be done using a personal access token (PAT) to delete packages.
+      # Only classic tokens can be used, fined-grained ones and GITHUB_TOKEN are currently (2024-01) not supported.
+      # More:
+      #   https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry
+      #   https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
+      # The recommendation is to create a new PAT with only the `read:packages` and `delete:packages` scopes.
+      # Create new token:
+      #   https://github.com/settings/tokens/new?scopes=read:packages,delete:packages
+      # List personal access tokens:
+      #   https://github.com/settings/tokens
+      #
+      # https://github.com/marketplace/actions/ghcr-cleaner
+      # Forked from: https://github.com/Chizkiyahu/delete-untagged-ghcr-action
+      - name: GHCR 🚮
+        uses: quartx-analytics/ghcr-cleaner@v1
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          repository-owner: ${{ github.repository_owner }}
+          repository-name: ${{ github.repository }}
+          owner-type: user
+          delete-untagged: true
