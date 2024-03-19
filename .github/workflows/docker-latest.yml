@@ -1,4 +1,4 @@
-name: "Latest image"
+name: "Image"
 
 on:
   workflow_dispatch:
