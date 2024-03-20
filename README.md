@@ -43,24 +43,25 @@ This [Docker container image](https://hub.docker.com/r/cyclenerd/cloud-tools-con
 
 The following software is included and tested:
 
+* [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) (`ansible` and `ansible-playbook`)
 * [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) (`aws`)
+* [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
+* [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) deletes old container images on registries (`gcr-cleaner-cli`)
 * [Google Cloud CLI](https://cloud.google.com/cli) (`gcloud`, `gsutil` and `bq`)
-* Kubernetes
-	* [Kubernetes cluster manager](https://kubernetes.io/docs/reference/kubectl/) (`kubectl`)
-	* [Helm](https://helm.sh/) (`helm`)
+* [Open Policy Agent](https://www.openpolicyagent.org/) general-purpose policy engine, context-aware policy enforcement (`opa`)
+* [Packer](https://developer.hashicorp.com/packer) (`packer`)
+* [Sentinel](https://developer.hashicorp.com/sentinel) (`sentinel`)
+* [ShellCheck](https://www.shellcheck.net/) analysis and linting tool for Shell/Bash scripts (`shellcheck`)
+* [skopeo](https://github.com/containers/skopeo) command line utility that performs various operations on container images and repositories (`skopeo`)
 * [Terraform](https://developer.hashicorp.com/terraform/cli) (`terraform`)
 	* [terraform-docs](https://github.com/terraform-docs/terraform-docs#readme) generates documentation from Terraform modules (`terraform-docs`)
 	* [Terragrunt](https://terragrunt.gruntwork.io/) thin wrapper that provides extra tools (`terragrunt`)
 	* [tflint](https://github.com/terraform-linters/tflint) linting tool for Terraform code (`tflint`)
 	* [tfsec](https://github.com/aquasecurity/tfsec#readme) analysis security scanner for Terraform code (`tfsec`)
-* [Packer](https://developer.hashicorp.com/packer) (`packer`)
+* Kubernetes
+	* [Helm](https://helm.sh/) (`helm`)
+	* [Kubernetes cluster manager](https://kubernetes.io/docs/reference/kubectl/) (`kubectl`)
 * [Vault](https://developer.hashicorp.com/vault) (`vault`)
-* [Sentinel](https://developer.hashicorp.com/sentinel) (`sentinel`)
-* [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) (`ansible` and `ansible-playbook`)
-* [skopeo](https://github.com/containers/skopeo) command line utility that performs various operations on container images and repositories (`skopeo`)
-* [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) deletes old container images on registries (`gcr-cleaner-cli`)
-* [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
-* [ShellCheck](https://www.shellcheck.net/) analysis and linting tool for Shell/Bash scripts (`shellcheck`)
 * Base packages
 	* GNU bash 5 (`bash`)
 	* [apt-utils](https://packages.ubuntu.com/lunar/apt-utils)

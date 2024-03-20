@@ -41,6 +41,7 @@ FROM base AS amd64
 # Download URLs for AMD64 (X86/64)
 ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
 ENV GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_amd64.tar.gz"
+ENV OPA_URL="https://github.com/open-policy-agent/opa/releases/latest/download/opa_linux_amd64_static"
 ENV TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64"
 ENV TFDOC_URL="https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-amd64.tar.gz"
 ENV TFLINT_URL="https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_amd64.zip"
@@ -50,6 +51,7 @@ FROM base AS arm64
 # Download URLs for ARM64
 ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip"
 ENV GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_arm64.tar.gz"
+ENV OPA_URL="https://github.com/open-policy-agent/opa/releases/latest/download/opa_linux_arm64_static"
 ENV TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_arm64"
 ENV TFDOC_URL="https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-arm64.tar.gz"
 ENV TFLINT_URL="https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_arm64.zip"
@@ -146,6 +148,10 @@ RUN uname -m && \
 	curl -L "$TERRAGRUNT_URL" -o "terragrunt" && \
 	chmod +x "terragrunt"                     && \
 	mv "terragrunt" "/usr/bin/terragrunt"     && \
+# Open Policy Agent (https://www.openpolicyagent.org/)
+	curl -L "$OPA_URL" -o "opa" && \
+	chmod +x "opa"              && \
+	mv "opa" "/usr/bin/opa"     && \
 # Google Cloud CLI config
 	gcloud config set "core/disable_usage_reporting" "true"           && \
 	gcloud config set "component_manager/disable_update_check" "true" && \
@@ -178,6 +184,7 @@ RUN uname -m && \
 	kubectl help               && \
 	lsb_release -a             && \
 	mutt -v                    && \
+	opa version                && \
 	openssl version            && \
 	packer --version           && \
 	perl --version             && \

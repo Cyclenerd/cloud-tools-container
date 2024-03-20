@@ -21,6 +21,7 @@ MY_COMMANDS=(
 	"kubectl help"
 	"lsb_release -a"
 	"mutt -v"
+	"opa version"
 	"openssl version"
 	"packer --version"
 	"perl --version"
