@@ -25,9 +25,7 @@ jobs:
           brew install crun podman
       - name: Versions 💡
         run: |
-          whereis crun
           crun --version
-          whereis podman
           podman version
       # Add support for more platforms with QEMU
       # https://github.com/marketplace/actions/docker-setup-qemu
@@ -47,8 +45,7 @@ jobs:
         run: |
           podman manifest create "cloud-tools-container" && \
           podman build \
-            --runtime "/home/linuxbrew/.linuxbrew/bin/crun" \
-            --network=slirp4netns \
+            --network "slirp4netns" \
             --manifest "cloud-tools-container" \
             --platform "linux/amd64,linux/arm64" \
             --tag "ghcr.io/cyclenerd/cloud-tools-container:test" \
