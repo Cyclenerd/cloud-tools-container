@@ -47,6 +47,7 @@ jobs:
         run: |
           podman manifest create "cloud-tools-container" && \
           podman build \
+            --runtime "/home/linuxbrew/.linuxbrew/bin/crun" \
             --manifest "cloud-tools-container" \
             --platform "linux/amd64,linux/arm64" \
             --tag "ghcr.io/cyclenerd/cloud-tools-container:test" \
