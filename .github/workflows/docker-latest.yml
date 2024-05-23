@@ -12,6 +12,8 @@ jobs:
     # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
       - name: Set up Homebrew 🍻
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
@@ -21,8 +23,12 @@ jobs:
         run: |
           sudo apt-get remove crun podman
           brew install crun podman
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
+      - name: Versions 💡
+        run: |
+          whereis crun
+          crun --version
+          whereis podman
+          podman version
       # Add support for more platforms with QEMU
       # https://github.com/marketplace/actions/docker-setup-qemu
       - name: Set up QEMU 🔧
