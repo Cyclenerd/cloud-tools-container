@@ -18,9 +18,9 @@ ARG TARGETARCH
 
 # See supported Ubuntu version of HashiCorp:
 # https://www.hashicorp.com/official-packaging-guide?product_intent=terraform
-# The ubuntu:mantic tag points to the 23.10 release
-# https://releases.ubuntu.com/mantic/
-FROM docker.io/library/ubuntu:mantic AS base
+# The ubuntu:noble tag points to the 24.04 release
+# https://releases.ubuntu.com/noble/
+FROM docker.io/library/ubuntu:noble AS base
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
 ENV GCR_CLEANER_VERSION="0.12.0"
 # https://github.com/sgarciac/fuego/releases
@@ -29,9 +29,9 @@ ENV FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSI
 # https://github.com/terraform-docs/terraform-docs/releases
 ENV TFDOC_VERSION="0.17.0"
 # https://github.com/aquasecurity/tfsec/releases
-ENV TFSEC_VERSION="1.28.5"
+ENV TFSEC_VERSION="1.28.6"
 # https://github.com/terraform-linters/tflint/releases
-ENV TFLINT_VERSION="0.50.3"
+ENV TFLINT_VERSION="0.51.1"
 # Default to UTF-8 file.encoding
 ENV LANG="C.UTF-8"
 # Set debconf frontend to noninteractive
@@ -165,7 +165,7 @@ RUN uname -m && \
 	go clean -testcache         && \
 	go clean -fuzzcache         && \
 # Disable Python virtual environments warning
-	rm "/usr/lib/python3.11/EXTERNALLY-MANAGED" && \
+	rm "/usr/lib/python3.12/EXTERNALLY-MANAGED" && \
 # Basic smoke test
 	ansible --version          && \
 	ansible-playbook --version && \
