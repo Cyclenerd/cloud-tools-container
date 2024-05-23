@@ -12,8 +12,9 @@ jobs:
     # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
     runs-on: ubuntu-latest
     steps:
-      - name: Activate Homebrew 🔧
-        run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+      - name: Set up Homebrew 🍻
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
       # Add repository
       # https://podman.io/docs/installation#linux-distributions
       - name: Install Podman 🔧
