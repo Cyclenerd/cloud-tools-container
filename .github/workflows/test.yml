@@ -19,9 +19,9 @@ jobs:
       - name: Set up Homebrew 🍻
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
-      # Add repository
+      # Install Podman via Homebrew
       # https://podman.io/docs/installation#linux-distributions
-      - name: Install Podman 🔧
+      - name: Install Podman 🦭
         run: |
           sudo apt-get remove crun podman
           brew install crun podman
