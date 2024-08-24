@@ -1,7 +1,7 @@
 # Cloud Tools Container
 
 [![Badge: Ansible](https://img.shields.io/badge/Ansible-%231A1918.svg?logo=ansible&logoColor=white)](#readme)
-[![Badge: AWS](https://img.shields.io/badge/AWS-%23232F3E.svg?logo=amazonaws&logoColor=white)](#readme)
+[![Badge: AWS](https://img.shields.io/badge/AWS-%23232F3E.svg?logo=amazonwebservices&logoColor=white)](#readme)
 [![Badge: Bitbucket](https://img.shields.io/badge/Bitbucket-0052CC.svg?logo=bitbucket&logoColor=white)](#readme)
 [![Badge: CircleCI](https://img.shields.io/badge/CircleCI-343434.svg?logo=circleci&logoColor=white)](#readme)
 [![Badge: Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?logo=docker&logoColor=white)](#readme)
