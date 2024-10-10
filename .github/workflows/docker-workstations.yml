@@ -1,0 +1,47 @@
+name: "Workstations"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '32 7 15 * *' # At 05:32 on day-of-month 15.
+
+jobs:
+
+  docker:
+    name: Build container image for Google Cloud Workstations
+    # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      - name: Set up Homebrew 🍻
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      # Install Podman via Homebrew
+      # https://podman.io/docs/installation#linux-distributions
+      - name: Install Podman 🦭
+        run: |
+          sudo apt-get remove crun podman
+          brew install crun podman
+      - name: Versions 💡
+        run: |
+          crun --version
+          podman version
+      # Login
+      # https://github.com/marketplace/actions/docker-login
+      - name: Login to GitHub container registry 🏭
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build 🧪
+        run: |
+          podman manifest create "cloud-tools-container" && \
+          podman build \
+            --network "slirp4netns" \
+            --manifest "cloud-tools-container" \
+            --platform "linux/amd64" \
+            --tag "ghcr.io/cyclenerd/cloud-tools-container:workstations" \
+            . && \
+          podman manifest push --all "cloud-tools-container" "docker://ghcr.io/cyclenerd/cloud-tools-container:workstations"
