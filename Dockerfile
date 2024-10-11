@@ -21,17 +21,19 @@ ARG TARGETARCH
 # The ubuntu:noble tag points to the 24.04 release
 # https://releases.ubuntu.com/noble/
 FROM docker.io/library/ubuntu:noble AS base
+
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
-ENV GCR_CLEANER_VERSION="0.12.0"
+ENV GCR_CLEANER_VERSION="0.12.2"
 # https://github.com/sgarciac/fuego/releases
-ENV FUEGO_VERSION="0.34.0"
+ENV FUEGO_VERSION="0.35.0"
 ENV FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz"
 # https://github.com/terraform-docs/terraform-docs/releases
-ENV TFDOC_VERSION="0.17.0"
+ENV TFDOC_VERSION="0.19.0"
 # https://github.com/aquasecurity/tfsec/releases
-ENV TFSEC_VERSION="1.28.6"
+ENV TFSEC_VERSION="1.28.11"
 # https://github.com/terraform-linters/tflint/releases
-ENV TFLINT_VERSION="0.51.1"
+ENV TFLINT_VERSION="0.53.0"
+
 # Default to UTF-8 file.encoding
 ENV LANG="C.UTF-8"
 # Set debconf frontend to noninteractive
