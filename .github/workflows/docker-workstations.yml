@@ -2,8 +2,6 @@ name: "Workstations"
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '32 7 15 * *' # At 05:32 on day-of-month 15.
 
 jobs:
 
