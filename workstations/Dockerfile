@@ -17,15 +17,15 @@
 FROM us-central1-docker.pkg.dev/cloud-workstations-images/predefined/code-oss:latest
 
 # https://github.com/sgarciac/fuego/releases
-ENV FUEGO_VERSION="0.34.0"
+ENV FUEGO_VERSION="0.35.0"
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
-ENV GCR_CLEANER_VERSION="0.12.0"
+ENV GCR_CLEANER_VERSION="0.12.2"
 # https://github.com/terraform-docs/terraform-docs/releases
-ENV TFDOC_VERSION="0.17.0"
+ENV TFDOC_VERSION="0.19.0"
 # https://github.com/terraform-linters/tflint/releases
-ENV TFLINT_VERSION="0.51.1"
+ENV TFLINT_VERSION="0.53.0"
 # https://github.com/aquasecurity/tfsec/releases
-ENV TFSEC_VERSION="1.28.6"
+ENV TFSEC_VERSION="1.28.11"
 # https://open-vsx.org/extension/dracula-theme/theme-dracula
 ENV VSX_DRACULA_VERSION="2.25.1"
 # https://open-vsx.org/extension/GitLab/gitlab-workflow
