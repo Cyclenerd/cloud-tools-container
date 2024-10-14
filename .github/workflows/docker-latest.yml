@@ -89,7 +89,7 @@ jobs:
       # Scan with Grype vulnerability scanner
       # https://github.com/anchore/scan-action
       - name: Scan 🧐
-        uses: anchore/scan-action@v4
+        uses: anchore/scan-action@v5
         id: scan
         with:
           image: "ghcr.io/cyclenerd/cloud-tools-container:test"
