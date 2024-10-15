@@ -18,7 +18,7 @@
 [![Badge: Vault](https://img.shields.io/badge/Vault-FFEC6E.svg?logo=vault&logoColor=black)](#readme)
 [![Badge:Latest image](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
 [![Badge: License](https://img.shields.io/github/license/cyclenerd/cloud-tools-container)](https://github.com/Cyclenerd/cloud-tools-container/blob/master/LICENSE)
-[![Badge:Latest build](https://img.shields.io/badge/Last%20build-2024--09--15-blue)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
+[![Badge:Latest build](https://img.shields.io/badge/Last%20build-2024--10--15-blue)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
 [![Badge: Docker pulls](https://img.shields.io/docker/pulls/cyclenerd/cloud-tools-container)](https://hub.docker.com/r/cyclenerd/cloud-tools-container)
 
 
