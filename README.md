@@ -132,7 +132,7 @@ AWS CodeBuild configuration:
 
 ### Google Cloud Build
 
-Google Cloud Build (`cloudbuild.yml`) configuration file:
+Google Cloud Build (`cloudbuild.yaml`) configuration file:
 
 ```yml
 steps:
