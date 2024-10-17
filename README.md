@@ -55,7 +55,6 @@ The following software is included and tested:
 * [Google Cloud CLI](https://cloud.google.com/cli) (`gcloud`, `gsutil` and `bq`)
 * [Open Policy Agent](https://www.openpolicyagent.org/) general-purpose policy engine, context-aware policy enforcement (`opa`)
 * [Packer](https://developer.hashicorp.com/packer) (`packer`)
-* [Sentinel](https://developer.hashicorp.com/sentinel) (`sentinel`)
 * [ShellCheck](https://www.shellcheck.net/) analysis and linting tool for Shell/Bash scripts (`shellcheck`)
 * [skopeo](https://github.com/containers/skopeo) command line utility that performs various operations on container images and repositories (`skopeo`)
 * [Terraform](https://developer.hashicorp.com/terraform/cli) (`terraform`)

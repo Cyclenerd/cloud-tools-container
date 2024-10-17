@@ -97,7 +97,6 @@ RUN uname -m && \
 		terraform \
 		packer \
 		vault \
-		sentinel \
 		ansible \
 		kubectl \
 		helm && \
@@ -204,7 +203,6 @@ RUN uname -m && \
 	perl --version             && \
 	pip3 --version             && \
 	python3 --version          && \
-	sentinel --version         && \
 	shellcheck --version       && \
 	skopeo -v                  && \
 	ssh -V                     && \
