@@ -35,6 +35,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build 🧪
         run: |
+          cd "workstations" && \
           podman manifest create "cloud-tools-container" && \
           podman build \
             --network "slirp4netns" \
