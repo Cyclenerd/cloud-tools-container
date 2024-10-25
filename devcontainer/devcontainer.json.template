@@ -1,10 +1,6 @@
 {
 	"name": "Cloud Tools Container",
-	//"image": "ghcr.io/cyclenerd/cloud-tools-container:dev",
-	// Use the following snippet for building the image locally and not pulling it from the remote
-	"build": {
-		"dockerfile": "../devcontainer/Dockerfile"
-	},
+	"image": "ghcr.io/cyclenerd/cloud-tools-container:dev",
 	"customizations": {
 		"vscode": {
 			"settings": {

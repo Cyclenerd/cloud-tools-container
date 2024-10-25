@@ -32,3 +32,9 @@ To get started, you'll need these tools:
 **Why Containers?**
 
 Using containers ensures a consistent and reproducible development environment. This means that your code will work the same way on your local machine, your CI/CD pipeline, and in production.
+
+## Open
+
+Try it out with the `Dev Containers: Reopen in Container` command:
+
+![Screenshot: VS Code Dev Cointainer](./dev-containers-reopen.png)
