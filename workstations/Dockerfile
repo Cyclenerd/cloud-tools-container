@@ -64,6 +64,8 @@ RUN uname -m && \
 	apt-get install -yqq \
 		apt-transport-https \
 		apt-utils \
+		bind9-dnsutils \
+		btop \
 		build-essential \
 		ca-certificates \
 		cpanminus \
@@ -74,15 +76,23 @@ RUN uname -m && \
 		golang-go \
 		gpg \
 		htop \
+		iperf3 \
+		iputils-ping \
 		jq \
 		lsb-release \
+		mc \
+		mtr \
 		mutt \
+		nano \
 		python3-pip \
+		screen \
 		shellcheck \
 		skopeo \
 		software-properties-common \
 		tar \
+		telnet \
 		unzip \
+		wget \
 		zip && \
 # Add Hashicorp repository
 	curl -fsSL "https://apt.releases.hashicorp.com/gpg" | gpg --dearmor -o "/usr/share/keyrings/releases-hashicorp.gpg" && \
