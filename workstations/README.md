@@ -5,6 +5,9 @@ Based on [Cloud Workstations base image](https://cloud.google.com/workstations/d
 
 ![Screenshot](./code.png)
 
+Google Cloud Workstations are currently only available with `amd64` CPU architecture.
+Therefore this container image only supports Intel or AMD 64-Bit CPU (x86-64).
+
 ## 1. Build
 
 Create the container image via Google Cloud Build and store the container image in the Google Cloud Artifact Registry.
