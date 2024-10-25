@@ -1,0 +1,52 @@
+name: "Dev Containers"
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  docker:
+    name: Build container image for Developer Containers
+    # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      - name: Set up Homebrew 🍻
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      # Install Podman via Homebrew
+      # https://podman.io/docs/installation#linux-distributions
+      - name: Install Podman 🦭
+        run: |
+          sudo apt-get remove crun podman
+          brew install crun podman
+      - name: Versions 💡
+        run: |
+          crun --version
+          podman version
+      # Add support for more platforms with QEMU
+      # https://github.com/marketplace/actions/docker-setup-qemu
+      - name: Set up QEMU 🔧
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: 'arm64'
+      # Login
+      # https://github.com/marketplace/actions/docker-login
+      - name: Login to GitHub container registry 🏭
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build 🧪
+        run: |
+          cd "devcontainer" && \
+          podman manifest create "cloud-tools-container" && \
+          podman build \
+            --network "slirp4netns" \
+            --manifest "cloud-tools-container" \
+            --platform "linux/amd64,linux/arm64" \
+            --tag "ghcr.io/cyclenerd/cloud-tools-container:dev" \
+            . && \
+          podman manifest push --all "cloud-tools-container" "docker://ghcr.io/cyclenerd/cloud-tools-container:dev"
