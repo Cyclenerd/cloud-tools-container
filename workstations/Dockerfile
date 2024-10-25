@@ -85,6 +85,7 @@ RUN uname -m && \
 		mutt \
 		nano \
 		python3-pip \
+		python3-venv \
 		screen \
 		shellcheck \
 		skopeo \

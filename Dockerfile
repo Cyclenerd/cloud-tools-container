@@ -79,6 +79,7 @@ RUN uname -m && \
 		lsb-release \
 		mutt \
 		python3-pip \
+		python3-venv \
 		shellcheck \
 		skopeo \
 		software-properties-common \
