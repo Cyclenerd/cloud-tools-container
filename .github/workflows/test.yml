@@ -29,12 +29,6 @@ jobs:
         run: |
           crun --version
           podman version
-      # Add support for more platforms with QEMU
-      # https://github.com/marketplace/actions/docker-setup-qemu
-      - name: Set up QEMU 🔧
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: 'arm64'
       # Login
       # https://github.com/marketplace/actions/docker-login
       - name: Login to GitHub container registry 🏭
@@ -49,10 +43,7 @@ jobs:
           podman build \
             --network "slirp4netns" \
             --manifest "cloud-tools-container" \
-            --platform "linux/amd64,linux/arm64" \
+            --platform "linux/amd64" \
             --tag "ghcr.io/cyclenerd/cloud-tools-container:test" \
             . && \
-          podman manifest inspect "cloud-tools-container" | jq && \
-          podman manifest inspect "cloud-tools-container" | grep -o "amd64" && \
-          podman manifest inspect "cloud-tools-container" | grep -o "arm64" && \
           podman manifest push --all "cloud-tools-container" "docker://ghcr.io/cyclenerd/cloud-tools-container:test"
