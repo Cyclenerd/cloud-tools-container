@@ -27,7 +27,7 @@
 	"postCreateCommand": "figlet 'Cloud Tools' && devcontainer-info",
 	// Podman specific settings
 	"remoteUser": "vscode",
-	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,Z",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
 	"workspaceFolder": "/workspace",
 	"runArgs": [
 		"--userns=keep-id"  // Causes issue with uid mappings on host, which we need for git to work properly - files are owned by random uids due to the uid mapping
