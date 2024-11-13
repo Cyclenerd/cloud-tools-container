@@ -5,6 +5,16 @@
 	"build": {
 		"dockerfile": "../devcontainer/Dockerfile"
 	},
+	/*
+	# Re-use the host docker socket, adding the Docker CLI to a container.
+	# https://github.com/devcontainers/features/tree/main/src/docker-outside-of-docker
+	"features": {
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+			"version": "latest",
+			"dockerDashComposeVersion": "v2"
+		}
+	},
+	*/
 	"customizations": {
 		"vscode": {
 			"settings": {
