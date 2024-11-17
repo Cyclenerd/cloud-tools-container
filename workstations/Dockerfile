@@ -68,6 +68,7 @@ RUN uname -m && \
 		btop \
 		build-essential \
 		ca-certificates \
+		cmatrix \
 		cpanminus \
 		curl \
 		dnsutils \
@@ -79,11 +80,13 @@ RUN uname -m && \
 		iperf3 \
 		iputils-ping \
 		jq \
+		linuxlogo \
 		lsb-release \
 		mc \
 		mtr \
 		mutt \
 		nano \
+		nyancat \
 		python3-pip \
 		python3-venv \
 		screen \
