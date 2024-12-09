@@ -5,6 +5,7 @@
 [![Badge: Bitbucket](https://img.shields.io/badge/Bitbucket-0052CC.svg?logo=bitbucket&logoColor=white)](#readme)
 [![Badge: CircleCI](https://img.shields.io/badge/CircleCI-343434.svg?logo=circleci&logoColor=white)](#readme)
 [![Badge: Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?logo=docker&logoColor=white)](#readme)
+[![Badge: Firebase](https://img.shields.io/badge/Firebase-%23DD2C00.svg?logo=firebase&logoColor=white)](#readme)
 [![Badge: GitLab](https://img.shields.io/badge/GitLab-FC6D26.svg?logo=gitlab&logoColor=white)](#readme)
 [![Badge: GNU Bash](https://img.shields.io/badge/GNU%20Bash-4EAA25.svg?logo=gnubash&logoColor=white)](#readme)
 [![Badge: Go](https://img.shields.io/badge/Go-%2300ADD8.svg?logo=go&logoColor=white)](#readme)
