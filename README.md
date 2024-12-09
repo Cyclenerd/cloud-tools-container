@@ -48,48 +48,51 @@ This [Docker container image](https://hub.docker.com/r/cyclenerd/cloud-tools-con
 
 The following software is included and tested:
 
-* [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) (`ansible` and `ansible-playbook`)
-* [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) (`aws`)
+* [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) infrastructure as configuration (IaC) software tool (`ansible` and `ansible-playbook`)
+* [AWS](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) command line interface (CLI) tools (`aws`)
+* [Firebase](https://firebase.google.com/docs/cli) command line interface (CLI) tools (`firebase`)
 * [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
 * [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) deletes old container images on registries (`gcr-cleaner-cli`)
-* [Google Cloud CLI](https://cloud.google.com/cli) (`gcloud`, `gsutil` and `bq`)
+* [Google Cloud](https://cloud.google.com/cli) command line interface (CLI) tools (`gcloud`, `gsutil` and `bq`)
 * [Open Policy Agent](https://www.openpolicyagent.org/) general-purpose policy engine, context-aware policy enforcement (`opa`)
 * [Packer](https://developer.hashicorp.com/packer) (`packer`)
 * [ShellCheck](https://www.shellcheck.net/) analysis and linting tool for Shell/Bash scripts (`shellcheck`)
 * [skopeo](https://github.com/containers/skopeo) command line utility that performs various operations on container images and repositories (`skopeo`)
-* [Terraform](https://developer.hashicorp.com/terraform/cli) (`terraform`)
-	* [terraform-docs](https://github.com/terraform-docs/terraform-docs#readme) generates documentation from Terraform modules (`terraform-docs`)
-	* [Terragrunt](https://terragrunt.gruntwork.io/) thin wrapper that provides extra tools (`terragrunt`)
-	* [tflint](https://github.com/terraform-linters/tflint) linting tool for Terraform code (`tflint`)
-	* [tfsec](https://github.com/aquasecurity/tfsec#readme) analysis security scanner for Terraform code (`tfsec`)
+* [Terraform](https://developer.hashicorp.com/terraform/cli) infrastructure as configuration (IaC) software tool (`terraform`)
+  * [terraform-docs](https://github.com/terraform-docs/terraform-docs#readme) generates documentation from Terraform modules (`terraform-docs`)
+  * [Terragrunt](https://terragrunt.gruntwork.io/) thin wrapper that provides extra tools (`terragrunt`)
+  * [tflint](https://github.com/terraform-linters/tflint) linting tool for Terraform code (`tflint`)
+  * [tfsec](https://github.com/aquasecurity/tfsec#readme) analysis security scanner for Terraform code (`tfsec`)
 * Kubernetes
-	* [Helm](https://helm.sh/) (`helm`)
-	* [Kubernetes cluster manager](https://kubernetes.io/docs/reference/kubectl/) (`kubectl`)
-* [Vault](https://developer.hashicorp.com/vault) (`vault`)
+  * [Helm](https://helm.sh/) package manager for Kubernetes (`helm`)
+  * [Kubernetes cluster manager](https://kubernetes.io/docs/reference/kubectl/) command line tool for communicating with a Kubernetes cluster (`kubectl`)
+* [Vault](https://developer.hashicorp.com/vault) password manager and authentication tool (`vault`)
 * Base packages
-	* GNU bash 5 (`bash`)
-	* [apt-utils](https://packages.ubuntu.com/lunar/apt-utils)
-		* [Advanced Packaging Tool](https://ubuntu.com/server/docs/package-management) package manager (`apt`, `apt-get`)
-	* [build-essential](https://packages.ubuntu.com/lunar/build-essential)
-		* GNU C compiler `gcc`
-		* [make](https://www.gnu.org/software/make/) utility for directing compilation (`make`)
-	* [Common CA certificates](https://ubuntu.com/server/docs/security-trust-store)
-	* [curl](https://curl.se/docs/manpage.html) tool for transferring data with URL syntax (`curl`)
-	* [DiG](https://en.wikipedia.org/wiki/Dig_(command)) DNS lookup utility (`dig`)
-	* [FIGlet](http://www.figlet.org/) prints its input using large characters (`figlet`)
-	* [git](https://git-scm.com/) distributed revision control system (`git`)
-	* [jq](https://jqlang.github.io/jq/) JSON processor (`jq`)
-	* [Mutt](https://wiki.archlinux.org/title/Mutt) command line email client (`mutt`)
-	* [OpenSSL](https://www.openssl.org/) cryptography toolkit (`openssl`)
-	* [OpenSSH](https://www.openssh.com/) remote login client (`ssh`)
-	* Perl 5 (`perl`)
-		* [cpanm](https://metacpan.org/dist/App-cpanminus/view/bin/cpanm) modules installer for Perl (`cpanm`)
-	* Python 3 (`python3`)
-		* [pip](https://pypi.org/project/pip/) package installer for Python (`pip3`)
-	* Go programming language (`go`)
-	* GNU tar archiving utility (`tar`)
-	* De-archiver for .zip files (`unzip`)
-	* Archiver for .zip files (`zip`)
+  * GNU bash 5 (`bash`)
+  * [apt-utils](https://packages.ubuntu.com/lunar/apt-utils)
+    * [Advanced Packaging Tool](https://ubuntu.com/server/docs/package-management) package manager (`apt`, `apt-get`)
+  * [build-essential](https://packages.ubuntu.com/lunar/build-essential)
+    * GNU C compiler `gcc`
+    * [make](https://www.gnu.org/software/make/) utility for directing compilation (`make`)
+  * [Common CA certificates](https://ubuntu.com/server/docs/security-trust-store)
+  * [curl](https://curl.se/docs/manpage.html) tool for transferring data with URL syntax (`curl`)
+  * [DiG](https://en.wikipedia.org/wiki/Dig_(command)) DNS lookup utility (`dig`)
+  * [FIGlet](http://www.figlet.org/) prints its input using large characters (`figlet`)
+  * [git](https://git-scm.com/) distributed revision control system (`git`)
+  * [jq](https://jqlang.github.io/jq/) JSON processor (`jq`)
+  * [Mutt](https://wiki.archlinux.org/title/Mutt) command line email client (`mutt`)
+  * [Node.js](https://nodejs.org/) JavaScript runtime environment (`node`)
+    * [npm](https://www.npmjs.com/) package manager for the JavaScript (`npm`)
+  * [OpenSSL](https://www.openssl.org/) cryptography toolkit (`openssl`)
+  * [OpenSSH](https://www.openssh.com/) remote login client (`ssh`)
+  * [Perl 5](https://www.perl.org/) programming language (`perl`)
+    * [cpanm](https://metacpan.org/dist/App-cpanminus/view/bin/cpanm) modules installer for Perl (`cpanm`)
+  * [Python 3](https://www.python.org/) programming language (`python3`)
+    * [pip](https://pypi.org/project/pip/) package installer for Python (`pip3`)
+  * [Go](https://go.dev/) programming language (`go`)
+  * GNU tar archiving utility (`tar`)
+  * De-archiver for .zip files (`unzip`)
+  * Archiver for .zip files (`zip`)
 
 ## Run
 
@@ -256,6 +259,18 @@ jobs:
       - run:
           name: Google Cloud CLI
           command: gcloud --version
+```
+
+## Build
+
+Create a multi-platform container image that can run on different architectures:
+
+```bash
+podman manifest create "cloud-tools-container"
+podman build . \
+  --manifest "cloud-tools-container" \
+  --platform "linux/amd64,linux/arm64" \
+  --tag "cloud-tools-container:local"
 ```
 
 ## Contributing

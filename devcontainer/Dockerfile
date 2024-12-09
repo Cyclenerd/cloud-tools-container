@@ -22,11 +22,11 @@ ARG TARGETARCH
 # https://github.com/devcontainers/images/tree/main/src/base-ubuntu
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04 AS base
 
-# https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
-ENV GCR_CLEANER_VERSION="0.12.2"
 # https://github.com/sgarciac/fuego/releases
 ENV FUEGO_VERSION="0.35.0"
 ENV FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz"
+# https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
+ENV GCR_CLEANER_VERSION="0.12.2"
 # https://github.com/terraform-docs/terraform-docs/releases
 ENV TFDOC_VERSION="0.19.0"
 # https://github.com/aquasecurity/tfsec/releases
@@ -88,6 +88,8 @@ RUN uname -m && \
 		mtr \
 		mutt \
 		nano \
+		nodejs \
+		npm \
 		nyancat \
 		python3-pip \
 		python3-venv \
@@ -131,11 +133,6 @@ RUN uname -m && \
 	unzip -qq "awscliv2.zip"                                  && \
 	./aws/install -b "/usr/local/bin" -i "/usr/local/aws-cli" && \
 	rm -rf aws*                                               && \
-# GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
-	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz" && \
-	tar -xf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli"     && \
-	mv "gcr-cleaner-cli" "/usr/bin/gcr-cleaner-cli"        && \
-	rm "gcr-cleaner-cli.tar.gz"                            && \
 # Fuego (https://github.com/sgarciac/fuego)
 	curl -L "$FUEGO_URL" -o "fuego.tar.gz" && \
 	tar -xf "fuego.tar.gz"                 && \
@@ -144,6 +141,11 @@ RUN uname -m && \
 	mv "fuego" "/usr/bin/fuego"            && \
 	cd "../"                               && \
 	rm -rf fuego*                          && \
+# GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
+	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz" && \
+	tar -xf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli"     && \
+	mv "gcr-cleaner-cli" "/usr/bin/gcr-cleaner-cli"        && \
+	rm "gcr-cleaner-cli.tar.gz"                            && \
 # terraform-docs (https://github.com/terraform-docs/terraform-docs)
 	curl -L "$TFDOC_URL" -o "terraform-docs.tar.gz"   && \
 	tar -xf "terraform-docs.tar.gz" "terraform-docs"  && \
@@ -168,6 +170,9 @@ RUN uname -m && \
 	curl -L "$OPA_URL" -o "opa" && \
 	chmod +x "opa"              && \
 	mv "opa" "/usr/bin/opa"     && \
+# Firebase CLI (https://github.com/firebase/firebase-tools)
+	echo "Install Firebase..."            && \
+	npm install --global "firebase-tools" && \
 # Google Cloud CLI config
 	gcloud config set "core/disable_usage_reporting" "true"           && \
 	gcloud config set "component_manager/disable_update_check" "true" && \
@@ -191,6 +196,7 @@ RUN uname -m && \
 	curl --version             && \
 	dig -v                     && \
 	figlet -v                  && \
+	firebase --version         && \
 	fuego --version            && \
 	gcloud --version           && \
 	gcr-cleaner-cli -version   && \
@@ -200,6 +206,8 @@ RUN uname -m && \
 	kubectl help               && \
 	lsb_release -a             && \
 	mutt -v                    && \
+	node -v                    && \
+	npm -v                     && \
 	opa version                && \
 	openssl version            && \
 	packer --version           && \
