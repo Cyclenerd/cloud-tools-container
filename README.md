@@ -264,14 +264,45 @@ jobs:
 
 ## Build
 
-Create a multi-platform container image that can run on different architectures:
+**Multi-Platform Image (AMD64 and ARM64)**
+
+To build a container image that can run on both AMD64 and ARM64 architectures, use the following command:
 
 ```bash
 podman manifest create "cloud-tools-container"
 podman build . \
   --manifest "cloud-tools-container" \
   --platform "linux/amd64,linux/arm64" \
-  --tag "cloud-tools-container:local"
+  --tag "cloud-tools-container:multi"
+```
+
+**Platform-Specific Images**
+
+Create a container image only for Intel or AMD 64-Bit CPU (x86-64):
+
+```bash
+podman build . \
+  --platform "linux/amd64" \
+  --tag "cloud-tools-container:amd64"
+```
+
+Create a container image only for Arm-based 64-Bit CPU:
+
+```bash
+podman build . \
+  --platform "linux/arm64" \
+  --tag "cloud-tools-container:arm64"
+```
+
+**(Alternative) Combining Images into a Multi-Platform Image**
+
+To combine platform-specific images into one multi-platform image:
+
+```bash
+podman manifest create "cloud-tools-container:multi" \
+  --amend "cloud-tools-container:amd64" \
+  --amend "cloud-tools-container:arm64"
+podman manifest inspect "cloud-tools-container:multi" | jq
 ```
 
 ## Contributing
