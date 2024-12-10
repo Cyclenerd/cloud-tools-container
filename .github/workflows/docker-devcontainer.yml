@@ -10,7 +10,6 @@ jobs:
 
   amd64:
     name: Build AMD64 image
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
     runs-on: ubuntu-latest
     steps:
