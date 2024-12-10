@@ -16,47 +16,45 @@
 # https://cloud.google.com/workstations/docs/preconfigured-base-images
 FROM us-central1-docker.pkg.dev/cloud-workstations-images/predefined/code-oss:latest
 
+# Set environment variables
+ENV LANG="C.UTF-8" \
+	DEBIAN_FRONTEND="noninteractive" \
+	NONINTERACTIVE=1 \
 # https://github.com/sgarciac/fuego/releases
-ENV FUEGO_VERSION="0.35.0"
+	FUEGO_VERSION="0.35.0" \
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
-ENV GCR_CLEANER_VERSION="0.12.2"
+	GCR_CLEANER_VERSION="0.12.2" \
 # https://github.com/terraform-docs/terraform-docs/releases
-ENV TFDOC_VERSION="0.19.0"
+	TFDOC_VERSION="0.19.0" \
 # https://github.com/terraform-linters/tflint/releases
-ENV TFLINT_VERSION="0.53.0"
+	TFLINT_VERSION="0.54.0" \
 # https://github.com/aquasecurity/tfsec/releases
-ENV TFSEC_VERSION="1.28.11"
+	TFSEC_VERSION="1.28.11" \
 # https://open-vsx.org/extension/dracula-theme/theme-dracula
-ENV VSX_DRACULA_VERSION="2.25.1"
+	VSX_DRACULA_VERSION="2.25.1" \
 # https://open-vsx.org/extension/GitLab/gitlab-workflow
-ENV VSX_GITLAB_VERSION="5.15.0"
+	VSX_GITLAB_VERSION="5.15.0" \
 # https://open-vsx.org/extension/hashicorp/terraform
-ENV VSX_TERRAFORM_VERSION="2.32.3"
+	VSX_TERRAFORM_VERSION="2.32.3" \
 # https://open-vsx.org/extension/vscode-icons-team/vscode-icons
-ENV VSX_ICONS_VERSION="12.9.0"
+	VSX_ICONS_VERSION="12.9.0" \
 # https://open-vsx.org/extension/ms-azuretools/vscode-docker
-ENV VSX_DOCKER_VERSION="1.29.3"
+	VSX_DOCKER_VERSION="1.29.3"
 
 # Download URLs for AMD64 (X86/64)
-ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
-ENV FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz"
-ENV GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_amd64.tar.gz"
-ENV OPA_URL="https://github.com/open-policy-agent/opa/releases/latest/download/opa_linux_amd64_static"
-ENV TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64"
-ENV TFDOC_URL="https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-amd64.tar.gz"
-ENV TFLINT_URL="https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_amd64.zip"
-ENV TFSEC_URL="https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec_${TFSEC_VERSION}_linux_amd64.tar.gz"
-ENV VSX_DRACULA_URL="https://open-vsx.org/api/dracula-theme/theme-dracula/${VSX_DRACULA_VERSION}/file/dracula-theme.theme-dracula-${VSX_DRACULA_VERSION}.vsix"
-ENV VSX_GITLAB_URL="https://open-vsx.org/api/GitLab/gitlab-workflow/${VSX_GITLAB_VERSION}/file/GitLab.gitlab-workflow-${VSX_GITLAB_VERSION}.vsix"
-ENV VSX_TERRAFORM_URL="https://open-vsx.org/api/hashicorp/terraform/linux-x64/${VSX_TERRAFORM_VERSION}/file/hashicorp.terraform-${VSX_TERRAFORM_VERSION}@linux-x64.vsix"
-ENV VSX_ICONS_URL="https://open-vsx.org/api/vscode-icons-team/vscode-icons/${VSX_ICONS_VERSION}/file/vscode-icons-team.vscode-icons-${VSX_ICONS_VERSION}.vsix"
-ENV VSX_DOCKER_URL="https://open-vsx.org/api/ms-azuretools/vscode-docker/${VSX_DOCKER_VERSION}/file/ms-azuretools.vscode-docker-${VSX_DOCKER_VERSION}.vsix"
-
-# Default to UTF-8 file.encoding
-ENV LANG="C.UTF-8"
-# Set debconf frontend to noninteractive
-ENV DEBIAN_FRONTEND="noninteractive"
-ENV NONINTERACTIVE=1
+ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
+	FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz" \
+	GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_amd64.tar.gz" \
+	OPA_URL="https://github.com/open-policy-agent/opa/releases/latest/download/opa_linux_amd64_static" \
+	TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64" \
+	TFDOC_URL="https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-amd64.tar.gz" \
+	TFLINT_URL="https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_amd64.zip" \
+	TFSEC_URL="https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec_${TFSEC_VERSION}_linux_amd64.tar.gz" \
+	VSX_DRACULA_URL="https://open-vsx.org/api/dracula-theme/theme-dracula/${VSX_DRACULA_VERSION}/file/dracula-theme.theme-dracula-${VSX_DRACULA_VERSION}.vsix" \
+	VSX_GITLAB_URL="https://open-vsx.org/api/GitLab/gitlab-workflow/${VSX_GITLAB_VERSION}/file/GitLab.gitlab-workflow-${VSX_GITLAB_VERSION}.vsix" \
+	VSX_TERRAFORM_URL="https://open-vsx.org/api/hashicorp/terraform/linux-x64/${VSX_TERRAFORM_VERSION}/file/hashicorp.terraform-${VSX_TERRAFORM_VERSION}@linux-x64.vsix" \
+	VSX_ICONS_URL="https://open-vsx.org/api/vscode-icons-team/vscode-icons/${VSX_ICONS_VERSION}/file/vscode-icons-team.vscode-icons-${VSX_ICONS_VERSION}.vsix" \
+	VSX_DOCKER_URL="https://open-vsx.org/api/ms-azuretools/vscode-docker/${VSX_DOCKER_VERSION}/file/ms-azuretools.vscode-docker-${VSX_DOCKER_VERSION}.vsix"
 
 # Install tools
 RUN uname -m && \
