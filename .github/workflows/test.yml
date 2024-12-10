@@ -39,11 +39,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build 🧪
         run: |
-          podman manifest create "cloud-tools-container" && \
-          podman build \
+          podman build . \
             --network "slirp4netns" \
-            --manifest "cloud-tools-container" \
             --platform "linux/amd64" \
-            --tag "ghcr.io/cyclenerd/cloud-tools-container:test" \
-            . && \
-          podman manifest push --all "cloud-tools-container" "docker://ghcr.io/cyclenerd/cloud-tools-container:test"
+            --tag "ghcr.io/cyclenerd/cloud-tools-container:test" && \
+          podman push "ghcr.io/cyclenerd/cloud-tools-container:test"

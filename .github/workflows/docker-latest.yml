@@ -7,8 +7,44 @@ on:
 
 jobs:
 
-  docker:
-    name: Build container image
+  amd64:
+    name: Build AMD64 image
+    # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      - name: Set up Homebrew 🍻
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      # Install Podman via Homebrew
+      # https://podman.io/docs/installation#linux-distributions
+      - name: Install Podman 🦭
+        run: |
+          sudo apt-get remove crun podman
+          brew install crun podman
+      - name: Versions 💡
+        run: |
+          crun --version
+          podman version
+      # Login
+      # https://github.com/marketplace/actions/docker-login
+      - name: Login to GitHub container registry 🏭
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build image for AMD64 🧪
+        run: |
+          podman build . \
+            --network "slirp4netns" \
+            --platform "linux/amd64" \
+            --tag "ghcr.io/cyclenerd/cloud-tools-container:amd64" && \
+          podman push "ghcr.io/cyclenerd/cloud-tools-container:amd64"
+
+  arm64:
+    name: Build ARM64 image
     # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
     runs-on: ubuntu-latest
     steps:
@@ -41,23 +77,57 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build 🧪
+      - name: Build image for ARM64 🧪
         run: |
-          podman manifest create "cloud-tools-container" && \
-          podman build \
+          podman build . \
             --network "slirp4netns" \
-            --manifest "cloud-tools-container" \
-            --platform "linux/amd64,linux/arm64" \
-            --tag "ghcr.io/cyclenerd/cloud-tools-container:test" \
-            . && \
-          podman manifest inspect "cloud-tools-container" | jq && \
-          podman manifest inspect "cloud-tools-container" | grep -o "amd64" && \
-          podman manifest inspect "cloud-tools-container" | grep -o "arm64" && \
-          podman manifest push --all "cloud-tools-container" "docker://ghcr.io/cyclenerd/cloud-tools-container:test"
+            --platform "linux/arm64" \
+            --tag "ghcr.io/cyclenerd/cloud-tools-container:arm64" && \
+          podman push "ghcr.io/cyclenerd/cloud-tools-container:arm64"
 
-  docker-test:
-    name: Test container image
-    needs: [docker]
+  multi:
+    name: Combine images
+    needs: [amd64, arm64]
+    # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      - name: Set up Homebrew 🍻
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      # Install Podman via Homebrew
+      # https://podman.io/docs/installation#linux-distributions
+      - name: Install Podman 🦭
+        run: |
+          sudo apt-get remove crun podman
+          brew install crun podman
+      - name: Versions 💡
+        run: |
+          crun --version
+          podman version
+      # Login
+      # https://github.com/marketplace/actions/docker-login
+      - name: Login to GitHub container registry 🏭
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Pull platform-specific images 💿
+        run: |
+          podman pull "ghcr.io/cyclenerd/cloud-tools-container:amd64" && \
+          podman pull "ghcr.io/cyclenerd/cloud-tools-container:arm64"
+      - name: Create multi-platform image 💿
+        run: |
+          podman manifest create "cloud-tools-container:multi" \
+            --amend "ghcr.io/cyclenerd/cloud-tools-container:amd64" \
+            --amend "ghcr.io/cyclenerd/cloud-tools-container:arm64" && \
+          podman manifest push --all "cloud-tools-container:multi" "docker://ghcr.io/cyclenerd/cloud-tools-container:test"
+
+  test:
+    name: Test image
+    needs: [multi]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -79,10 +149,10 @@ jobs:
       - name: Test 📏
         run: bash test.sh
 
-  container-scan:
-    name: Container image scan
+  scan:
+    name: Scan image
     runs-on: ubuntu-latest
-    needs: [docker-test]
+    needs: [test]
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
@@ -105,7 +175,7 @@ jobs:
   github-registry-latest:
     name: Push image to GitHub
     runs-on: ubuntu-latest
-    needs: [container-scan]
+    needs: [scan]
     steps:
       - name: Login to GitHub container registry 🏭
         uses: docker/login-action@v3
@@ -119,7 +189,7 @@ jobs:
   docker-hub-latest:
     name: Push image to Docker Hub
     runs-on: ubuntu-latest
-    needs: [container-scan]
+    needs: [scan]
     steps:
       - name: Login to Docker Hub registry 🏭
         uses: docker/login-action@v3
