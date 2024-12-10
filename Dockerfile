@@ -28,7 +28,6 @@ ENV LANG="C.UTF-8" \
 	NONINTERACTIVE=1 \
 	PYTHONUNBUFFERED="True" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
-	PIP_NO_CACHE_DIR=1 \
 # https://github.com/sgarciac/fuego/releases
 	FUEGO_VERSION="0.35.0" \
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
