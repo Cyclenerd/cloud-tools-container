@@ -2,15 +2,11 @@ name: "Workstations"
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Image"]
-    types: [completed]
 
 jobs:
 
-  docker:
-    name: Build container image for Google Cloud Workstations
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  workstations:
+    name: Build Google Cloud Workstations image
     # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
     runs-on: ubuntu-latest
     steps:
@@ -37,14 +33,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build 🧪
+      - name: Build image for Google Cloud Workstations 🧪
         run: |
           cd "workstations" && \
-          podman manifest create "cloud-tools-container" && \
-          podman build \
+          podman build . \
             --network "slirp4netns" \
-            --manifest "cloud-tools-container" \
             --platform "linux/amd64" \
-            --tag "ghcr.io/cyclenerd/cloud-tools-container:workstations" \
-            . && \
-          podman manifest push --all "cloud-tools-container" "docker://ghcr.io/cyclenerd/cloud-tools-container:workstations"
+            --tag "ghcr.io/cyclenerd/cloud-tools-container:workstations" && \
+          podman push "ghcr.io/cyclenerd/cloud-tools-container:workstations"
