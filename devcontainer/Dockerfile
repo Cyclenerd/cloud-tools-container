@@ -185,6 +185,7 @@ RUN uname -m && \
 	go clean -modcache          && \
 	go clean -testcache         && \
 	go clean -fuzzcache         && \
+	npm cache clean --force     && \
 # Disable Python virtual environments warning
 	rm "/usr/lib/python3.12/EXTERNALLY-MANAGED" && \
 # Basic smoke test
