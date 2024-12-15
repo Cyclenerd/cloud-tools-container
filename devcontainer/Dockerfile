@@ -26,6 +26,9 @@ FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04 AS base
 ENV LANG="C.UTF-8" \
 	DEBIAN_FRONTEND="noninteractive" \
 	NONINTERACTIVE=1 \
+# https://cloud.google.com/sdk/gcloud/reference/topic/startup
+	PATH="/usr/bin/google-cloud-sdk/bin:$PATH" \
+	CLOUDSDK_PYTHON="/usr/bin/python3" \
 # https://github.com/sgarciac/fuego/releases
 	FUEGO_VERSION="0.35.0" \
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
@@ -41,6 +44,7 @@ FROM base AS amd64
 # Download URLs for AMD64 (X86/64)
 ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
 	FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz" \
+	GCLOUD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz" \
 	GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_amd64.tar.gz" \
 	OPA_URL="https://github.com/open-policy-agent/opa/releases/latest/download/opa_linux_amd64_static" \
 	TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64" \
@@ -52,6 +56,7 @@ FROM base AS arm64
 # Download URLs for ARM64
 ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" \
 	FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz" \
+	GCLOUD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-arm.tar.gz" \
 	GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_arm64.tar.gz" \
 	OPA_URL="https://github.com/open-policy-agent/opa/releases/latest/download/opa_linux_arm64_static" \
 	TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_arm64" \
@@ -93,6 +98,7 @@ RUN uname -m && \
 		nyancat \
 		openssh-client \
 		python3-crcmod \
+		python3-openssl \
 		python3-pip \
 		python3-venv \
 		screen \
@@ -125,10 +131,6 @@ RUN uname -m && \
 		packer \
 		terraform \
 		vault && \
-# Install Google Cloud CLI without Anthos
-	apt-get install -yqq --no-install-recommends \
-		google-cloud-cli \
-		google-cloud-sdk-gke-gcloud-auth-plugin && \
 # Fix "vault: Operation not permitted" error
 # https://github.com/hashicorp/vault/issues/10924
 	setcap -r "/usr/bin/vault" && \
@@ -149,6 +151,18 @@ RUN uname -m && \
 	mv "fuego" "/usr/bin/fuego"            && \
 	cd "../"                               && \
 	rm -rf fuego*                          && \
+# Google Cloud CLI (https://cloud.google.com/sdk/docs/install#linux)
+	echo "Google Cloud CLI URL: '$GCLOUD_URL'"                && \
+	curl -L "$GCLOUD_URL" -o "gcloud.tar.gz"                  && \
+	tar -C "/usr/bin/" -xf "gcloud.tar.gz" "google-cloud-sdk" && \
+	rm "gcloud.tar.gz"                                        && \
+	if [ -d "/usr/bin/google-cloud-sdk/platform/bundledpythonunix" ]; then \
+		rm -rf "/usr/bin/google-cloud-sdk/platform/bundledpythonunix"; \
+	fi && \
+	if [ -d "/usr/bin/google-cloud-sdkgoogle-cloud-sdk/.install" ]; then \
+		rm -rf "/usr/bin/google-cloud-sdkgoogle-cloud-sdk/.install"; \
+	fi && \
+	gcloud components install -q "gke-gcloud-auth-plugin" && \
 # GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
 	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz" && \
 	tar -xf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli"     && \
