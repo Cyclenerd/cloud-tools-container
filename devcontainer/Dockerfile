@@ -91,6 +91,8 @@ RUN uname -m && \
 		nodejs \
 		npm \
 		nyancat \
+		openssh-client \
+		python3-crcmod \
 		python3-pip \
 		python3-venv \
 		screen \

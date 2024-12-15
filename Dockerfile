@@ -84,6 +84,8 @@ RUN uname -m && \
 		mutt \
 		nodejs \
 		npm \
+		openssh-client \
+		python3-crcmod \
 		python3-pip \
 		python3-venv \
 		shellcheck \

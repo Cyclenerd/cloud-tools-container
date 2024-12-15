@@ -85,6 +85,8 @@ RUN uname -m && \
 		mutt \
 		nano \
 		nyancat \
+		openssh-client \
+		python3-crcmod \
 		python3-pip \
 		python3-venv \
 		screen \
