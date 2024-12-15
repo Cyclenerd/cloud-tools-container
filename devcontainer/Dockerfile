@@ -192,7 +192,7 @@ RUN uname -m && \
 # Delete all log file
 	find /var/log -type f -delete && \
 # Disable Python virtual environments warning
-	rm "/usr/lib/python3.12/EXTERNALLY-MANAGED" && \
+	printf "[global]\nbreak-system-packages = true" > "/etc/pip.conf" && \
 # Basic smoke test
 	echo "Versions..."         && \
 	ansible --version          && \

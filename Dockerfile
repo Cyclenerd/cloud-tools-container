@@ -27,9 +27,11 @@ FROM docker.io/library/ubuntu:noble AS base
 # Set environment variables
 ENV LANG="C.UTF-8" \
 	DEBIAN_FRONTEND="noninteractive" \
+	NO_COLOR=1 \
 	NONINTERACTIVE=1 \
-	PYTHONUNBUFFERED="True" \
 	PIP_DISABLE_PIP_VERSION_CHECK=1 \
+	PIP_ROOT_USER_ACTION="ignore" \
+	PYTHONUNBUFFERED="True" \
 # https://github.com/sgarciac/fuego/releases
 	FUEGO_VERSION="0.35.0" \
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
@@ -196,7 +198,7 @@ RUN uname -m && \
 # Delete all log file
 	find /var/log -type f -delete && \
 # Disable Python virtual environments warning
-	rm "/usr/lib/python3.12/EXTERNALLY-MANAGED" && \
+	printf "[global]\nbreak-system-packages = true" > "/etc/pip.conf" && \
 # Basic smoke test
 	echo "Versions..."         && \
 	ansible --version          && \
