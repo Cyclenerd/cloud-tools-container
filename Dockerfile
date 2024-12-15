@@ -177,8 +177,9 @@ RUN uname -m && \
 	echo "Install Firebase..."            && \
 	npm install --global "firebase-tools" && \
 # Google Cloud CLI config
-	gcloud config set "core/disable_usage_reporting" "true"           && \
 	gcloud config set "component_manager/disable_update_check" "true" && \
+	gcloud config set "core/disable_usage_reporting" "true"           && \
+	gcloud config set "metrics/environment" "docker_image_latest"     && \
 	gcloud config set "survey/disable_prompts" "true"                 && \
 # Delete caches
 	apt-get clean               && \
