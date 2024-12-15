@@ -88,6 +88,7 @@ RUN uname -m && \
 		npm \
 		openssh-client \
 		python3-crcmod \
+		python3-openssl \
 		python3-pip \
 		python3-venv \
 		shellcheck \
