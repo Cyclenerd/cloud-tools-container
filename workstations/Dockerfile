@@ -189,17 +189,23 @@ RUN uname -m && \
 # Delete Code OSS install files
 	rm -rf "*.vsix" && \
 # Delete caches
+	echo "Clean up..." && \
 	apt-get clean               && \
 	rm -rf /var/lib/apt/lists/* && \
+	rm -rf /tmp/*               && \
+	rm -rf "$HOME/.cache"       && \
 	pip3 cache purge            && \
 	go clean -cache             && \
 	go clean -modcache          && \
 	go clean -testcache         && \
 	go clean -fuzzcache         && \
 	npm cache clean --force     && \
+# Delete all log file
+	find /var/log -type f -delete && \
 # Disable Python virtual environments warning
 	rm "/usr/lib/python3.12/EXTERNALLY-MANAGED" && \
 # Basic smoke test
+	echo "Versions..."         && \
 	ansible --version          && \
 	ansible-playbook --version && \
 	aws --version              && \
