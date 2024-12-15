@@ -106,15 +106,18 @@ RUN uname -m && \
 # Install tools
 	apt-get update -yq && \
 	apt-get install -yqq \
-		google-cloud-cli \
-		#google-cloud-cli=502.0.0-0 \
-		google-cloud-sdk-gke-gcloud-auth-plugin \
-		terraform \
-		packer \
-		vault \
 		ansible \
+		helm \
 		kubectl \
-		helm && \
+		packer \
+		terraform \
+		vault && \
+# Install Google Cloud CLI without Anthos
+	apt-get install -yqq --no-install-recommends \
+		google-cloud-cli \
+		# https://issuetracker.google.com/issues/383568269
+		#google-cloud-cli=502.0.0-0 \
+		google-cloud-sdk-gke-gcloud-auth-plugin && \
 # Fix "vault: Operation not permitted" error
 # https://github.com/hashicorp/vault/issues/10924
 	setcap -r "/usr/bin/vault" && \
@@ -202,7 +205,7 @@ RUN uname -m && \
 	git --version              && \
 	go version                 && \
 	helm version               && \
-	kubectl help               && \
+	kubectl version --client   && \
 	lsb_release -a             && \
 	mutt -v                    && \
 	node -v                    && \
