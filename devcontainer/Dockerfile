@@ -104,6 +104,8 @@ RUN uname -m && \
 		unzip \
 		wget \
 		zip && \
+# Disable Python virtual environments warning
+	printf "[global]\nbreak-system-packages = true" > "/etc/pip.conf" && \
 # Add Google Cloud repository
 	curl -fsSL "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | gpg --dearmor -o "/usr/share/keyrings/cloud.google.gpg" && \
 	echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a "/etc/apt/sources.list.d/google-cloud-sdk.list" && \
@@ -118,7 +120,6 @@ RUN uname -m && \
 # Install tools
 	apt-get update -yq && \
 	apt-get install -yqq \
-		ansible \
 		helm \
 		kubectl \
 		packer \
@@ -131,6 +132,9 @@ RUN uname -m && \
 # Fix "vault: Operation not permitted" error
 # https://github.com/hashicorp/vault/issues/10924
 	setcap -r "/usr/bin/vault" && \
+# Ansible (https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip)
+	pip3 install ansible      && \
+	pip3 install ansible-core && \
 # AWS CLI (https://github.com/GoogleCloudPlatform/gcr-cleaner)
 	echo "AWS CLI URL: '$AWS_CLI_URL'"                        && \
 	curl -L "$AWS_CLI_URL" -o "awscliv2.zip"                  && \

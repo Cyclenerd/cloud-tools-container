@@ -96,21 +96,20 @@ RUN uname -m && \
 		tar \
 		unzip \
 		zip && \
+# Disable Python virtual environments warning
+	printf "[global]\nbreak-system-packages = true" > "/etc/pip.conf" && \
 # Add Google Cloud repository
 	curl -fsSL "https://packages.cloud.google.com/apt/doc/apt-key.gpg" | gpg --dearmor -o "/usr/share/keyrings/cloud.google.gpg" && \
 	echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a "/etc/apt/sources.list.d/google-cloud-sdk.list" && \
 # Add Hashicorp repository
 	curl -fsSL "https://apt.releases.hashicorp.com/gpg" | gpg --dearmor -o "/usr/share/keyrings/releases-hashicorp.gpg" && \
 	echo "deb [signed-by=/usr/share/keyrings/releases-hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee -a "/etc/apt/sources.list.d/releases-hashicorp.list" && \
-# Add Ansible PPA repository
-	add-apt-repository "ppa:ansible/ansible" && \
 # Add Helm repository
 	curl -fsSL "https://baltocdn.com/helm/signing.asc" | gpg --dearmor -o "/usr/share/keyrings/baltocdn-helm.gpg" && \
 	echo "deb [signed-by=/usr/share/keyrings/baltocdn-helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee -a "/etc/apt/sources.list.d/helm-stable-debian.list" && \
 # Install tools
 	apt-get update -yq && \
 	apt-get install -yqq \
-		ansible \
 		helm \
 		kubectl \
 		packer \
@@ -125,6 +124,9 @@ RUN uname -m && \
 # Fix "vault: Operation not permitted" error
 # https://github.com/hashicorp/vault/issues/10924
 	setcap -r "/usr/bin/vault" && \
+# Ansible (https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip)
+	pip3 install ansible      && \
+	pip3 install ansible-core && \
 # AWS CLI (https://github.com/GoogleCloudPlatform/gcr-cleaner)
 	echo "AWS CLI URL: '$AWS_CLI_URL'"                        && \
 	curl -L "$AWS_CLI_URL" -o "awscliv2.zip"                  && \
@@ -197,8 +199,6 @@ RUN uname -m && \
 	npm cache clean --force     && \
 # Delete all log file
 	find /var/log -type f -delete && \
-# Disable Python virtual environments warning
-	printf "[global]\nbreak-system-packages = true" > "/etc/pip.conf" && \
 # Basic smoke test
 	echo "Versions..."         && \
 	ansible --version          && \
