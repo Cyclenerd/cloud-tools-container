@@ -9,24 +9,11 @@ jobs:
 
   amd64:
     name: Build AMD64 image
-    # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
-    runs-on: ubuntu-latest
+    # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
-      - name: Set up Homebrew 🍻
-        id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
-      # Install Podman via Homebrew
-      # https://podman.io/docs/installation#linux-distributions
-      - name: Install Podman 🦭
-        run: |
-          sudo apt-get remove crun podman
-          brew install crun podman
-      - name: Versions 💡
-        run: |
-          crun --version
-          podman version
       # Login
       # https://github.com/marketplace/actions/docker-login
       - name: Login to GitHub container registry 🏭
@@ -45,24 +32,11 @@ jobs:
 
   arm64:
     name: Build ARM64 image
-    # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
-    runs-on: ubuntu-latest
+    # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
-      - name: Set up Homebrew 🍻
-        id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
-      # Install Podman via Homebrew
-      # https://podman.io/docs/installation#linux-distributions
-      - name: Install Podman 🦭
-        run: |
-          sudo apt-get remove crun podman
-          brew install crun podman
-      - name: Versions 💡
-        run: |
-          crun --version
-          podman version
       # Add support for more platforms with QEMU
       # https://github.com/marketplace/actions/docker-setup-qemu
       - name: Set up QEMU 🔧
@@ -88,24 +62,11 @@ jobs:
   multi:
     name: Combine images
     needs: [amd64, arm64]
-    # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2204-Readme.md
-    runs-on: ubuntu-latest
+    # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
-      - name: Set up Homebrew 🍻
-        id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
-      # Install Podman via Homebrew
-      # https://podman.io/docs/installation#linux-distributions
-      - name: Install Podman 🦭
-        run: |
-          sudo apt-get remove crun podman
-          brew install crun podman
-      - name: Versions 💡
-        run: |
-          crun --version
-          podman version
       # Login
       # https://github.com/marketplace/actions/docker-login
       - name: Login to GitHub container registry 🏭
@@ -128,7 +89,7 @@ jobs:
   test:
     name: Test image
     needs: [multi]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
@@ -151,7 +112,7 @@ jobs:
 
   scan:
     name: Scan image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [test]
     steps:
       - name: Checkout 🛎️
@@ -174,7 +135,7 @@ jobs:
 
   github-registry-latest:
     name: Push image to GitHub
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [scan]
     steps:
       - name: Login to GitHub container registry 🏭
@@ -188,7 +149,7 @@ jobs:
 
   docker-hub-latest:
     name: Push image to Docker Hub
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [scan]
     steps:
       - name: Login to Docker Hub registry 🏭
@@ -201,7 +162,7 @@ jobs:
 
   readme:
     name: Update README
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [docker-hub-latest, github-registry-latest]
     steps:
       - name: Checkout 🛎️
