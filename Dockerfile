@@ -17,9 +17,11 @@
 ARG TARGETARCH
 
 # See supported Ubuntu version of HashiCorp:
-# https://www.hashicorp.com/official-packaging-guide?product_intent=terraform
-# The ubuntu:noble tag points to the 24.04 release
-# https://releases.ubuntu.com/noble/
+#   https://www.hashicorp.com/official-packaging-guide?product_intent=terraform
+# The ubuntu:noble tag points to the 24.04 release:
+#   https://releases.ubuntu.com/noble/
+# Use same Ubuntu version as development container:
+#   https://github.com/devcontainers/images/tree/main/src/base-ubuntu
 FROM docker.io/library/ubuntu:noble AS base
 
 # Set environment variables
@@ -105,6 +107,7 @@ RUN uname -m && \
 	apt-get update -yq && \
 	apt-get install -yqq \
 		google-cloud-cli \
+		#google-cloud-cli=502.0.0-0 \
 		google-cloud-sdk-gke-gcloud-auth-plugin \
 		terraform \
 		packer \
