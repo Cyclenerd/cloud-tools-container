@@ -26,5 +26,6 @@ jobs:
           podman build . \
             --network "slirp4netns" \
             --platform "linux/amd64" \
-            --tag "ghcr.io/cyclenerd/cloud-tools-container:workstations" && \
-          podman push "ghcr.io/cyclenerd/cloud-tools-container:workstations"
+            --tag "ghcr.io/cyclenerd/cloud-tools-container:workstations"
+      - name: Push Google Cloud Workstations image 📤
+        run: podman push "ghcr.io/cyclenerd/cloud-tools-container:workstations"

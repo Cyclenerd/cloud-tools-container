@@ -1,0 +1,270 @@
+name: "Release"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '32 4 15 * *' # At 04:32 on day-of-month 15.
+
+env:
+  ARTIFACT_NAME: 'cyclenerd/cloud-tools-container'
+
+jobs:
+  create-arm64-runner:
+    name: Create ARM64 runner
+    runs-on: ubuntu-24.04
+    outputs:
+      label: ${{ steps.create-arm64-runner.outputs.label }}
+      server_id: ${{ steps.create-arm64-runner.outputs.server_id }}
+    steps:
+      - name: Create runner with Arm-based Ampere Altra CPU
+        id: create-arm64-runner
+        uses: Cyclenerd/hcloud-github-runner@v1
+        with:
+          mode: create
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          server_type: cax11
+          image: rocky-9 # Use Rocky Linux 9 base image
+          ssh_key: 25724978
+          # Install Podman
+          pre_runner_script: |
+            dnf install podman -y
+
+  arm64:
+    name: Build ARM64 images
+    needs:
+      - create-arm64-runner # required to get output from the create-arm64-runner job
+    runs-on: ${{ needs.create-arm64-runner.outputs.label }}
+    steps:
+      - name: Hardware platform 🐧
+        run: uname -m
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      - name: Login to GitHub container registry 🏭
+        run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
+      # Build
+      - name: Build container image for ARM64 🧪
+        run: |
+          podman build . \
+            --platform "linux/arm64" \
+            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:arm64"
+      - name: Build dev container image for ARM64 🧪
+        run: |
+          cd "devcontainer" && \
+          podman build . \
+            --platform "linux/arm64" \
+            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:dev-arm64"
+      # Push
+      - name: Push ARM64 container image 📤
+        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:arm64"
+      - name: Push ARM64 dev container image 📤
+        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:dev-arm64"
+
+  delete-arm64-runner:
+    name: Delete ARM64 runner
+    needs:
+      - create-arm64-runner # required to get output from the create-runner job
+      - arm64 # required to wait when the main job is done
+    runs-on: ubuntu-24.04
+    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
+    steps:
+      - name: Delete runner
+        uses: Cyclenerd/hcloud-github-runner@v1
+        with:
+          mode: delete
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          name: ${{ needs.create-arm64-runner.outputs.label }}
+          server_id: ${{ needs.create-arm64-runner.outputs.server_id }}
+
+  create-amd64-runner:
+    name: Create AMD64 runner
+    needs:
+      - arm64 # required to wait that the arm64 image is build
+    runs-on: ubuntu-24.04
+    outputs:
+      label: ${{ steps.create-amd64-runner.outputs.label }}
+      server_id: ${{ steps.create-amd64-runner.outputs.server_id }}
+    steps:
+      - name: Create runner with Intel CPU
+        id: create-amd64-runner
+        uses: Cyclenerd/hcloud-github-runner@v1
+        with:
+          mode: create
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          server_type: cx22
+          image: rocky-9 # Use Rocky Linux 9 base image
+          ssh_key: 25724978
+          # Install Podman
+          pre_runner_script: |
+            dnf install podman -y
+
+  amd64:
+    name: Build AMD64 and multi-platform images
+    needs:
+      - create-amd64-runner # required to get output from the create-amd64-runner job
+    runs-on: ${{ needs.create-amd64-runner.outputs.label }}
+    steps:
+      - name: Hardware platform 🐧
+        run: uname -m
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      - name: Login to GitHub container registry 🏭
+        run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
+      # Build
+      - name: Build image for AMD64 🧪
+        run: |
+          podman build . \
+            --platform "linux/amd64" \
+            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:amd64"
+      - name: Build dev container image for AMD64 🧪
+        run: |
+          cd "devcontainer" && \
+          podman build . \
+            --platform "linux/amd64" \
+            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:dev-amd64"
+      # Push
+      - name: Push AMD64 container image 📤
+        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:amd64"
+      - name: Push AMD64 dev container image 📤
+        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:dev-arm64"
+      # Pull
+      - name: Pull ARM64 container image 💿
+        run: podman pull "ghcr.io/${{env.ARTIFACT_NAME}}:arm64"
+      - name: Pull ARM64 dev container image 💿
+        run: podman pull "ghcr.io/${{env.ARTIFACT_NAME}}:dev-arm64"
+      # Multi-platform
+      - name: Create multi-platform container image 💿
+        run: |
+          podman manifest create "${{env.ARTIFACT_NAME}}:multi" \
+            --amend "ghcr.io/${{env.ARTIFACT_NAME}}:amd64" \
+            --amend "ghcr.io/${{env.ARTIFACT_NAME}}:arm64"
+      - name: Create multi-platform dev container image 💿
+        run: |
+          podman manifest create "${{env.ARTIFACT_NAME}}:dev-multi" \
+            --amend "ghcr.io/${{env.ARTIFACT_NAME}}:dev-amd64" \
+            --amend "ghcr.io/${{env.ARTIFACT_NAME}}:dev-arm64"
+      # Push multi-platform
+      - name: Push multi-platform container image 📤
+        run: podman manifest push --all "${{env.ARTIFACT_NAME}}:multi" "docker://ghcr.io/${{env.ARTIFACT_NAME}}:test"
+      - name: Push multi-platform dev container image 📤
+        run: podman manifest push --all "${{env.ARTIFACT_NAME}}:dev-multi" "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev-test"
+  
+  delete-amd64-runner:
+    name: Delete AMD64 runner
+    needs:
+      - create-amd64-runner # required to get output from the create-runner job
+      - amd64 # required to wait when the main job is done
+    runs-on: ubuntu-24.04
+    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
+    steps:
+      - name: Delete runner
+        uses: Cyclenerd/hcloud-github-runner@v1
+        with:
+          mode: delete
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          name: ${{ needs.create-amd64-runner.outputs.label }}
+          server_id: ${{ needs.create-amd64-runner.outputs.server_id }}
+
+  test:
+    name: Test images
+    needs: [amd64]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      # Inspect
+      - name: Inspect test container image 💿
+        run: |
+          skopeo inspect --raw "docker://ghcr.io/${{env.ARTIFACT_NAME}}:test" | jq && \
+          skopeo inspect --raw "docker://ghcr.io/${{env.ARTIFACT_NAME}}:test" | grep -o "amd64" && \
+          skopeo inspect --raw "docker://ghcr.io/${{env.ARTIFACT_NAME}}:test" | grep -o "arm64"
+      - name: Inspect test dev container image 💿
+        run: |
+          skopeo inspect --raw "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev-test" | jq && \
+          skopeo inspect --raw "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev-test" | grep -o "amd64" && \
+          skopeo inspect --raw "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev-test" | grep -o "arm64"
+      # Pull
+      - name: Pull test container image 💿
+        run: |
+          docker pull "ghcr.io/${{env.ARTIFACT_NAME}}:test"
+          docker tag "ghcr.io/${{env.ARTIFACT_NAME}}:test" "cloud-tools-container"
+      - name: Pull test dev container image 💿
+        run: |
+          docker pull "ghcr.io/${{env.ARTIFACT_NAME}}:dev-test"
+          docker tag "ghcr.io/${{env.ARTIFACT_NAME}}:dev-test" "cloud-tools-dev-container"
+      - name: Images 📏
+        run: docker images
+      # Tests
+      - name: Test container 📏
+        run: bash test.sh
+      - name: Test dev container 📏
+        run: docker run cloud-tools-dev-container gcloud --version || exit 9
+
+  scan:
+    name: Scan image
+    runs-on: ubuntu-24.04
+    needs: [test]
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      # Scan with Grype vulnerability scanner
+      # https://github.com/anchore/scan-action
+      - name: Scan 🧐
+        uses: anchore/scan-action@v6
+        id: scan
+        with:
+          image: "ghcr.io/${{env.ARTIFACT_NAME}}:test"
+          # Do not fail to upload the SARIF report in the next step...
+          fail-build: false
+          severity-cutoff: critical
+          output-format: sarif
+      - name: Upload SARIF report 📤
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif }}
+
+  github-registry-latest:
+    name: Push image to GitHub
+    runs-on: ubuntu-24.04
+    needs: [scan]
+    steps:
+      - name: Login to GitHub container registry 🏭
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.github_token }}
+      - name: Push container image as latest version 🚢
+        run: skopeo copy --all "docker://ghcr.io/${{env.ARTIFACT_NAME}}:test" "docker://ghcr.io/${{env.ARTIFACT_NAME}}:latest"
+      - name: Push dev container image as latest version 🚢
+        run: skopeo copy --all "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev-test" "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev"
+
+  docker-hub-latest:
+    name: Push image to Docker Hub
+    runs-on: ubuntu-24.04
+    needs: [scan]
+    steps:
+      - name: Login to Docker Hub registry 🏭
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      - name: Push container image as latest version 🚢
+        run: skopeo copy --all "docker://ghcr.io/${{env.ARTIFACT_NAME}}:test" "docker://${{env.ARTIFACT_NAME}}:latest"
+      - name: Push dev container image as latest version 🚢
+        run: skopeo copy --all "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev-test" "docker://${{env.ARTIFACT_NAME}}:dev"
+
+  readme:
+    name: Update README
+    runs-on: ubuntu-24.04
+    needs:
+      - docker-hub-latest
+      - github-registry-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      - name: Update 📰
+        run: bash readme.sh
