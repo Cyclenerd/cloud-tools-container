@@ -10,6 +10,7 @@
 [![Badge: GNU Bash](https://img.shields.io/badge/GNU%20Bash-4EAA25.svg?logo=gnubash&logoColor=white)](#readme)
 [![Badge: Go](https://img.shields.io/badge/Go-%2300ADD8.svg?logo=go&logoColor=white)](#readme)
 [![Badge: Google Cloud](https://img.shields.io/badge/Google%20Cloud-%234285F4.svg?logo=google-cloud&logoColor=white)](#readme)
+[![Badge: Hetzer Cloud](https://img.shields.io/badge/Hetzner-D50C2D.svg?logo=hetzner&logoColor=white)](#readme)
 [![Badge: Kubernetes](https://img.shields.io/badge/Kubernetes-%23326ce5.svg?logo=kubernetes&logoColor=white)](#readme)
 [![Badge: Packer](https://img.shields.io/badge/Packer-02A8EF.svg?logo=packer&logoColor=white)](#readme)
 [![Badge: Perl](https://img.shields.io/badge/Perl-%2339457E.svg?logo=perl&logoColor=white)](#readme)
@@ -19,7 +20,7 @@
 [![Badge: Vault](https://img.shields.io/badge/Vault-FFEC6E.svg?logo=vault&logoColor=black)](#readme)
 [![Badge:Latest image](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
 [![Badge: License](https://img.shields.io/github/license/cyclenerd/cloud-tools-container)](https://github.com/Cyclenerd/cloud-tools-container/blob/master/LICENSE)
-[![Badge:Latest build](https://img.shields.io/badge/Last%20build-2025--01--04-blue)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
+[![Badge:Last release](https://img.shields.io/badge/Last%20release-2024--12--15-blue)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/podman-release.yml)
 [![Badge: Docker pulls](https://img.shields.io/docker/pulls/cyclenerd/cloud-tools-container)](https://hub.docker.com/r/cyclenerd/cloud-tools-container)
 
 
@@ -53,6 +54,7 @@ The following software is included and tested:
 * [AWS](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) command line interface (CLI) tools (`aws`)
 * [Firebase](https://firebase.google.com/docs/cli) command line interface (CLI) tools (`firebase`)
 * [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
+* [Hetzner Cloud CLI](https://github.com/hetznercloud/cli) (`hcloud`)
 * [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) deletes old container images on registries (`gcr-cleaner-cli`)
 * [Google Cloud](https://cloud.google.com/cli) command line interface (CLI) tools (`gcloud`, `gsutil` and `bq`)
 * [Open Policy Agent](https://www.openpolicyagent.org/) general-purpose policy engine, context-aware policy enforcement (`opa`)
