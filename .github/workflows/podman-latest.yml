@@ -4,27 +4,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  create-amd64-runner:
-    name: Create AMD64 runner
-    runs-on: ubuntu-24.04
-    outputs:
-      label: ${{ steps.create-amd64-runner.outputs.label }}
-      server_id: ${{ steps.create-amd64-runner.outputs.server_id }}
-    steps:
-      - name: Create runner with Intel CPU
-        id: create-amd64-runner
-        uses: Cyclenerd/hcloud-github-runner@v1
-        with:
-          mode: create
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
-          server_type: cx22
-          image: rocky-9 # Use Rocky Linux 9 base image
-          ssh_key: 25724978
-          # Install Podman
-          pre_runner_script: |
-            dnf install podman -y
-
   create-arm64-runner:
     name: Create ARM64 runner
     runs-on: ubuntu-24.04
@@ -46,26 +25,6 @@ jobs:
           pre_runner_script: |
             dnf install podman -y
 
-  amd64:
-    name: Build AMD64 image
-    needs:
-      - create-amd64-runner # required to get output from the create-amd64-runner job
-    runs-on: ${{ needs.create-amd64-runner.outputs.label }}
-    steps:
-      - name: Hardware platform 🐧
-        run: uname -m
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
-      - name: Login to GitHub container registry 🏭
-        run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
-      - name: Build image for AMD64 🧪
-        run: |
-          podman build . \
-            --platform "linux/amd64" \
-            --tag "ghcr.io/cyclenerd/cloud-tools-container:amd64"
-      - name: Push AMD64 image 📤
-        run: podman push "ghcr.io/cyclenerd/cloud-tools-container:amd64"
-
   arm64:
     name: Build ARM64 image
     needs:
@@ -86,23 +45,6 @@ jobs:
       - name: Push ARM64 image 📤
         run: podman push "ghcr.io/cyclenerd/cloud-tools-container:arm64"
 
-  delete-amd64-runner:
-    name: Delete AMD64 runner
-    needs:
-      - create-amd64-runner # required to get output from the create-runner job
-      - amd64 # required to wait when the main job is done
-    runs-on: ubuntu-24.04
-    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
-    steps:
-      - name: Delete runner
-        uses: Cyclenerd/hcloud-github-runner@v1
-        with:
-          mode: delete
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
-          name: ${{ needs.create-amd64-runner.outputs.label }}
-          server_id: ${{ needs.create-amd64-runner.outputs.server_id }}
-
   delete-arm64-runner:
     name: Delete ARM64 runner
     needs:
@@ -120,17 +62,48 @@ jobs:
           name: ${{ needs.create-arm64-runner.outputs.label }}
           server_id: ${{ needs.create-arm64-runner.outputs.server_id }}
 
-  multi:
-    name: Combine images
-    needs: [amd64, arm64]
+  create-amd64-runner:
+    name: Create AMD64 runner
+    needs:
+      - arm64 # required to wait that the arm64 image is build
     runs-on: ubuntu-24.04
+    outputs:
+      label: ${{ steps.create-amd64-runner.outputs.label }}
+      server_id: ${{ steps.create-amd64-runner.outputs.server_id }}
     steps:
+      - name: Create runner with Intel CPU
+        id: create-amd64-runner
+        uses: Cyclenerd/hcloud-github-runner@v1
+        with:
+          mode: create
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          server_type: cx22
+          image: rocky-9 # Use Rocky Linux 9 base image
+          ssh_key: 25724978
+          # Install Podman
+          pre_runner_script: |
+            dnf install podman -y
+
+  amd64:
+    name: Build AMD64 and multi-platform image
+    needs:
+      - create-amd64-runner # required to get output from the create-amd64-runner job
+    runs-on: ${{ needs.create-amd64-runner.outputs.label }}
+    steps:
+      - name: Hardware platform 🐧
+        run: uname -m
       - name: Checkout 🛎️
         uses: actions/checkout@v4
       - name: Login to GitHub container registry 🏭
         run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
-      - name: Pull AMD64 image 💿
-        run: podman pull "ghcr.io/cyclenerd/cloud-tools-container:amd64"
+      - name: Build image for AMD64 🧪
+        run: |
+          podman build . \
+            --platform "linux/amd64" \
+            --tag "ghcr.io/cyclenerd/cloud-tools-container:amd64"
+      - name: Push AMD64 image 📤
+        run: podman push "ghcr.io/cyclenerd/cloud-tools-container:amd64"
       - name: Pull ARM64 image 💿
         run: podman pull "ghcr.io/cyclenerd/cloud-tools-container:arm64"
       - name: Create multi-platform image 💿
@@ -140,3 +113,44 @@ jobs:
             --amend "ghcr.io/cyclenerd/cloud-tools-container:arm64"
       - name: Push multi-platform image 📤
         run: podman manifest push --all "cloud-tools-container:multi" "docker://ghcr.io/cyclenerd/cloud-tools-container:test"
+
+  delete-amd64-runner:
+    name: Delete AMD64 runner
+    needs:
+      - create-amd64-runner # required to get output from the create-runner job
+      - amd64 # required to wait when the main job is done
+    runs-on: ubuntu-24.04
+    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
+    steps:
+      - name: Delete runner
+        uses: Cyclenerd/hcloud-github-runner@v1
+        with:
+          mode: delete
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          name: ${{ needs.create-amd64-runner.outputs.label }}
+          server_id: ${{ needs.create-amd64-runner.outputs.server_id }}
+
+  test:
+    name: Test image
+    needs: [amd64]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      # Inspect
+      - name: Inspect test image 💿
+        run: |
+          skopeo inspect --raw "docker://ghcr.io/cyclenerd/cloud-tools-container:test" | jq && \
+          skopeo inspect --raw "docker://ghcr.io/cyclenerd/cloud-tools-container:test" | grep -o "amd64" && \
+          skopeo inspect --raw "docker://ghcr.io/cyclenerd/cloud-tools-container:test" | grep -o "arm64"
+      # Run test
+      - name: Pull test image 💿
+        run: |
+          docker pull "ghcr.io/cyclenerd/cloud-tools-container:test"
+          docker tag "ghcr.io/cyclenerd/cloud-tools-container:test" "cloud-tools-container"
+      - name: Images 📏
+        run: docker images
+      # Tests
+      - name: Test 📏
+        run: bash test.sh
