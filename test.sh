@@ -18,6 +18,7 @@ MY_COMMANDS=(
 	"gcr-cleaner-cli -version"
 	"git --version"
 	"go version"
+	"hcloud version"
 	"helm version"
 	"kubectl help"
 	"lsb_release -a"

@@ -1,4 +1,4 @@
-# Copyright 2024 Nils Knieling. All Rights Reserved.
+# Copyright 2024 - 2025 Nils Knieling. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ ENV LANG="C.UTF-8" \
 ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
 	FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz" \
 	GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_amd64.tar.gz" \
+	HCLOUD_URL="https://github.com/hetznercloud/cli/releases/latest/download/hcloud-linux-amd64.tar.gz" \
 	OPA_URL="https://github.com/open-policy-agent/opa/releases/latest/download/opa_linux_amd64_static" \
 	TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64" \
 	TFDOC_URL="https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-amd64.tar.gz" \
@@ -144,6 +145,12 @@ RUN uname -m && \
 	tar -xf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli"     && \
 	mv "gcr-cleaner-cli" "/usr/bin/gcr-cleaner-cli"        && \
 	rm "gcr-cleaner-cli.tar.gz"                            && \
+# Hetzner Cloud CLI (https://github.com/hetznercloud/cli)
+	echo "Hetzner Cloud CLI URL: '$HCLOUD_URL'"    && \
+	curl -L "$HCLOUD_URL" -o "hcloud-linux.tar.gz" && \
+	tar -xf "hcloud-linux.tar.gz" "hcloud"         && \
+	mv "hcloud" "/usr/bin/hcloud"                  && \
+	rm "hcloud-linux.tar.gz"                       && \
 # terraform-docs (https://github.com/terraform-docs/terraform-docs)
 	curl -L "$TFDOC_URL" -o "terraform-docs.tar.gz"   && \
 	tar -xf "terraform-docs.tar.gz" "terraform-docs"  && \
@@ -223,6 +230,7 @@ RUN uname -m && \
 	gcr-cleaner-cli -version   && \
 	git --version              && \
 	go version                 && \
+	hcloud version             && \
 	helm version               && \
 	kubectl version --client   && \
 	lsb_release -a             && \
