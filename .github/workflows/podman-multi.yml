@@ -1,0 +1,26 @@
+name: "Podman Multi"
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  multi:
+    name: Combine images
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      - name: Login to GitHub container registry 🏭
+        run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
+      - name: Pull AMD64 image 💿
+        run: podman pull "ghcr.io/cyclenerd/cloud-tools-container:amd64"
+      - name: Pull ARM64 image 💿
+        run: podman pull "ghcr.io/cyclenerd/cloud-tools-container:arm64"
+      - name: Create multi-platform image 💿
+        run: |
+          podman manifest create "cloud-tools-container:multi" \
+            --amend "ghcr.io/cyclenerd/cloud-tools-container:amd64" \
+            --amend "ghcr.io/cyclenerd/cloud-tools-container:arm64"
+      - name: Push multi-platform image 📤
+        run: podman manifest push --all "cloud-tools-container:multi" "docker://ghcr.io/cyclenerd/cloud-tools-container:test"
