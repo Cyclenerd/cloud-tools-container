@@ -20,8 +20,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Build 🧪
         run: |
-          cd "devcontainer/" && \
           podman build . \
+            --file "devcontainer/Dockerfile" \
             --network "slirp4netns" \
             --platform "linux/amd64" \
             --tag "cloud-tools-container:local"

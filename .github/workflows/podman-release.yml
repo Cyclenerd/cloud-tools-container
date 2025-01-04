@@ -35,6 +35,8 @@ jobs:
     needs:
       - create-arm64-runner # required to get output from the create-arm64-runner job
     runs-on: ${{ needs.create-arm64-runner.outputs.label }}
+    env:
+        TARGETARCH: 'arm64'
     steps:
       - name: Hardware platform 🐧
         run: uname -m
@@ -43,22 +45,22 @@ jobs:
       - name: Login to GitHub container registry 🏭
         run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
       # Build
-      - name: Build container image for ARM64 🧪
+      - name: Build container image for ${{env.TARGETARCH}} 🧪
         run: |
           podman build . \
-            --platform "linux/arm64" \
-            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:arm64"
-      - name: Build dev container image for ARM64 🧪
+            --platform "linux/${{env.TARGETARCH}}" \
+            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:${{env.TARGETARCH}}"
+      - name: Build dev container image for ${{env.TARGETARCH}} 🧪
         run: |
-          cd "devcontainer" && \
           podman build . \
-            --platform "linux/arm64" \
-            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:dev-arm64"
+            --file "devcontainer/Dockerfile" \
+            --platform "linux/${{env.TARGETARCH}}" \
+            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:dev-${{env.TARGETARCH}}"
       # Push
-      - name: Push ARM64 container image 📤
-        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:arm64"
-      - name: Push ARM64 dev container image 📤
-        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:dev-arm64"
+      - name: Push ${{env.TARGETARCH}} container image 📤
+        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:${{env.TARGETARCH}}"
+      - name: Push ${{env.TARGETARCH}} dev container image 📤
+        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:dev-${{env.TARGETARCH}}"
 
   delete-arm64-runner:
     name: Delete ARM64 runner
@@ -105,6 +107,8 @@ jobs:
     needs:
       - create-amd64-runner # required to get output from the create-amd64-runner job
     runs-on: ${{ needs.create-amd64-runner.outputs.label }}
+    env:
+        TARGETARCH: 'amd64'
     steps:
       - name: Hardware platform 🐧
         run: uname -m
@@ -113,22 +117,22 @@ jobs:
       - name: Login to GitHub container registry 🏭
         run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
       # Build
-      - name: Build image for AMD64 🧪
+      - name: Build image for ${{env.TARGETARCH}} 🧪
         run: |
           podman build . \
-            --platform "linux/amd64" \
-            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:amd64"
-      - name: Build dev container image for AMD64 🧪
+            --platform "linux/${{env.TARGETARCH}}" \
+            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:${{env.TARGETARCH}}"
+      - name: Build dev container image for ${{env.TARGETARCH}} 🧪
         run: |
-          cd "devcontainer" && \
           podman build . \
-            --platform "linux/amd64" \
-            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:dev-amd64"
+            --file "devcontainer/Dockerfile" \
+            --platform "linux/${{env.TARGETARCH}}" \
+            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:dev-${{env.TARGETARCH}}"
       # Push
-      - name: Push AMD64 container image 📤
-        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:amd64"
-      - name: Push AMD64 dev container image 📤
-        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:dev-arm64"
+      - name: Push ${{env.TARGETARCH}} container image 📤
+        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:${{env.TARGETARCH}}"
+      - name: Push ${{env.TARGETARCH}} dev container image 📤
+        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:dev-${{env.TARGETARCH}}"
       # Pull
       - name: Pull ARM64 container image 💿
         run: podman pull "ghcr.io/${{env.ARTIFACT_NAME}}:arm64"
