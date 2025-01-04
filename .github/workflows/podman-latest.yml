@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Create runner with Intel CPU
         id: create-amd64-runner
-        uses: Cyclenerd/hcloud-github-runner@master
+        uses: Cyclenerd/hcloud-github-runner@v1
         with:
           mode: create
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -34,7 +34,7 @@ jobs:
     steps:
       - name: Create runner with Arm-based Ampere Altra CPU
         id: create-arm64-runner
-        uses: Cyclenerd/hcloud-github-runner@master
+        uses: Cyclenerd/hcloud-github-runner@v1
         with:
           mode: create
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -62,7 +62,7 @@ jobs:
         run: |
           podman build . \
             --platform "linux/amd64" \
-            --tag "ghcr.io/cyclenerd/cloud-tools-container:amd64" && \
+            --tag "ghcr.io/cyclenerd/cloud-tools-container:amd64"
       - name: Push AMD64 image 📤
         run: podman push "ghcr.io/cyclenerd/cloud-tools-container:amd64"
 
@@ -82,7 +82,7 @@ jobs:
         run: |
           podman build . \
             --platform "linux/arm64" \
-            --tag "ghcr.io/cyclenerd/cloud-tools-container:arm64" && \
+            --tag "ghcr.io/cyclenerd/cloud-tools-container:arm64"
       - name: Push ARM64 image 📤
         run: podman push "ghcr.io/cyclenerd/cloud-tools-container:arm64"
 
@@ -95,7 +95,7 @@ jobs:
     if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
     steps:
       - name: Delete runner
-        uses: Cyclenerd/hcloud-github-runner@master
+        uses: Cyclenerd/hcloud-github-runner@v1
         with:
           mode: delete
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -112,7 +112,7 @@ jobs:
     if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
     steps:
       - name: Delete runner
-        uses: Cyclenerd/hcloud-github-runner@master
+        uses: Cyclenerd/hcloud-github-runner@v1
         with:
           mode: delete
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
