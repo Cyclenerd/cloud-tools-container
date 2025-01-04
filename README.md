@@ -18,11 +18,10 @@
 [![Badge: Terraform](https://img.shields.io/badge/Terraform-%235835CC.svg?logo=terraform&logoColor=white)](#readme)
 [![Badge: Ubuntu](https://img.shields.io/badge/Ubuntu-E95420.svg?logo=ubuntu&logoColor=white)](#readme)
 [![Badge: Vault](https://img.shields.io/badge/Vault-FFEC6E.svg?logo=vault&logoColor=black)](#readme)
-[![Badge:Latest image](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/docker-latest.yml)
-[![Badge: License](https://img.shields.io/github/license/cyclenerd/cloud-tools-container)](https://github.com/Cyclenerd/cloud-tools-container/blob/master/LICENSE)
+[![Badge:Last release](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/podman-release.yml/badge.svg)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/podman-release.yml)
 [![Badge:Last release](https://img.shields.io/badge/Last%20release-2024--12--15-blue)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/podman-release.yml)
 [![Badge: Docker pulls](https://img.shields.io/docker/pulls/cyclenerd/cloud-tools-container)](https://hub.docker.com/r/cyclenerd/cloud-tools-container)
-
+[![Badge: License](https://img.shields.io/github/license/cyclenerd/cloud-tools-container)](https://github.com/Cyclenerd/cloud-tools-container/blob/master/LICENSE)
 
 Ready-to-use Docker container image for
 AWS CodeBuild/CodePipeline,
