@@ -40,8 +40,10 @@ cyclenerd/cloud-tools-container:latest
   * `amd64` : Intel or AMD 64-Bit CPU (x86-64)
   * `arm64` : Arm-based 64-Bit CPU (i.e. Apple silicon, AWS Graviton, Ampere Altra)
 
-> This project uses [GitHub Actions](https://github.com/Cyclenerd/cloud-tools-container/actions) for automated builds and deployments.
-> The image is regularly rebuilt on the 15th of each month.
+> [!NOTE]
+> This project leverages GitHub Actions (https://github.com/Cyclenerd/cloud-tools-container/actions) for streamlined automated builds and deployments.
+> The Container image is rebuilt on a weekly basis, every Monday.
+
 
 ## Software
 

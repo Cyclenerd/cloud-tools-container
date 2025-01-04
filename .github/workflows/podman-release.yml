@@ -3,7 +3,7 @@ name: "Release"
 on:
   workflow_dispatch:
   schedule:
-    - cron: '32 4 15 * *' # At 04:32 on day-of-month 15.
+    - cron: '32 4 * * 1' # At 04:32 on Monday.
 
 env:
   MY_ARTIFACT_NAME: 'cyclenerd/cloud-tools-container'
