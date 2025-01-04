@@ -6,7 +6,7 @@ on:
     - cron: '32 4 15 * *' # At 04:32 on day-of-month 15.
 
 env:
-  ARTIFACT_NAME: 'cyclenerd/cloud-tools-container'
+  MY_ARTIFACT_NAME: 'cyclenerd/cloud-tools-container'
 
 jobs:
   create-arm64-runner:
@@ -36,7 +36,7 @@ jobs:
       - create-arm64-runner # required to get output from the create-arm64-runner job
     runs-on: ${{ needs.create-arm64-runner.outputs.label }}
     env:
-        TARGETARCH: 'arm64'
+        MY_TARGETARCH: 'arm64'
     steps:
       - name: Hardware platform 🐧
         run: uname -m
@@ -45,22 +45,22 @@ jobs:
       - name: Login to GitHub container registry 🏭
         run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
       # Build
-      - name: Build container image for ${{env.TARGETARCH}} 🧪
+      - name: Build container image for ${{env.MY_TARGETARCH}} 🧪
         run: |
           podman build . \
-            --platform "linux/${{env.TARGETARCH}}" \
-            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:${{env.TARGETARCH}}"
-      - name: Build dev container image for ${{env.TARGETARCH}} 🧪
+            --platform "linux/${{env.MY_TARGETARCH}}" \
+            --tag "ghcr.io/${{env.MY_ARTIFACT_NAME}}:${{env.MY_TARGETARCH}}"
+      - name: Build dev container image for ${{env.MY_TARGETARCH}} 🧪
         run: |
           podman build . \
             --file "devcontainer/Dockerfile" \
-            --platform "linux/${{env.TARGETARCH}}" \
-            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:dev-${{env.TARGETARCH}}"
+            --platform "linux/${{env.MY_TARGETARCH}}" \
+            --tag "ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-${{env.MY_TARGETARCH}}"
       # Push
-      - name: Push ${{env.TARGETARCH}} container image 📤
-        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:${{env.TARGETARCH}}"
-      - name: Push ${{env.TARGETARCH}} dev container image 📤
-        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:dev-${{env.TARGETARCH}}"
+      - name: Push ${{env.MY_TARGETARCH}} container image 📤
+        run: podman push "ghcr.io/${{env.MY_ARTIFACT_NAME}}:${{env.MY_TARGETARCH}}"
+      - name: Push ${{env.MY_TARGETARCH}} dev container image 📤
+        run: podman push "ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-${{env.MY_TARGETARCH}}"
 
   delete-arm64-runner:
     name: Delete ARM64 runner
@@ -108,7 +108,7 @@ jobs:
       - create-amd64-runner # required to get output from the create-amd64-runner job
     runs-on: ${{ needs.create-amd64-runner.outputs.label }}
     env:
-        TARGETARCH: 'amd64'
+        MY_TARGETARCH: 'amd64'
     steps:
       - name: Hardware platform 🐧
         run: uname -m
@@ -117,43 +117,43 @@ jobs:
       - name: Login to GitHub container registry 🏭
         run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
       # Build
-      - name: Build image for ${{env.TARGETARCH}} 🧪
+      - name: Build image for ${{env.MY_TARGETARCH}} 🧪
         run: |
           podman build . \
-            --platform "linux/${{env.TARGETARCH}}" \
-            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:${{env.TARGETARCH}}"
-      - name: Build dev container image for ${{env.TARGETARCH}} 🧪
+            --platform "linux/${{env.MY_TARGETARCH}}" \
+            --tag "ghcr.io/${{env.MY_ARTIFACT_NAME}}:${{env.MY_TARGETARCH}}"
+      - name: Build dev container image for ${{env.MY_TARGETARCH}} 🧪
         run: |
           podman build . \
             --file "devcontainer/Dockerfile" \
-            --platform "linux/${{env.TARGETARCH}}" \
-            --tag "ghcr.io/${{env.ARTIFACT_NAME}}:dev-${{env.TARGETARCH}}"
+            --platform "linux/${{env.MY_TARGETARCH}}" \
+            --tag "ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-${{env.MY_TARGETARCH}}"
       # Push
-      - name: Push ${{env.TARGETARCH}} container image 📤
-        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:${{env.TARGETARCH}}"
-      - name: Push ${{env.TARGETARCH}} dev container image 📤
-        run: podman push "ghcr.io/${{env.ARTIFACT_NAME}}:dev-${{env.TARGETARCH}}"
+      - name: Push ${{env.MY_TARGETARCH}} container image 📤
+        run: podman push "ghcr.io/${{env.MY_ARTIFACT_NAME}}:${{env.MY_TARGETARCH}}"
+      - name: Push ${{env.MY_TARGETARCH}} dev container image 📤
+        run: podman push "ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-${{env.MY_TARGETARCH}}"
       # Pull
       - name: Pull ARM64 container image 💿
-        run: podman pull "ghcr.io/${{env.ARTIFACT_NAME}}:arm64"
+        run: podman pull "ghcr.io/${{env.MY_ARTIFACT_NAME}}:arm64"
       - name: Pull ARM64 dev container image 💿
-        run: podman pull "ghcr.io/${{env.ARTIFACT_NAME}}:dev-arm64"
+        run: podman pull "ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-arm64"
       # Multi-platform
       - name: Create multi-platform container image 💿
         run: |
-          podman manifest create "${{env.ARTIFACT_NAME}}:multi" \
-            --amend "ghcr.io/${{env.ARTIFACT_NAME}}:amd64" \
-            --amend "ghcr.io/${{env.ARTIFACT_NAME}}:arm64"
+          podman manifest create "${{env.MY_ARTIFACT_NAME}}:multi" \
+            --amend "ghcr.io/${{env.MY_ARTIFACT_NAME}}:amd64" \
+            --amend "ghcr.io/${{env.MY_ARTIFACT_NAME}}:arm64"
       - name: Create multi-platform dev container image 💿
         run: |
-          podman manifest create "${{env.ARTIFACT_NAME}}:dev-multi" \
-            --amend "ghcr.io/${{env.ARTIFACT_NAME}}:dev-amd64" \
-            --amend "ghcr.io/${{env.ARTIFACT_NAME}}:dev-arm64"
+          podman manifest create "${{env.MY_ARTIFACT_NAME}}:dev-multi" \
+            --amend "ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-amd64" \
+            --amend "ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-arm64"
       # Push multi-platform
       - name: Push multi-platform container image 📤
-        run: podman manifest push --all "${{env.ARTIFACT_NAME}}:multi" "docker://ghcr.io/${{env.ARTIFACT_NAME}}:test"
+        run: podman manifest push --all "${{env.MY_ARTIFACT_NAME}}:multi" "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:test"
       - name: Push multi-platform dev container image 📤
-        run: podman manifest push --all "${{env.ARTIFACT_NAME}}:dev-multi" "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev-test"
+        run: podman manifest push --all "${{env.MY_ARTIFACT_NAME}}:dev-multi" "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test"
   
   delete-amd64-runner:
     name: Delete AMD64 runner
@@ -182,23 +182,23 @@ jobs:
       # Inspect
       - name: Inspect test container image 💿
         run: |
-          skopeo inspect --raw "docker://ghcr.io/${{env.ARTIFACT_NAME}}:test" | jq && \
-          skopeo inspect --raw "docker://ghcr.io/${{env.ARTIFACT_NAME}}:test" | grep -o "amd64" && \
-          skopeo inspect --raw "docker://ghcr.io/${{env.ARTIFACT_NAME}}:test" | grep -o "arm64"
+          skopeo inspect --raw "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:test" | jq && \
+          skopeo inspect --raw "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:test" | grep -o "amd64" && \
+          skopeo inspect --raw "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:test" | grep -o "arm64"
       - name: Inspect test dev container image 💿
         run: |
-          skopeo inspect --raw "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev-test" | jq && \
-          skopeo inspect --raw "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev-test" | grep -o "amd64" && \
-          skopeo inspect --raw "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev-test" | grep -o "arm64"
+          skopeo inspect --raw "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test" | jq && \
+          skopeo inspect --raw "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test" | grep -o "amd64" && \
+          skopeo inspect --raw "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test" | grep -o "arm64"
       # Pull
       - name: Pull test container image 💿
         run: |
-          docker pull "ghcr.io/${{env.ARTIFACT_NAME}}:test"
-          docker tag "ghcr.io/${{env.ARTIFACT_NAME}}:test" "cloud-tools-container"
+          docker pull "ghcr.io/${{env.MY_ARTIFACT_NAME}}:test"
+          docker tag "ghcr.io/${{env.MY_ARTIFACT_NAME}}:test" "cloud-tools-container"
       - name: Pull test dev container image 💿
         run: |
-          docker pull "ghcr.io/${{env.ARTIFACT_NAME}}:dev-test"
-          docker tag "ghcr.io/${{env.ARTIFACT_NAME}}:dev-test" "cloud-tools-dev-container"
+          docker pull "ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test"
+          docker tag "ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test" "cloud-tools-dev-container"
       - name: Images 📏
         run: docker images
       # Tests
@@ -220,7 +220,7 @@ jobs:
         uses: anchore/scan-action@v6
         id: scan
         with:
-          image: "ghcr.io/${{env.ARTIFACT_NAME}}:test"
+          image: "ghcr.io/${{env.MY_ARTIFACT_NAME}}:test"
           # Do not fail to upload the SARIF report in the next step...
           fail-build: false
           severity-cutoff: critical
@@ -242,9 +242,9 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.github_token }}
       - name: Push container image as latest version 🚢
-        run: skopeo copy --all "docker://ghcr.io/${{env.ARTIFACT_NAME}}:test" "docker://ghcr.io/${{env.ARTIFACT_NAME}}:latest"
+        run: skopeo copy --all "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:test" "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:latest"
       - name: Push dev container image as latest version 🚢
-        run: skopeo copy --all "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev-test" "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev"
+        run: skopeo copy --all "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test" "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev"
 
   docker-hub-latest:
     name: Push image to Docker Hub
@@ -257,9 +257,9 @@ jobs:
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
       - name: Push container image as latest version 🚢
-        run: skopeo copy --all "docker://ghcr.io/${{env.ARTIFACT_NAME}}:test" "docker://${{env.ARTIFACT_NAME}}:latest"
+        run: skopeo copy --all "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:test" "docker://${{env.MY_ARTIFACT_NAME}}:latest"
       - name: Push dev container image as latest version 🚢
-        run: skopeo copy --all "docker://ghcr.io/${{env.ARTIFACT_NAME}}:dev-test" "docker://${{env.ARTIFACT_NAME}}:dev"
+        run: skopeo copy --all "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test" "docker://${{env.MY_ARTIFACT_NAME}}:dev"
 
   readme:
     name: Update README
