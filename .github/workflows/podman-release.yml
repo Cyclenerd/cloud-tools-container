@@ -24,7 +24,7 @@ jobs:
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
           server_type: cax11
-          image: rocky-9 # Use Rocky Linux 9 base image
+          image: fedora-41
           ssh_key: 25724978
           # Install Podman
           pre_runner_script: |
@@ -96,7 +96,7 @@ jobs:
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
           server_type: cx22
-          image: rocky-9 # Use Rocky Linux 9 base image
+          image: fedora-41
           ssh_key: 25724978
           # Install Podman
           pre_runner_script: |
@@ -172,13 +172,11 @@ jobs:
           name: ${{ needs.create-amd64-runner.outputs.label }}
           server_id: ${{ needs.create-amd64-runner.outputs.server_id }}
 
-  test:
-    name: Test images
+  inspect:
+    name: Inspect images
     needs: [amd64]
     runs-on: ubuntu-24.04
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
       # Inspect
       - name: Inspect test container image 💿
         run: |
@@ -190,6 +188,14 @@ jobs:
           skopeo inspect --raw "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test" | jq && \
           skopeo inspect --raw "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test" | grep -o "amd64" && \
           skopeo inspect --raw "docker://ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test" | grep -o "arm64"
+
+  test:
+    name: Test images with Docker
+    needs: [inspect]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
       # Pull
       - name: Pull test container image 💿
         run: |
@@ -205,7 +211,22 @@ jobs:
       - name: Test container 📏
         run: bash test.sh
       - name: Test dev container 📏
-        run: docker run cloud-tools-dev-container gcloud --version || exit 9
+        run: docker run "cloud-tools-dev-container" gcloud --version || exit 9
+
+  test-podman:
+    name: Test images with Podman
+    needs: [inspect]
+    runs-on: ubuntu-24.04
+    steps:
+      # Pull
+      - name: Pull test container image 💿
+        run: |
+          podman run "ghcr.io/${{env.MY_ARTIFACT_NAME}}:test" aws --version && \
+          podman run "ghcr.io/${{env.MY_ARTIFACT_NAME}}:test" gcloud --version
+      - name: Pull test dev container image 💿
+        run: |
+          podman run "ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test" aws --version && \
+          podman run "ghcr.io/${{env.MY_ARTIFACT_NAME}}:dev-test" gcloud --version
 
   scan:
     name: Scan image
