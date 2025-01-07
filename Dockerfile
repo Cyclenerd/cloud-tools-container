@@ -210,7 +210,7 @@ RUN uname -m && \
 	echo "Install Firebase..."            && \
 	npm install --global "firebase-tools" && \
 	# Fix user and group IDs
-	chown -R root:root "/usr/local/lib/node_modules/firebase-tools"
+	chown -R root:root "/usr/local/lib/node_modules/firebase-tools" && \
 # Delete caches
 	echo "Clean up..." && \
 	apt-get clean               && \
