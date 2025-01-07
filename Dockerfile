@@ -156,6 +156,11 @@ RUN uname -m && \
 	if [ -d "/usr/bin/google-cloud-sdk/.install" ]; then \
 		rm -rf "/usr/bin/google-cloud-sdk/.install"; \
 	fi && \
+	# Create Google Cloud CLI config
+	gcloud components install -q "gke-gcloud-auth-plugin"             && \
+	gcloud config set "component_manager/disable_update_check" "true" && \
+	gcloud config set "core/disable_usage_reporting" "true"           && \
+	gcloud config set "survey/disable_prompts" "true"                 && \
 	# Create Google Cloud CLI links (PATH variable is not recognized by all CI/CD tools and may be overwritten)
 	ln -s "/usr/bin/google-cloud-sdk/bin/bq" "/usr/bin/bq" && \
 	ln -s "/usr/bin/google-cloud-sdk/bin/docker-credential-gcloud" "/usr/bin/docker-credential-gcloud" && \
@@ -163,12 +168,7 @@ RUN uname -m && \
 	ln -s "/usr/bin/google-cloud-sdk/bin/gcloud-crc32c" "/usr/bin/gcloud-crc32c" && \
 	ln -s "/usr/bin/google-cloud-sdk/bin/git-credential-gcloud.sh" "/usr/bin/git-credential-gcloud.sh" && \
 	ln -s "/usr/bin/google-cloud-sdk/bin/gsutil" "/usr/bin/gsutil" && \
-	# Create Google Cloud CLI config
-	gcloud components install -q "gke-gcloud-auth-plugin"             && \
-	gcloud config set "component_manager/disable_update_check" "true" && \
-	gcloud config set "core/disable_usage_reporting" "true"           && \
-	gcloud config set "survey/disable_prompts" "true"                 && \
-# GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
+	# GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
 	echo "GCR Cleaner URL: '$GCR_CLEANER_URL'"             && \
 	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz" && \
 	tar -xf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli"     && \
