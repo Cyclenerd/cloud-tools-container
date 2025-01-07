@@ -153,9 +153,6 @@ RUN uname -m && \
 	if [ -d "/usr/bin/google-cloud-sdk/platform/bundledpythonunix" ]; then \
 		rm -rf "/usr/bin/google-cloud-sdk/platform/bundledpythonunix"; \
 	fi && \
-	if [ -d "/usr/bin/google-cloud-sdk/.install" ]; then \
-		rm -rf "/usr/bin/google-cloud-sdk/.install"; \
-	fi && \
 	# Create Google Cloud CLI config
 	gcloud components install -q "gke-gcloud-auth-plugin"             && \
 	gcloud config set "component_manager/disable_update_check" "true" && \
