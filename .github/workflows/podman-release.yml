@@ -7,7 +7,7 @@ on:
 
 env:
   MY_ARTIFACT_NAME: 'cyclenerd/cloud-tools-container'
-  MY_HETZNER_IMAGE: 'fedora-41'
+  MY_HETZNER_IMAGE: 'ubuntu-24.04'
   MY_PRE_RUNNER_SCRIPT: |
     apt-get update -yq
     apt-get install -yqq podman
