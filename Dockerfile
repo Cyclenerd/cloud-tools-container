@@ -149,12 +149,21 @@ RUN uname -m && \
 	curl -L "$GCLOUD_URL" -o "gcloud.tar.gz"                  && \
 	tar -C "/usr/bin/" -xf "gcloud.tar.gz" "google-cloud-sdk" && \
 	rm "gcloud.tar.gz"                                        && \
+	# Delete unnecessary Google Cloud CLI files and folders
 	if [ -d "/usr/bin/google-cloud-sdk/platform/bundledpythonunix" ]; then \
 		rm -rf "/usr/bin/google-cloud-sdk/platform/bundledpythonunix"; \
 	fi && \
-	if [ -d "/usr/bin/google-cloud-sdkgoogle-cloud-sdk/.install" ]; then \
-		rm -rf "/usr/bin/google-cloud-sdkgoogle-cloud-sdk/.install"; \
+	if [ -d "/usr/bin/google-cloud-sdk/.install" ]; then \
+		rm -rf "/usr/bin/google-cloud-sdk/.install"; \
 	fi && \
+	# Create Google Cloud CLI links (PATH variable is not recognized by all CI/CD tools and may be overwritten)
+	ln -s "/usr/bin/google-cloud-sdk/bin/bq" "/usr/bin/bq" && \
+	ln -s "/usr/bin/google-cloud-sdk/bin/docker-credential-gcloud" "/usr/bin/docker-credential-gcloud" && \
+	ln -s "/usr/bin/google-cloud-sdk/bin/gcloud" "/usr/bin/gcloud" && \
+	ln -s "/usr/bin/google-cloud-sdk/bin/gcloud-crc32c" "/usr/bin/gcloud-crc32c" && \
+	ln -s "/usr/bin/google-cloud-sdk/bin/git-credential-gcloud.sh" "/usr/bin/git-credential-gcloud.sh" && \
+	ln -s "/usr/bin/google-cloud-sdk/bin/gsutil" "/usr/bin/gsutil" && \
+	# Create Google Cloud CLI config
 	gcloud components install -q "gke-gcloud-auth-plugin"             && \
 	gcloud config set "component_manager/disable_update_check" "true" && \
 	gcloud config set "core/disable_usage_reporting" "true"           && \
