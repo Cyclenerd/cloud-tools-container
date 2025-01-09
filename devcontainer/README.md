@@ -102,3 +102,46 @@ Using containers ensures a consistent and reproducible development environment. 
 Try it out with the `Dev Containers: Reopen in Container` command:
 
 ![Screenshot: VS Code Dev Cointainer](./dev-containers-reopen.png)
+
+## Build
+
+**Multi-Platform Image (AMD64 and ARM64)**
+
+To build a container image that can run on both AMD64 and ARM64 architectures, use the following command:
+
+```bash
+podman manifest create "cloud-tools-container"
+podman build . \
+  --manifest "cloud-tools-container" \
+  --platform "linux/amd64,linux/arm64" \
+  --tag "cloud-tools-container:dev-multi"
+```
+
+**Platform-Specific Images**
+
+Create a container image only for Intel or AMD 64-Bit CPU (x86-64):
+
+```bash
+podman build . \
+  --platform "linux/amd64" \
+  --tag "cloud-tools-container:dev-amd64"
+```
+
+Create a container image only for Arm-based 64-Bit CPU:
+
+```bash
+podman build . \
+  --platform "linux/arm64" \
+  --tag "cloud-tools-container:dev-arm64"
+```
+
+**(Alternative) Combining Images into a Multi-Platform Image**
+
+To combine platform-specific images into one multi-platform image:
+
+```bash
+podman manifest create "cloud-tools-container:dev-multi" \
+  --amend "cloud-tools-container:dev-amd64" \
+  --amend "cloud-tools-container:dev-arm64"
+podman manifest inspect "cloud-tools-container:dev-multi" | jq
+```
