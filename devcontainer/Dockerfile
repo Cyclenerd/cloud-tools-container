@@ -51,7 +51,8 @@ ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
 	TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64" \
 	TFDOC_URL="https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-amd64.tar.gz" \
 	TFLINT_URL="https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_amd64.zip" \
-	TFSEC_URL="https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec_${TFSEC_VERSION}_linux_amd64.tar.gz"
+	TFSEC_URL="https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec_${TFSEC_VERSION}_linux_amd64.tar.gz" \
+	YQ_URL="https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64"
 
 FROM base AS arm64
 # Download URLs for ARM64
@@ -64,7 +65,8 @@ ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" \
 	TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_arm64" \
 	TFDOC_URL="https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-arm64.tar.gz" \
 	TFLINT_URL="https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_arm64.zip" \
-	TFSEC_URL="https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec_${TFSEC_VERSION}_linux_arm64.tar.gz"
+	TFSEC_URL="https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec_${TFSEC_VERSION}_linux_arm64.tar.gz" \
+	YQ_URL="https://github.com/mikefarah/yq/releases/latest/download/yq_linux_arm64"
 
 FROM ${TARGETARCH} AS tools
 # Install tools
@@ -193,9 +195,9 @@ RUN uname -m && \
 	mv "tflint" "/usr/bin/tflint"         && \
 	rm "tflint.zip"                       && \
 # Terragrunt (https://terragrunt.gruntwork.io/)
-	curl -L "$TERRAGRUNT_URL" -o "terragrunt" && \
-	chmod +x "terragrunt"                     && \
-	mv "terragrunt" "/usr/bin/terragrunt"     && \
+	echo "Terragrunt URL: '$TERRAGRUNT_URL'"           && \
+	curl -L "$TERRAGRUNT_URL" -o "/usr/bin/terragrunt" && \
+	chmod +x "/usr/bin/terragrunt"                     && \
 # Open Policy Agent (https://www.openpolicyagent.org/)
 	curl -L "$OPA_URL" -o "opa" && \
 	chmod +x "opa"              && \
@@ -205,6 +207,10 @@ RUN uname -m && \
 	npm install --global "firebase-tools" && \
 	# Fix user and group IDs
 	chown -R root:root "/usr/local/lib/node_modules/firebase-tools" && \
+# yq (https://github.com/mikefarah/yq)
+	echo "yq URL: '$YQ_URL'"           && \
+	curl -L "$YQ_URL" -o "/usr/bin/yq" && \
+	chmod +x "/usr/bin/yq"             && \
 # Delete caches
 	echo "Clean up..." && \
 	apt-get clean               && \
@@ -239,6 +245,7 @@ RUN uname -m && \
 	go version                 && \
 	hcloud version             && \
 	helm version               && \
+	jq --version               && \
 	kubectl version --client   && \
 	lsb_release -a             && \
 	mutt -v                    && \
@@ -261,6 +268,7 @@ RUN uname -m && \
 	tfsec --version            && \
 	unzip -v                   && \
 	vault --version            && \
+	yq --version               && \
 	zip -v
 
 # If you're reading this and have any feedback on how this image could be

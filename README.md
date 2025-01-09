@@ -71,6 +71,7 @@ The following software is included and tested:
   * [Helm](https://helm.sh/) package manager for Kubernetes (`helm`)
   * [Kubernetes cluster manager](https://kubernetes.io/docs/reference/kubectl/) command line tool for communicating with a Kubernetes cluster (`kubectl`)
 * [Vault](https://developer.hashicorp.com/vault) password manager and authentication tool (`vault`)
+* [yq](https://github.com/mikefarah/yq) command-line YAML, JSON and XML processor (`yq`)
 * Base packages
   * GNU bash 5 (`bash`)
   * [apt-utils](https://packages.ubuntu.com/lunar/apt-utils)

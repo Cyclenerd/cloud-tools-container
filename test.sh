@@ -3,7 +3,6 @@
 # Test container
 
 MY_COMMANDS=(
-	"uname -m"
 	"ansible --version"
 	"ansible-playbook --version"
 	"aws --version"
@@ -20,6 +19,7 @@ MY_COMMANDS=(
 	"go version"
 	"hcloud version"
 	"helm version"
+	"jq --version"
 	"kubectl help"
 	"lsb_release -a"
 	"mutt -v"
@@ -40,8 +40,10 @@ MY_COMMANDS=(
 	"terragrunt --version"
 	"tflint --version"
 	"tfsec --version"
+	"uname -m"
 	"unzip -v"
 	"vault --version"
+	"yq --version"
 	"zip -v"
 )
 

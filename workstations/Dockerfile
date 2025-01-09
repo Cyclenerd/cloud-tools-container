@@ -55,7 +55,8 @@ ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
 	VSX_GITLAB_URL="https://open-vsx.org/api/GitLab/gitlab-workflow/${VSX_GITLAB_VERSION}/file/GitLab.gitlab-workflow-${VSX_GITLAB_VERSION}.vsix" \
 	VSX_TERRAFORM_URL="https://open-vsx.org/api/hashicorp/terraform/linux-x64/${VSX_TERRAFORM_VERSION}/file/hashicorp.terraform-${VSX_TERRAFORM_VERSION}@linux-x64.vsix" \
 	VSX_ICONS_URL="https://open-vsx.org/api/vscode-icons-team/vscode-icons/${VSX_ICONS_VERSION}/file/vscode-icons-team.vscode-icons-${VSX_ICONS_VERSION}.vsix" \
-	VSX_DOCKER_URL="https://open-vsx.org/api/ms-azuretools/vscode-docker/${VSX_DOCKER_VERSION}/file/ms-azuretools.vscode-docker-${VSX_DOCKER_VERSION}.vsix"
+	VSX_DOCKER_URL="https://open-vsx.org/api/ms-azuretools/vscode-docker/${VSX_DOCKER_VERSION}/file/ms-azuretools.vscode-docker-${VSX_DOCKER_VERSION}.vsix" \
+	YQ_URL="https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64"
 
 # Install tools
 RUN uname -m && \
@@ -168,13 +169,17 @@ RUN uname -m && \
 	mv "tflint" "/usr/bin/tflint"         && \
 	rm "tflint.zip"                       && \
 # Terragrunt (https://terragrunt.gruntwork.io/)
-	curl -L "$TERRAGRUNT_URL" -o "terragrunt" && \
-	chmod +x "terragrunt"                     && \
-	mv "terragrunt" "/usr/bin/terragrunt"     && \
+	echo "Terragrunt URL: '$TERRAGRUNT_URL'"           && \
+	curl -L "$TERRAGRUNT_URL" -o "/usr/bin/terragrunt" && \
+	chmod +x "/usr/bin/terragrunt"                     && \
 # Open Policy Agent (https://www.openpolicyagent.org/)
 	curl -L "$OPA_URL" -o "opa" && \
 	chmod +x "opa"              && \
 	mv "opa" "/usr/bin/opa"     && \
+# yq (https://github.com/mikefarah/yq)
+	echo "yq URL: '$YQ_URL'"           && \
+	curl -L "$YQ_URL" -o "/usr/bin/yq" && \
+	chmod +x "/usr/bin/yq"             && \
 # Code OSS extensions
 # Terraform
 	curl -L "$VSX_TERRAFORM_URL" -o "hashicorp.terraform.vsix" && \
@@ -232,6 +237,7 @@ RUN uname -m && \
 	go version                 && \
 	hcloud version             && \
 	helm version               && \
+	jq --version               && \
 	kubectl version --client   && \
 	lsb_release -a             && \
 	mutt -v                    && \
@@ -254,6 +260,7 @@ RUN uname -m && \
 	tfsec --version            && \
 	unzip -v                   && \
 	vault --version            && \
+	yq --version               && \
 	zip -v
 
 # If you're reading this and have any feedback on how this image could be
