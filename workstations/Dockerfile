@@ -153,10 +153,11 @@ RUN uname -m && \
 	tar -xf "hcloud-linux.tar.gz" "hcloud"         && \
 	mv "hcloud" "/usr/bin/hcloud"                  && \
 	rm "hcloud-linux.tar.gz"                       && \
-# K9s https://k9scli.io/
-	curl -L "$K9S_URL" -o "k9s_linux.deb" && \
-	apt-get install -yqq "k9s_linux.deb"  && \
-	rm "k9s_linux.deb"                    && \
+# K9s (https://k9scli.io/)
+	echo "K9s URL: '$K9S_URL'"             && \
+	curl -L "$K9S_URL" -o "k9s_linux.deb"  && \
+	apt-get install -yqq "./k9s_linux.deb" && \
+	rm "k9s_linux.deb"                     && \
 # terraform-docs (https://github.com/terraform-docs/terraform-docs)
 	curl -L "$TFDOC_URL" -o "terraform-docs.tar.gz"   && \
 	tar -xf "terraform-docs.tar.gz" "terraform-docs"  && \
@@ -243,7 +244,7 @@ RUN uname -m && \
 	hcloud version             && \
 	helm version               && \
 	jq --version               && \
-	k9s version                && \
+	k9s version --short        && \
 	kubectl version --client   && \
 	lsb_release -a             && \
 	mutt -v                    && \
