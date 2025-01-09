@@ -47,6 +47,7 @@ ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
 	GCLOUD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz" \
 	GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_amd64.tar.gz" \
 	HCLOUD_URL="https://github.com/hetznercloud/cli/releases/latest/download/hcloud-linux-amd64.tar.gz" \
+	K9S_URL="https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb" \
 	OPA_URL="https://github.com/open-policy-agent/opa/releases/latest/download/opa_linux_amd64_static" \
 	TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64" \
 	TFDOC_URL="https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-amd64.tar.gz" \
@@ -61,6 +62,7 @@ ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" \
 	GCLOUD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-arm.tar.gz" \
 	GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_arm64.tar.gz" \
 	HCLOUD_URL="https://github.com/hetznercloud/cli/releases/latest/download/hcloud-linux-arm64.tar.gz" \
+	K9S_URL="https://github.com/derailed/k9s/releases/latest/download/k9s_linux_arm64.deb" \
 	OPA_URL="https://github.com/open-policy-agent/opa/releases/latest/download/opa_linux_arm64_static" \
 	TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_arm64" \
 	TFDOC_URL="https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-arm64.tar.gz" \
@@ -178,6 +180,10 @@ RUN uname -m && \
 	tar -xf "hcloud-linux.tar.gz" "hcloud"         && \
 	mv "hcloud" "/usr/bin/hcloud"                  && \
 	rm "hcloud-linux.tar.gz"                       && \
+# K9s https://k9scli.io/
+	curl -L "$K9S_URL" -o "k9s_linux.deb" && \
+	apt-get install -yqq "k9s_linux.deb"  && \
+	rm "k9s_linux.deb"                    && \
 # terraform-docs (https://github.com/terraform-docs/terraform-docs)
 	curl -L "$TFDOC_URL" -o "terraform-docs.tar.gz"   && \
 	tar -xf "terraform-docs.tar.gz" "terraform-docs"  && \
@@ -246,6 +252,7 @@ RUN uname -m && \
 	hcloud version             && \
 	helm version               && \
 	jq --version               && \
+	k9s version                && \
 	kubectl version --client   && \
 	lsb_release -a             && \
 	mutt -v                    && \
