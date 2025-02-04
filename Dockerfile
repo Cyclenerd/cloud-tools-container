@@ -87,6 +87,7 @@ RUN uname -m && \
 		curl \
 		dnsutils \
 		figlet \
+		flake8 \
 		git \
 		golang-go \
 		gpg \
@@ -241,6 +242,7 @@ RUN uname -m && \
 	dig -v                     && \
 	figlet -v                  && \
 	firebase --version         && \
+	flake8 --version           && \
 	fuego --version            && \
 	gcloud --version           && \
 	gcr-cleaner-cli -version   && \

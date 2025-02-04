@@ -94,6 +94,7 @@ The following software is included and tested:
     * [cpanm](https://metacpan.org/dist/App-cpanminus/view/bin/cpanm) modules installer for Perl (`cpanm`)
   * [Python 3](https://www.python.org/) programming language (`python3`)
     * [pip](https://pypi.org/project/pip/) package installer for Python (`pip3`)
+    * [flake8](https://flake8.pycqa.org/en/latest/) code checker using pycodestyle and pyflakes (`flake8`)
   * [Go](https://go.dev/) programming language (`go`)
   * GNU tar archiving utility (`tar`)
   * De-archiver for .zip files (`unzip`)

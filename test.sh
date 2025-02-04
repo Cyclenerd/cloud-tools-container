@@ -12,6 +12,7 @@ MY_COMMANDS=(
 	"dig -v"
 	"figlet -v"
 	"firebase --version"
+	"flake8 --version"
 	"fuego --version"
 	"gcloud --version"
 	"gcr-cleaner-cli -version"
