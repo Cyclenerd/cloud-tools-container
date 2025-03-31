@@ -11,7 +11,6 @@ MY_COMMANDS=(
 	"curl --version"
 	"dig -v"
 	"figlet -v"
-	"firebase --version"
 	"flake8 --version"
 	"fuego --version"
 	"gcloud --version"
