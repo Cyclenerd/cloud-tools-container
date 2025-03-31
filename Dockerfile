@@ -208,11 +208,6 @@ RUN uname -m && \
 	curl -L "$OPA_URL" -o "opa" && \
 	chmod +x "opa"              && \
 	mv "opa" "/usr/bin/opa"     && \
-# Firebase CLI (https://github.com/firebase/firebase-tools)
-	echo "Install Firebase..."            && \
-	npm install --global "firebase-tools" && \
-	# Fix user and group IDs
-	chown -R root:root "/usr/local/lib/node_modules/firebase-tools" && \
 # yq (https://github.com/mikefarah/yq)
 	echo "yq URL: '$YQ_URL'"           && \
 	curl -L "$YQ_URL" -o "/usr/bin/yq" && \
@@ -241,7 +236,6 @@ RUN uname -m && \
 	curl --version             && \
 	dig -v                     && \
 	figlet -v                  && \
-	firebase --version         && \
 	flake8 --version           && \
 	fuego --version            && \
 	gcloud --version           && \

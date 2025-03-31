@@ -132,9 +132,6 @@ RUN uname -m && \
 	unzip -qq "awscliv2.zip"                                  && \
 	./aws/install -b "/usr/local/bin" -i "/usr/local/aws-cli" && \
 	rm -rf aws*                                               && \
-# Firebase (https://firebase.tools/)
-	curl -L "https://firebase.tools/bin/linux/latest" -o "/usr/bin/firebase" && \
-	chmod +x "/usr/bin/firebase" && \
 # Fuego (https://github.com/sgarciac/fuego)
 	curl -L "$FUEGO_URL" -o "fuego.tar.gz" && \
 	tar -xf "fuego.tar.gz"                 && \
@@ -236,7 +233,6 @@ RUN uname -m && \
 	curl --version             && \
 	dig -v                     && \
 	figlet -v                  && \
-	firebase --version         && \
 	flake8 --version           && \
 	fuego --version            && \
 	gcloud --version           && \

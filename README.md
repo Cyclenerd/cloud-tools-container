@@ -5,7 +5,6 @@
 [![Badge: Bitbucket](https://img.shields.io/badge/Bitbucket-0052CC.svg?logo=bitbucket&logoColor=white)](#readme)
 [![Badge: CircleCI](https://img.shields.io/badge/CircleCI-343434.svg?logo=circleci&logoColor=white)](#readme)
 [![Badge: Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?logo=docker&logoColor=white)](#readme)
-[![Badge: Firebase](https://img.shields.io/badge/Firebase-%23DD2C00.svg?logo=firebase&logoColor=white)](#readme)
 [![Badge: GitLab](https://img.shields.io/badge/GitLab-FC6D26.svg?logo=gitlab&logoColor=white)](#readme)
 [![Badge: GNU Bash](https://img.shields.io/badge/GNU%20Bash-4EAA25.svg?logo=gnubash&logoColor=white)](#readme)
 [![Badge: Go](https://img.shields.io/badge/Go-%2300ADD8.svg?logo=go&logoColor=white)](#readme)
@@ -53,7 +52,6 @@ The following software is included and tested:
 
 * [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) infrastructure as configuration (IaC) software tool (`ansible` and `ansible-playbook`)
 * [AWS](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) command line interface (CLI) tools (`aws`)
-* [Firebase](https://firebase.google.com/docs/cli) command line interface (CLI) tools (`firebase`)
 * [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
 * [Hetzner Cloud CLI](https://github.com/hetznercloud/cli) (`hcloud`)
 * [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) deletes old container images on registries (`gcr-cleaner-cli`)
