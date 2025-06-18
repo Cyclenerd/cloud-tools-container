@@ -25,7 +25,7 @@ ENV LANG="C.UTF-8" \
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
 	GCR_CLEANER_VERSION="0.12.2" \
 # https://github.com/terraform-docs/terraform-docs/releases
-	TFDOC_VERSION="0.19.0" \
+	TFDOC_VERSION="0.20.0" \
 # https://github.com/terraform-linters/tflint/releases
 	TFLINT_VERSION="0.58.0" \
 # https://github.com/aquasecurity/tfsec/releases
