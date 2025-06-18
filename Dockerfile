@@ -42,7 +42,7 @@ ENV LANG="C.UTF-8" \
 # https://github.com/terraform-docs/terraform-docs/releases
 	TFDOC_VERSION="0.19.0" \
 # https://github.com/aquasecurity/tfsec/releases
-	TFSEC_VERSION="1.28.11" \
+	TFSEC_VERSION="1.28.14" \
 # https://github.com/terraform-linters/tflint/releases
 	TFLINT_VERSION="0.54.0"
 
