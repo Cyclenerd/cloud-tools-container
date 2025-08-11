@@ -18,7 +18,7 @@
 [![Badge: Ubuntu](https://img.shields.io/badge/Ubuntu-E95420.svg?logo=ubuntu&logoColor=white)](#readme)
 [![Badge: Vault](https://img.shields.io/badge/Vault-FFEC6E.svg?logo=vault&logoColor=black)](#readme)
 [![Badge:Last release](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/podman-release.yml/badge.svg)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/podman-release.yml)
-[![Badge:Last release](https://img.shields.io/badge/Last%20release-2025--08--04-blue)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/podman-release.yml)
+[![Badge:Last release](https://img.shields.io/badge/Last%20release-2025--08--11-blue)](https://github.com/Cyclenerd/cloud-tools-container/actions/workflows/podman-release.yml)
 [![Badge: Docker pulls](https://img.shields.io/docker/pulls/cyclenerd/cloud-tools-container)](https://hub.docker.com/r/cyclenerd/cloud-tools-container)
 [![Badge: License](https://img.shields.io/github/license/cyclenerd/cloud-tools-container)](https://github.com/Cyclenerd/cloud-tools-container/blob/master/LICENSE)
 
