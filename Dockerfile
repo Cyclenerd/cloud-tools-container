@@ -116,8 +116,8 @@ RUN uname -m && \
 	curl -fsSL "https://apt.releases.hashicorp.com/gpg" | gpg --dearmor -o "/usr/share/keyrings/releases-hashicorp.gpg" && \
 	echo "deb [signed-by=/usr/share/keyrings/releases-hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee -a "/etc/apt/sources.list.d/releases-hashicorp.list" && \
 # Add Helm repository
-	curl -fsSL "https://baltocdn.com/helm/signing.asc" | gpg --dearmor -o "/usr/share/keyrings/baltocdn-helm.gpg" && \
-	echo "deb [signed-by=/usr/share/keyrings/baltocdn-helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee -a "/etc/apt/sources.list.d/helm-stable-debian.list" && \
+	curl -fsSL "https://packages.buildkite.com/helm-linux/helm-debian/gpgkey" | gpg --dearmor -o "/usr/share/keyrings/helm.gpg" && \
+	echo "deb [signed-by=/usr/share/keyrings/helm.gpg] https://packages.buildkite.com/helm-linux/helm-debian/any/ any main" | tee -a "/etc/apt/sources.list.d/helm-stable-debian.list" && \
 # Install tools
 	apt-get update -yq && \
 	apt-get install -yqq \
