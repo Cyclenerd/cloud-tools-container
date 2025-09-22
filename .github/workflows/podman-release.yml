@@ -252,7 +252,7 @@ jobs:
       # Scan with Grype vulnerability scanner
       # https://github.com/anchore/scan-action
       - name: Scan 🧐
-        uses: anchore/scan-action@v6
+        uses: anchore/scan-action@v7
         id: scan
         with:
           image: "ghcr.io/${{env.MY_ARTIFACT_NAME}}:test"
