@@ -96,7 +96,7 @@ jobs:
           mode: create
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
-          server_type: cx22
+          server_type: cx23
           image: ${{env.MY_HETZNER_IMAGE}}
           ssh_key: ${{env.MY_PUBLIC_HETZNER_SSH_ID}}
           pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
