@@ -21,10 +21,10 @@ fi
 
 # Build the container image
 echo -e "${YELLOW}Building container image with Podman...${NC}"
-podman manifest create "cloud-tools-container"
+podman manifest create "localhost/cloud-tools-container"
 podman build . \
-  --manifest "cloud-tools-container" \
+  --manifest "localhost/cloud-tools-container" \
   --platform "linux/amd64,linux/arm64" \
-  --tag "cloud-tools-container:latest"
+  --tag "localhost/cloud-tools-container:latest"
 
 echo -e "${GREEN}Build script completed successfully.${NC}"
