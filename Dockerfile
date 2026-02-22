@@ -130,8 +130,9 @@ RUN uname -m && \
 # https://github.com/hashicorp/vault/issues/10924
 	setcap -r "/usr/bin/vault" && \
 # Ansible (https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-and-upgrading-ansible-with-pip)
-	pip3 install ansible      && \
-	pip3 install ansible-core && \
+	pip3 install ansible       && \
+	pip3 install ansible-core  && \
+	pip3 install ansible-lint  && \
 # AWS CLI (https://github.com/GoogleCloudPlatform/gcr-cleaner)
 	echo "AWS CLI URL: '$AWS_CLI_URL'"                        && \
 	curl -L "$AWS_CLI_URL" -o "awscliv2.zip"                  && \
@@ -229,6 +230,7 @@ RUN uname -m && \
 # Basic smoke test
 	echo "Versions..."         && \
 	ansible --version          && \
+	ansible-lint --version     && \
 	ansible-playbook --version && \
 	aws --version              && \
 	bash --version             && \

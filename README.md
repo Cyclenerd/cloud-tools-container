@@ -51,6 +51,7 @@ This [Docker container image](https://hub.docker.com/r/cyclenerd/cloud-tools-con
 The following software is included and tested:
 
 * [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) infrastructure as configuration (IaC) software tool (`ansible` and `ansible-playbook`)
+  * [Ansible Lint](https://docs.ansible.com/projects/lint/) linting tool for Ansible playbooks, roles and collections (`ansible-lint`)
 * [AWS](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) command line interface (CLI) tools (`aws`)
 * [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
 * [Hetzner Cloud CLI](https://github.com/hetznercloud/cli) (`hcloud`)
