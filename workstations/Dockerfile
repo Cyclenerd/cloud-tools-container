@@ -32,8 +32,6 @@ ENV LANG="C.UTF-8" \
 	TFLINT_VERSION="0.61.0" \
 # https://github.com/aquasecurity/tfsec/releases
 	TFSEC_VERSION="1.28.14" \
-# https://open-vsx.org/extension/dracula-theme/theme-dracula
-	VSX_DRACULA_VERSION="2.25.1" \
 # https://open-vsx.org/extension/GitLab/gitlab-workflow
 	VSX_GITLAB_VERSION="5.15.0" \
 # https://open-vsx.org/extension/hashicorp/terraform
@@ -55,7 +53,6 @@ ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
 	TFDOC_URL="https://github.com/terraform-docs/terraform-docs/releases/download/v${TFDOC_VERSION}/terraform-docs-v${TFDOC_VERSION}-linux-amd64.tar.gz" \
 	TFLINT_URL="https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_linux_amd64.zip" \
 	TFSEC_URL="https://github.com/aquasecurity/tfsec/releases/download/v${TFSEC_VERSION}/tfsec_${TFSEC_VERSION}_linux_amd64.tar.gz" \
-	VSX_DRACULA_URL="https://open-vsx.org/api/dracula-theme/theme-dracula/${VSX_DRACULA_VERSION}/file/dracula-theme.theme-dracula-${VSX_DRACULA_VERSION}.vsix" \
 	VSX_GITLAB_URL="https://open-vsx.org/api/GitLab/gitlab-workflow/${VSX_GITLAB_VERSION}/file/GitLab.gitlab-workflow-${VSX_GITLAB_VERSION}.vsix" \
 	VSX_TERRAFORM_URL="https://open-vsx.org/api/hashicorp/terraform/linux-x64/${VSX_TERRAFORM_VERSION}/file/hashicorp.terraform-${VSX_TERRAFORM_VERSION}@linux-x64.vsix" \
 	VSX_ICONS_URL="https://open-vsx.org/api/vscode-icons-team/vscode-icons/${VSX_ICONS_VERSION}/file/vscode-icons-team.vscode-icons-${VSX_ICONS_VERSION}.vsix" \
@@ -199,10 +196,6 @@ RUN uname -m && \
 	curl -L "$VSX_GITLAB_URL" -o "GitLab.gitlab-workflow.vsix" && \
 	unzip "GitLab.gitlab-workflow.vsix" "extension/*" && \
 	mv "extension" "/opt/code-oss/extensions/gitlab.gitlab-workflow-${VSX_GITLAB_VERSION}}" && \
-# Dracula Theme
-	curl -L "$VSX_DRACULA_URL" -o "dracula-theme.theme-dracula.vsix" && \
-	unzip "dracula-theme.theme-dracula.vsix" "extension/*" && \
-	mv "extension" "/opt/code-oss/extensions/dracula-theme.theme-dracula-${VSX_DRACULA_VERSION}}" && \
 # Docker
 	curl -L "$VSX_DOCKER_URL" -o "ms-azuretools.vscode-docker.vsix" && \
 	unzip "ms-azuretools.vscode-docker.vsix" "extension/*" && \
