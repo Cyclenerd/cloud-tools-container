@@ -95,6 +95,7 @@ The following software is included and tested:
     * [pip](https://pypi.org/project/pip/) package installer for Python (`pip3`)
     * [flake8](https://flake8.pycqa.org/en/latest/) code checker using pycodestyle and pyflakes (`flake8`)
   * [Go](https://go.dev/) programming language (`go`)
+    * [Golangci-lint](https://golangci-lint.run/) fast linter for Go (`golangci-lint`)
   * GNU tar archiving utility (`tar`)
   * De-archiver for .zip files (`unzip`)
   * Archiver for .zip files (`zip`)

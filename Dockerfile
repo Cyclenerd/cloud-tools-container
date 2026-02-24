@@ -39,6 +39,8 @@ ENV LANG="C.UTF-8" \
 	FUEGO_VERSION="0.35.0" \
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
 	GCR_CLEANER_VERSION="0.12.2" \
+# https://github.com/golangci/golangci-lint/releases
+	GOLANGCI_LINT_VERSION="2.10.1" \
 # https://github.com/terraform-docs/terraform-docs/releases
 	TFDOC_VERSION="0.21.0" \
 # https://github.com/aquasecurity/tfsec/releases
@@ -52,6 +54,7 @@ ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
 	FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz" \
 	GCLOUD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-x86_64.tar.gz" \
 	GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_amd64.tar.gz" \
+	GOLANGCI_LINT_URL="https://github.com/golangci/golangci-lint/releases/download/v${GOLANGCI_LINT_VERSION}/golangci-lint-${GOLANGCI_LINT_VERSION}-linux-amd64.tar.gz" \
 	HCLOUD_URL="https://github.com/hetznercloud/cli/releases/latest/download/hcloud-linux-amd64.tar.gz" \
 	OPA_URL="https://github.com/open-policy-agent/opa/releases/latest/download/opa_linux_amd64_static" \
 	TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_amd64" \
@@ -66,6 +69,7 @@ ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" \
 	FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz" \
 	GCLOUD_URL="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-linux-arm.tar.gz" \
 	GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_arm64.tar.gz" \
+	GOLANGCI_LINT_URL="https://github.com/golangci/golangci-lint/releases/download/v${GOLANGCI_LINT_VERSION}/golangci-lint-${GOLANGCI_LINT_VERSION}-linux-arm64.tar.gz" \
 	HCLOUD_URL="https://github.com/hetznercloud/cli/releases/latest/download/hcloud-linux-arm64.tar.gz" \
 	OPA_URL="https://github.com/open-policy-agent/opa/releases/latest/download/opa_linux_arm64_static" \
 	TERRAGRUNT_URL="https://github.com/gruntwork-io/terragrunt/releases/latest/download/terragrunt_linux_arm64" \
@@ -169,30 +173,32 @@ RUN uname -m && \
 	ln -s "/usr/bin/google-cloud-sdk/bin/gcloud-crc32c" "/usr/bin/gcloud-crc32c" && \
 	ln -s "/usr/bin/google-cloud-sdk/bin/git-credential-gcloud.sh" "/usr/bin/git-credential-gcloud.sh" && \
 	ln -s "/usr/bin/google-cloud-sdk/bin/gsutil" "/usr/bin/gsutil" && \
-	# GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
-	echo "GCR Cleaner URL: '$GCR_CLEANER_URL'"             && \
-	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz" && \
-	tar -xf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli"     && \
-	mv "gcr-cleaner-cli" "/usr/bin/gcr-cleaner-cli"        && \
-	rm "gcr-cleaner-cli.tar.gz"                            && \
+# GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
+	echo "GCR Cleaner URL: '$GCR_CLEANER_URL'"                        && \
+	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz"            && \
+	tar -C "/usr/bin/" -xf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli" && \
+	rm "gcr-cleaner-cli.tar.gz"                                       && \
+# golangci-lint (https://golangci-lint.run/)
+	echo "golangci-lint URL: '$GOLANGCI_LINT_URL'"         && \
+	curl -L "$GOLANGCI_LINT_URL" -o "golangci-lint.tar.gz" && \
+	tar -xf "golangci-lint.tar.gz" --wildcards "*/golangci-lint" -O > "/usr/bin/golangci-lint" && \
+	chmod +x "/usr/bin/golangci-lint"                      && \
+	rm "golangci-lint.tar.gz"                              && \
 # Hetzner Cloud CLI (https://github.com/hetznercloud/cli)
-	echo "Hetzner Cloud CLI URL: '$HCLOUD_URL'"    && \
-	curl -L "$HCLOUD_URL" -o "hcloud-linux.tar.gz" && \
-	tar -xf "hcloud-linux.tar.gz" "hcloud"         && \
-	mv "hcloud" "/usr/bin/hcloud"                  && \
-	rm "hcloud-linux.tar.gz"                       && \
+	echo "Hetzner Cloud CLI URL: '$HCLOUD_URL'"           && \
+	curl -L "$HCLOUD_URL" -o "hcloud-linux.tar.gz"        && \
+	tar -C "/usr/bin/" -xf "hcloud-linux.tar.gz" "hcloud" && \
+	rm "hcloud-linux.tar.gz"                              && \
 # terraform-docs (https://github.com/terraform-docs/terraform-docs)
-	echo "terraform-docs URL: '$TFDOC_URL'"           && \
-	curl -L "$TFDOC_URL" -o "terraform-docs.tar.gz"   && \
-	tar -xf "terraform-docs.tar.gz" "terraform-docs"  && \
-	mv "terraform-docs" "/usr/bin/terraform-docs"     && \
-	rm "terraform-docs.tar.gz"                        && \
+	echo "terraform-docs URL: '$TFDOC_URL'"                         && \
+	curl -L "$TFDOC_URL" -o "terraform-docs.tar.gz"                 && \
+	tar -C "/usr/bin/" -xf "terraform-docs.tar.gz" "terraform-docs" && \
+	rm "terraform-docs.tar.gz"                                      && \
 # tfsec (https://github.com/aquasecurity/tfsec)
-	echo "tfsec URL: '$TFSEC_URL'"         && \
-	curl -L "$TFSEC_URL" -o "tfsec.tar.gz" && \
-	tar -xf "tfsec.tar.gz" "tfsec"         && \
-	mv "tfsec" "/usr/bin/tfsec"            && \
-	rm "tfsec.tar.gz"                      && \
+	echo "tfsec URL: '$TFSEC_URL'"                && \
+	curl -L "$TFSEC_URL" -o "tfsec.tar.gz"        && \
+	tar -C "/usr/bin/" -xf "tfsec.tar.gz" "tfsec" && \
+	rm "tfsec.tar.gz"                             && \
 # tflint (https://github.com/terraform-linters/tflint)
 	echo "tflint URL: '$TFSEC_URL'"       && \
 	curl -L "$TFLINT_URL" -o "tflint.zip" && \
@@ -242,6 +248,7 @@ RUN uname -m && \
 	fuego --version            && \
 	gcloud --version           && \
 	gcr-cleaner-cli -version   && \
+	golangci-lint --version    && \
 	git --version              && \
 	go version                 && \
 	hcloud version             && \

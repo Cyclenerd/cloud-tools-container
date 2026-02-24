@@ -24,6 +24,8 @@ ENV LANG="C.UTF-8" \
 	FUEGO_VERSION="0.35.0" \
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
 	GCR_CLEANER_VERSION="0.12.2" \
+# https://github.com/golangci/golangci-lint/releases
+	GOLANGCI_LINT_VERSION="2.10.1" \
 # https://github.com/terraform-docs/terraform-docs/releases
 	TFDOC_VERSION="0.21.0" \
 # https://github.com/terraform-linters/tflint/releases
@@ -45,6 +47,7 @@ ENV LANG="C.UTF-8" \
 ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
 	FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz" \
 	GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_amd64.tar.gz" \
+	GOLANGCI_LINT_URL="https://github.com/golangci/golangci-lint/releases/download/v${GOLANGCI_LINT_VERSION}/golangci-lint-${GOLANGCI_LINT_VERSION}-linux-amd64.tar.gz" \
 	HCLOUD_URL="https://github.com/hetznercloud/cli/releases/latest/download/hcloud-linux-amd64.tar.gz" \
 	K9S_URL="https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb" \
 	OPA_URL="https://github.com/open-policy-agent/opa/releases/latest/download/opa_linux_amd64_static" \
@@ -127,7 +130,7 @@ RUN uname -m && \
 	pip3 install ansible      && \
 	pip3 install ansible-core && \
 	pip3 install ansible-lint && \
-	# AWS CLI (https://github.com/GoogleCloudPlatform/gcr-cleaner)
+# AWS CLI (https://github.com/GoogleCloudPlatform/gcr-cleaner)
 	echo "AWS CLI URL: '$AWS_CLI_URL'"                        && \
 	curl -L "$AWS_CLI_URL" -o "awscliv2.zip"                  && \
 	unzip -qq "awscliv2.zip"                                  && \
@@ -142,31 +145,33 @@ RUN uname -m && \
 	cd "../"                               && \
 	rm -rf fuego*                          && \
 # GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
-	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz" && \
-	tar -xf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli"     && \
-	mv "gcr-cleaner-cli" "/usr/bin/gcr-cleaner-cli"        && \
-	rm "gcr-cleaner-cli.tar.gz"                            && \
+	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz"            && \
+	tar -C "/usr/bin/" -xf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli" && \
+	rm "gcr-cleaner-cli.tar.gz"                                       && \
+# golangci-lint (https://golangci-lint.run/)
+	echo "golangci-lint URL: '$GOLANGCI_LINT_URL'"         && \
+	curl -L "$GOLANGCI_LINT_URL" -o "golangci-lint.tar.gz" && \
+	tar -xf "golangci-lint.tar.gz" --wildcards "*/golangci-lint" -O > "/usr/bin/golangci-lint" && \
+	chmod +x "/usr/bin/golangci-lint"                      && \
+	rm "golangci-lint.tar.gz"                              && \
 # Hetzner Cloud CLI (https://github.com/hetznercloud/cli)
-	echo "Hetzner Cloud CLI URL: '$HCLOUD_URL'"    && \
-	curl -L "$HCLOUD_URL" -o "hcloud-linux.tar.gz" && \
-	tar -xf "hcloud-linux.tar.gz" "hcloud"         && \
-	mv "hcloud" "/usr/bin/hcloud"                  && \
-	rm "hcloud-linux.tar.gz"                       && \
+	echo "Hetzner Cloud CLI URL: '$HCLOUD_URL'"           && \
+	curl -L "$HCLOUD_URL" -o "hcloud-linux.tar.gz"        && \
+	tar -C "/usr/bin/" -xf "hcloud-linux.tar.gz" "hcloud" && \
+	rm "hcloud-linux.tar.gz"                              && \
 # K9s (https://k9scli.io/)
 	echo "K9s URL: '$K9S_URL'"             && \
 	curl -L "$K9S_URL" -o "k9s_linux.deb"  && \
 	apt-get install -yqq "./k9s_linux.deb" && \
 	rm "k9s_linux.deb"                     && \
 # terraform-docs (https://github.com/terraform-docs/terraform-docs)
-	curl -L "$TFDOC_URL" -o "terraform-docs.tar.gz"   && \
-	tar -xf "terraform-docs.tar.gz" "terraform-docs"  && \
-	mv "terraform-docs" "/usr/bin/terraform-docs"     && \
-	rm "terraform-docs.tar.gz"                        && \
+	curl -L "$TFDOC_URL" -o "terraform-docs.tar.gz"                     && \
+	tar tar -C "/usr/bin/" -xf "terraform-docs.tar.gz" "terraform-docs" && \
+	rm "terraform-docs.tar.gz"                                          && \
 # tfsec (https://github.com/aquasecurity/tfsec)
-	curl -L "$TFSEC_URL" -o "tfsec.tar.gz" && \
-	tar -xf "tfsec.tar.gz" "tfsec"         && \
-	mv "tfsec" "/usr/bin/tfsec"            && \
-	rm "tfsec.tar.gz"                      && \
+	curl -L "$TFSEC_URL" -o "tfsec.tar.gz"            && \
+	tar tar -C "/usr/bin/" -xf "tfsec.tar.gz" "tfsec" && \
+	rm "tfsec.tar.gz"                                 && \
 # tflint (https://github.com/terraform-linters/tflint)
 	curl -L "$TFLINT_URL" -o "tflint.zip" && \
 	unzip -qq "tflint.zip"                && \
@@ -229,6 +234,7 @@ RUN uname -m && \
 	ansible --version          && \
 	ansible-lint --version     && \
 	ansible-playbook --version && \
+	ansible-lint --version     && \
 	aws --version              && \
 	bash --version             && \
 	cpanm --version            && \
@@ -239,6 +245,7 @@ RUN uname -m && \
 	fuego --version            && \
 	gcloud --version           && \
 	gcr-cleaner-cli -version   && \
+	golangci-lint --version    && \
 	git --version              && \
 	go version                 && \
 	hcloud version             && \

@@ -5,6 +5,7 @@
 MY_COMMANDS=(
 	"ansible --version"
 	"ansible-playbook --version"
+	"ansible-lint --version"
 	"aws --version"
 	"bash --version"
 	"cpanm --version"
@@ -15,6 +16,7 @@ MY_COMMANDS=(
 	"fuego --version"
 	"gcloud --version"
 	"gcr-cleaner-cli -version"
+	"golangci-lint --version"
 	"git --version"
 	"go version"
 	"hcloud version"
