@@ -166,11 +166,11 @@ RUN uname -m && \
 	rm "k9s_linux.deb"                     && \
 # terraform-docs (https://github.com/terraform-docs/terraform-docs)
 	curl -L "$TFDOC_URL" -o "terraform-docs.tar.gz"                     && \
-	tar tar -C "/usr/bin/" -xf "terraform-docs.tar.gz" "terraform-docs" && \
+	tar -C "/usr/bin/" -xf "terraform-docs.tar.gz" "terraform-docs" && \
 	rm "terraform-docs.tar.gz"                                          && \
 # tfsec (https://github.com/aquasecurity/tfsec)
 	curl -L "$TFSEC_URL" -o "tfsec.tar.gz"            && \
-	tar tar -C "/usr/bin/" -xf "tfsec.tar.gz" "tfsec" && \
+	tar -C "/usr/bin/" -xf "tfsec.tar.gz" "tfsec" && \
 	rm "tfsec.tar.gz"                                 && \
 # tflint (https://github.com/terraform-linters/tflint)
 	curl -L "$TFLINT_URL" -o "tflint.zip" && \

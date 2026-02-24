@@ -33,6 +33,8 @@ ENV LANG="C.UTF-8" \
 	FUEGO_VERSION="0.35.0" \
 # https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
 	GCR_CLEANER_VERSION="0.12.2" \
+# https://github.com/golangci/golangci-lint/releases
+	GOLANGCI_LINT_VERSION="2.10.1" \
 # https://github.com/terraform-docs/terraform-docs/releases
 	TFDOC_VERSION="0.21.0" \
 # https://github.com/aquasecurity/tfsec/releases
