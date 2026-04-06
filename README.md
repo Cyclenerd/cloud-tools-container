@@ -55,7 +55,6 @@ The following software is included and tested:
 * [AWS](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html) command line interface (CLI) tools (`aws`)
 * [fuego](https://github.com/sgarciac/fuego#readme) command line firestore client (`fuego`)
 * [Hetzner Cloud CLI](https://github.com/hetznercloud/cli) (`hcloud`)
-* [GCR Cleaner](https://github.com/GoogleCloudPlatform/gcr-cleaner#readme) deletes old container images on registries (`gcr-cleaner-cli`)
 * [Google Cloud](https://cloud.google.com/cli) command line interface (CLI) tools (`gcloud`, `gsutil` and `bq`)
 * [Open Policy Agent](https://www.openpolicyagent.org/) general-purpose policy engine, context-aware policy enforcement (`opa`)
 * [Packer](https://developer.hashicorp.com/packer) (`packer`)

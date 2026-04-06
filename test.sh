@@ -15,7 +15,6 @@ MY_COMMANDS=(
 	"flake8 --version"
 	"fuego --version"
 	"gcloud --version"
-	"gcr-cleaner-cli -version"
 	"golangci-lint --version"
 	"git --version"
 	"go version"

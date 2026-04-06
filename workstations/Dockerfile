@@ -22,8 +22,6 @@ ENV LANG="C.UTF-8" \
 	NONINTERACTIVE=1 \
 # https://github.com/sgarciac/fuego/releases
 	FUEGO_VERSION="0.35.0" \
-# https://github.com/GoogleCloudPlatform/gcr-cleaner/releases
-	GCR_CLEANER_VERSION="0.12.2" \
 # https://github.com/golangci/golangci-lint/releases
 	GOLANGCI_LINT_VERSION="2.10.1" \
 # https://github.com/terraform-docs/terraform-docs/releases
@@ -44,7 +42,6 @@ ENV LANG="C.UTF-8" \
 # Download URLs for AMD64 (X86/64)
 ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
 	FUEGO_URL="https://github.com/sgarciac/fuego/archive/refs/tags/${FUEGO_VERSION}.tar.gz" \
-	GCR_CLEANER_URL="https://github.com/GoogleCloudPlatform/gcr-cleaner/releases/download/v${GCR_CLEANER_VERSION}/gcr-cleaner-cli_${GCR_CLEANER_VERSION}_linux_amd64.tar.gz" \
 	GOLANGCI_LINT_URL="https://github.com/golangci/golangci-lint/releases/download/v${GOLANGCI_LINT_VERSION}/golangci-lint-${GOLANGCI_LINT_VERSION}-linux-amd64.tar.gz" \
 	HCLOUD_URL="https://github.com/hetznercloud/cli/releases/latest/download/hcloud-linux-amd64.tar.gz" \
 	K9S_URL="https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb" \
@@ -127,7 +124,7 @@ RUN uname -m && \
 	pip3 install ansible      && \
 	pip3 install ansible-core && \
 	pip3 install ansible-lint && \
-# AWS CLI (https://github.com/GoogleCloudPlatform/gcr-cleaner)
+# AWS CLI (https://aws.amazon.com/cli/)
 	echo "AWS CLI URL: '$AWS_CLI_URL'"                        && \
 	curl -L "$AWS_CLI_URL" -o "awscliv2.zip"                  && \
 	unzip -qq "awscliv2.zip"                                  && \
@@ -141,10 +138,6 @@ RUN uname -m && \
 	mv "fuego" "/usr/bin/fuego"            && \
 	cd "../"                               && \
 	rm -rf fuego*                          && \
-# GCR Cleaner (https://github.com/GoogleCloudPlatform/gcr-cleaner)
-	curl -L "$GCR_CLEANER_URL" -o "gcr-cleaner-cli.tar.gz"            && \
-	tar -C "/usr/bin/" -xf "gcr-cleaner-cli.tar.gz" "gcr-cleaner-cli" && \
-	rm "gcr-cleaner-cli.tar.gz"                                       && \
 # golangci-lint (https://golangci-lint.run/)
 	echo "golangci-lint URL: '$GOLANGCI_LINT_URL'"         && \
 	curl -L "$GOLANGCI_LINT_URL" -o "golangci-lint.tar.gz" && \
@@ -237,7 +230,6 @@ RUN uname -m && \
 	flake8 --version           && \
 	fuego --version            && \
 	gcloud --version           && \
-	gcr-cleaner-cli -version   && \
 	golangci-lint --version    && \
 	git --version              && \
 	go version                 && \
