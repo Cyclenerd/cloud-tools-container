@@ -8,6 +8,10 @@ on:
 env:
   MY_ARTIFACT_NAME: 'cyclenerd/cloud-tools-container'
   MY_HETZNER_IMAGE: 'ubuntu-24.04'
+  MY_HETZNER_ARM64_SERVER_TYPE: 'cax11'
+  MY_HETZNER_AMD64_SERVER_TYPE: 'cx23'
+  MY_HETZNER_LOCATION: 'nbg1' # Nuremberg, Germany
+  MY_HETZNER_FALLBACK_LOCATION: 'hel1' # Helsinki, Finland
   MY_PRE_RUNNER_SCRIPT: |
     apt-get update -yq
     apt-get install -yqq podman
@@ -18,17 +22,34 @@ jobs:
     name: Create ARM64 runner
     runs-on: ubuntu-24.04
     outputs:
-      label: ${{ steps.create-arm64-runner.outputs.label }}
-      server_id: ${{ steps.create-arm64-runner.outputs.server_id }}
+      label: ${{ steps.create-arm64-runner.outputs.label || steps.create-arm64-runner-fallback.outputs.label }}
+      server_id: ${{ steps.create-arm64-runner.outputs.server_id || steps.create-arm64-runner-fallback.outputs.server_id }}
     steps:
+      # Try default location
       - name: Create runner with Arm-based Ampere Altra CPU
         id: create-arm64-runner
+        uses: Cyclenerd/hcloud-github-runner@v1
+        continue-on-error: true # do not fail if location is out of resources, try fallback location instead
+        with:
+          mode: create
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          server_type: ${{env.MY_HETZNER_ARM64_SERVER_TYPE}}
+          location: ${{env.MY_HETZNER_LOCATION}}
+          image: ${{env.MY_HETZNER_IMAGE}}
+          ssh_key: ${{env.MY_PUBLIC_HETZNER_SSH_ID}}
+          pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
+      # Try fallback location if default location is out of resources
+      - name: Create runner with Arm-based Ampere Altra CPU (fallback location)
+        id: create-arm64-runner-fallback
+        if: ${{ steps.create-arm64-runner.outcome == 'failure' }}
         uses: Cyclenerd/hcloud-github-runner@v1
         with:
           mode: create
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
-          server_type: cax11
+          server_type: ${{env.MY_HETZNER_ARM64_SERVER_TYPE}}
+          location: ${{env.MY_HETZNER_FALLBACK_LOCATION}}
           image: ${{env.MY_HETZNER_IMAGE}}
           ssh_key: ${{env.MY_PUBLIC_HETZNER_SSH_ID}}
           pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
@@ -86,17 +107,34 @@ jobs:
     name: Create AMD64 runner
     runs-on: ubuntu-24.04
     outputs:
-      label: ${{ steps.create-amd64-runner.outputs.label }}
-      server_id: ${{ steps.create-amd64-runner.outputs.server_id }}
+      label: ${{ steps.create-amd64-runner.outputs.label || steps.create-amd64-runner-fallback.outputs.label }}
+      server_id: ${{ steps.create-amd64-runner.outputs.server_id || steps.create-amd64-runner-fallback.outputs.server_id }}
     steps:
+      # Try default location
       - name: Create runner with Intel CPU
         id: create-amd64-runner
+        uses: Cyclenerd/hcloud-github-runner@v1
+        continue-on-error: true # do not fail if location is out of resources, try fallback location instead
+        with:
+          mode: create
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          server_type: ${{env.MY_HETZNER_AMD64_SERVER_TYPE}}
+          location: ${{env.MY_HETZNER_LOCATION}}
+          image: ${{env.MY_HETZNER_IMAGE}}
+          ssh_key: ${{env.MY_PUBLIC_HETZNER_SSH_ID}}
+          pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
+      # Try fallback location if default location is out of resources
+      - name: Create runner with Intel CPU (fallback location)
+        id: create-amd64-runner-fallback
+        if: ${{ steps.create-amd64-runner.outcome == 'failure' }}
         uses: Cyclenerd/hcloud-github-runner@v1
         with:
           mode: create
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
-          server_type: cx23
+          server_type: ${{env.MY_HETZNER_AMD64_SERVER_TYPE}}
+          location: ${{env.MY_HETZNER_FALLBACK_LOCATION}}
           image: ${{env.MY_HETZNER_IMAGE}}
           ssh_key: ${{env.MY_PUBLIC_HETZNER_SSH_ID}}
           pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
