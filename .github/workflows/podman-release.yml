@@ -32,6 +32,7 @@ jobs:
         continue-on-error: true # do not fail if location is out of resources, try fallback location instead
         with:
           mode: create
+          create_wait: 30 # 5 min
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
           server_type: ${{env.MY_HETZNER_ARM64_SERVER_TYPE}}
@@ -46,6 +47,7 @@ jobs:
         uses: Cyclenerd/hcloud-github-runner@v1
         with:
           mode: create
+          create_wait: 30 # 5 min
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
           server_type: ${{env.MY_HETZNER_ARM64_SERVER_TYPE}}
@@ -117,6 +119,7 @@ jobs:
         continue-on-error: true # do not fail if location is out of resources, try fallback location instead
         with:
           mode: create
+          create_wait: 30 # 5 min
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
           server_type: ${{env.MY_HETZNER_AMD64_SERVER_TYPE}}
@@ -131,6 +134,7 @@ jobs:
         uses: Cyclenerd/hcloud-github-runner@v1
         with:
           mode: create
+          create_wait: 30 # 5 min
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
           server_type: ${{env.MY_HETZNER_AMD64_SERVER_TYPE}}
