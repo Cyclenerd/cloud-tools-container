@@ -140,7 +140,7 @@ jobs:
           network: ${{ env.MY_GCP_NETWORK }}
           subnet: ${{ env.MY_GCP_SUBNET }}
           service_account: ${{ env.MY_GCP_VM_SERVICE_ACCOUNT }}
-          machine_type: t2d-standard-1
+          machine_type: e2-medium
           disk_type: pd-ssd
           disk_size: ${{ env.MY_DISK_SIZE_GB }}
           image_family: ubuntu-2604-lts-amd64
