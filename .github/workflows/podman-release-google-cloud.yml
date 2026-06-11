@@ -14,6 +14,7 @@ env:
   MY_GCP_NETWORK: vpc-gce-github-runners
   MY_GCP_SUBNET: subnet-gce-github-runners-uc1
   MY_GCP_VM_SERVICE_ACCOUNT: gce-github-runner-vms@nkn-it-github.iam.gserviceaccount.com
+  MY_DISK_SIZE_GB: 128
   MY_ARTIFACT_NAME: 'cyclenerd/cloud-tools-container'
   MY_PRE_RUNNER_SCRIPT: |
     apt-get update -yq
@@ -47,9 +48,9 @@ jobs:
           network: ${{ env.MY_GCP_NETWORK }}
           subnet: ${{ env.MY_GCP_SUBNET }}
           service_account: ${{ env.MY_GCP_VM_SERVICE_ACCOUNT }}
-          machine_type: n4a-highcpu-1
+          machine_type: n4a-standard-1
           disk_type: hyperdisk-balanced
-          disk_size: 25
+          disk_size: ${{ env.MY_DISK_SIZE_GB }}
           image_family: ubuntu-2604-lts-arm64
           max_run_duration: 1h
           pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
@@ -139,9 +140,9 @@ jobs:
           network: ${{ env.MY_GCP_NETWORK }}
           subnet: ${{ env.MY_GCP_SUBNET }}
           service_account: ${{ env.MY_GCP_VM_SERVICE_ACCOUNT }}
-          machine_type: e2-medium
+          machine_type: t2d-standard-1
           disk_type: pd-ssd
-          disk_size: 25
+          disk_size: ${{ env.MY_DISK_SIZE_GB }}
           image_family: ubuntu-2604-lts-amd64
           max_run_duration: 1h
           pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
@@ -184,7 +185,7 @@ jobs:
     needs:
       - create-amd64-runner # required to get output from the create-runner job
       - amd64 # required to wait when the main job is done
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
     steps:
       - name: Authenticate to Google Cloud
