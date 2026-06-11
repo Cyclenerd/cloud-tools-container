@@ -52,6 +52,7 @@ jobs:
           disk_size: 25
           image_family: ubuntu-2604-lts-arm64
           max_run_duration: 1h
+          pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
 
   arm64:
     name: Build ARM64 images
@@ -143,6 +144,7 @@ jobs:
           disk_size: 25
           image_family: ubuntu-2604-lts-amd64
           max_run_duration: 1h
+          pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
 
 
   amd64:
