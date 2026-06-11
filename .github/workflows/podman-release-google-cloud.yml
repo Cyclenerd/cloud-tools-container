@@ -6,7 +6,6 @@ on:
     - cron: '32 4 * * 1' # At 04:32 on Monday.
 
 permissions:
-  contents: read
   id-token: write # required for Workload Identity Federation
 
 env:
