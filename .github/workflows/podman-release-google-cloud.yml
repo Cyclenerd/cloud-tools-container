@@ -53,7 +53,7 @@ jobs:
           machine_type: c4a-standard-1
           disk_type: hyperdisk-balanced
           disk_size: ${{ env.MY_DISK_SIZE_GB }}
-          image_family: ubuntu-2604-lts-arm64
+          image_family: ubuntu-2404-lts-arm64
           max_run_duration: 1h
           pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
 
@@ -145,7 +145,7 @@ jobs:
           machine_type: e2-medium
           disk_type: pd-ssd
           disk_size: ${{ env.MY_DISK_SIZE_GB }}
-          image_family: ubuntu-2604-lts-amd64
+          image_family: ubuntu-2404-lts-amd64
           max_run_duration: 1h
           pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
 
