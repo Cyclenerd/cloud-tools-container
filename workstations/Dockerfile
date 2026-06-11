@@ -25,7 +25,7 @@ ENV LANG="C.UTF-8" \
 # https://github.com/golangci/golangci-lint/releases
 	GOLANGCI_LINT_VERSION="2.12.2" \
 # https://github.com/terraform-docs/terraform-docs/releases
-	TFDOC_VERSION="0.21.0" \
+	TFDOC_VERSION="0.24.0" \
 # https://github.com/terraform-linters/tflint/releases
 	TFLINT_VERSION="0.61.0" \
 # https://github.com/aquasecurity/tfsec/releases
