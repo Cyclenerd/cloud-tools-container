@@ -1,4 +1,4 @@
-name: "Release"
+name: "Release via Google Cloud"
 
 on:
   workflow_dispatch:
@@ -6,55 +6,40 @@ on:
     - cron: '32 4 * * 1' # At 04:32 on Monday.
 
 env:
+  MY_GCP_PROJECT: nkn-it-github
+  MY_GCP_ZONE: us-central1-b
+  MY_GCP_NETWORK: vpc-gce-github-runners
+  MY_GCP_SUBNET: subnet-gce-github-runners-uc1
+  MY_GCP_VM_SERVICE_ACCOUNT: gce-github-runner-vms@nkn-it-github.iam.gserviceaccount.com
   MY_ARTIFACT_NAME: 'cyclenerd/cloud-tools-container'
-  MY_HETZNER_IMAGE: 'ubuntu-24.04'
-  MY_HETZNER_ARM64_SERVER_TYPE: 'cax11'
-  MY_HETZNER_AMD64_SERVER_TYPE: 'cx23'
-  MY_HETZNER_LOCATION: 'nbg1' # Nuremberg, Germany
-  MY_HETZNER_FALLBACK_LOCATION: 'hel1' # Helsinki, Finland
   MY_PRE_RUNNER_SCRIPT: |
     apt-get update -yq
     apt-get install -yqq podman
-  MY_PUBLIC_HETZNER_SSH_ID: 25724978
+
 
 jobs:
   create-arm64-runner:
     name: Create ARM64 runner
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     outputs:
-      label: ${{ steps.create-arm64-runner.outputs.label || steps.create-arm64-runner-fallback.outputs.label }}
-      server_id: ${{ steps.create-arm64-runner.outputs.server_id || steps.create-arm64-runner-fallback.outputs.server_id }}
+      label: ${{ steps.create-arm64-runner.outputs.label }}
+      server_id: ${{ steps.create-arm64-runner.outputs.server_id }}
     steps:
-      # Try default location
-      - name: Create runner with Arm-based Ampere Altra CPU
+      - name: Create runner with Arm-based Google Axion CPU
         id: create-arm64-runner
-        uses: Cyclenerd/hcloud-github-runner@v1
-        continue-on-error: true # do not fail if location is out of resources, try fallback location instead
+        uses: Cyclenerd/gce-github-runner@master
         with:
           mode: create
-          create_wait: 30 # 5 min
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
-          server_type: ${{env.MY_HETZNER_ARM64_SERVER_TYPE}}
-          location: ${{env.MY_HETZNER_LOCATION}}
-          image: ${{env.MY_HETZNER_IMAGE}}
-          ssh_key: ${{env.MY_PUBLIC_HETZNER_SSH_ID}}
-          pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
-      # Try fallback location if default location is out of resources
-      - name: Create runner with Arm-based Ampere Altra CPU (fallback location)
-        id: create-arm64-runner-fallback
-        if: ${{ steps.create-arm64-runner.outcome == 'failure' }}
-        uses: Cyclenerd/hcloud-github-runner@v1
-        with:
-          mode: create
-          create_wait: 30 # 5 min
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
-          server_type: ${{env.MY_HETZNER_ARM64_SERVER_TYPE}}
-          location: ${{env.MY_HETZNER_FALLBACK_LOCATION}}
-          image: ${{env.MY_HETZNER_IMAGE}}
-          ssh_key: ${{env.MY_PUBLIC_HETZNER_SSH_ID}}
-          pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
+          project: ${{ env.MY_GCP_PROJECT }}
+          zone: ${{ env.MY_GCP_ZONE }}
+          network: ${{ env.MY_GCP_NETWORK }}
+          subnet: ${{ env.MY_GCP_SUBNET }}
+          service_account: ${{ env.MY_GCP_VM_SERVICE_ACCOUNT }}
+          machine_type: n4a-highcpu-1
+          disk_type: hyperdisk-balanced
+          disk_size: 25
+          image_family: ubuntu-2604-lts-arm64
 
   arm64:
     name: Build ARM64 images
@@ -93,55 +78,41 @@ jobs:
     needs:
       - create-arm64-runner # required to get output from the create-runner job
       - arm64 # required to wait when the main job is done
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
     steps:
       - name: Delete runner
-        uses: Cyclenerd/hcloud-github-runner@v1
+        uses: Cyclenerd/gce-github-runner@master
         with:
           mode: delete
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          project: ${{ env.MY_GCP_PROJECT }}
+          zone: ${{ env.MY_GCP_ZONE }}
           name: ${{ needs.create-arm64-runner.outputs.label }}
-          server_id: ${{ needs.create-arm64-runner.outputs.server_id }}
 
   create-amd64-runner:
     name: Create AMD64 runner
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     outputs:
-      label: ${{ steps.create-amd64-runner.outputs.label || steps.create-amd64-runner-fallback.outputs.label }}
-      server_id: ${{ steps.create-amd64-runner.outputs.server_id || steps.create-amd64-runner-fallback.outputs.server_id }}
+      label: ${{ steps.create-amd64-runner.outputs.label }}
+      server_id: ${{ steps.create-amd64-runner.outputs.server_id }}
     steps:
-      # Try default location
-      - name: Create runner with Intel CPU
+      - name: Create runner with Intel or AMD CPU
         id: create-amd64-runner
-        uses: Cyclenerd/hcloud-github-runner@v1
-        continue-on-error: true # do not fail if location is out of resources, try fallback location instead
+        uses: Cyclenerd/gce-github-runner@master
         with:
           mode: create
-          create_wait: 30 # 5 min
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
-          server_type: ${{env.MY_HETZNER_AMD64_SERVER_TYPE}}
-          location: ${{env.MY_HETZNER_LOCATION}}
-          image: ${{env.MY_HETZNER_IMAGE}}
-          ssh_key: ${{env.MY_PUBLIC_HETZNER_SSH_ID}}
-          pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
-      # Try fallback location if default location is out of resources
-      - name: Create runner with Intel CPU (fallback location)
-        id: create-amd64-runner-fallback
-        if: ${{ steps.create-amd64-runner.outcome == 'failure' }}
-        uses: Cyclenerd/hcloud-github-runner@v1
-        with:
-          mode: create
-          create_wait: 30 # 5 min
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
-          server_type: ${{env.MY_HETZNER_AMD64_SERVER_TYPE}}
-          location: ${{env.MY_HETZNER_FALLBACK_LOCATION}}
-          image: ${{env.MY_HETZNER_IMAGE}}
-          ssh_key: ${{env.MY_PUBLIC_HETZNER_SSH_ID}}
-          pre_runner_script: ${{env.MY_PRE_RUNNER_SCRIPT}}
+          project: ${{ env.MY_GCP_PROJECT }}
+          zone: ${{ env.MY_GCP_ZONE }}
+          network: ${{ env.MY_GCP_NETWORK }}
+          subnet: ${{ env.MY_GCP_SUBNET }}
+          service_account: ${{ env.MY_GCP_VM_SERVICE_ACCOUNT }}
+          machine_type: e2-medium
+          disk_type: pd-ssd
+          disk_size: 25
+          image_family: ubuntu-2604-lts-amd64
+
 
   amd64:
     name: Build AMD64 images
@@ -184,20 +155,20 @@ jobs:
     if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
     steps:
       - name: Delete runner
-        uses: Cyclenerd/hcloud-github-runner@v1
+        uses: Cyclenerd/gce-github-runner@master
         with:
           mode: delete
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          hcloud_token: ${{ secrets.HCLOUD_TOKEN }}
+          project: ${{ env.MY_GCP_PROJECT }}
+          zone: ${{ env.MY_GCP_ZONE }}
           name: ${{ needs.create-amd64-runner.outputs.label }}
-          server_id: ${{ needs.create-amd64-runner.outputs.server_id }}
 
   multi:
     name: Create multi-platform container
     needs:
       - arm64
       - amd64
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Login to GitHub container registry 🏭
         run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
@@ -222,7 +193,7 @@ jobs:
     needs:
       - arm64
       - amd64
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Login to GitHub container registry 🏭
         run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
@@ -245,7 +216,7 @@ jobs:
   inspect:
     name: Inspect images
     needs: [multi, multi-dev]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       # Inspect
       - name: Inspect test container image 💿
@@ -262,7 +233,7 @@ jobs:
   test-docker:
     name: Test images with Docker
     needs: [inspect]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v6
@@ -286,7 +257,7 @@ jobs:
   test-podman:
     name: Test images with Podman
     needs: [inspect]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       # Pull
       - name: Pull test container image 💿
@@ -300,7 +271,7 @@ jobs:
 
   scan:
     name: Scan image
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs: [test-docker, test-podman]
     steps:
       - name: Checkout 🛎️
@@ -323,7 +294,7 @@ jobs:
 
   github-registry-latest:
     name: Push image to GitHub
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs: [scan]
     steps:
       - name: Login to GitHub container registry 🏭
@@ -339,7 +310,7 @@ jobs:
 
   docker-hub-latest:
     name: Push image to Docker Hub
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs: [scan]
     steps:
       - name: Login to Docker Hub registry 🏭
@@ -354,7 +325,7 @@ jobs:
 
   readme:
     name: Update README
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:
       - docker-hub-latest
       - github-registry-latest
