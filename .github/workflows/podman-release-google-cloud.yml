@@ -16,7 +16,6 @@ env:
     apt-get update -yq
     apt-get install -yqq podman
 
-
 jobs:
   create-arm64-runner:
     name: Create ARM64 runner
@@ -25,6 +24,15 @@ jobs:
       label: ${{ steps.create-arm64-runner.outputs.label }}
       server_id: ${{ steps.create-arm64-runner.outputs.server_id }}
     steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
       - name: Create runner with Arm-based Google Axion CPU
         id: create-arm64-runner
         uses: Cyclenerd/gce-github-runner@master
@@ -40,6 +48,7 @@ jobs:
           disk_type: hyperdisk-balanced
           disk_size: 25
           image_family: ubuntu-2604-lts-arm64
+          max_run_duration: 1h
 
   arm64:
     name: Build ARM64 images
@@ -81,6 +90,15 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
     steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
       - name: Delete runner
         uses: Cyclenerd/gce-github-runner@master
         with:
@@ -97,6 +115,15 @@ jobs:
       label: ${{ steps.create-amd64-runner.outputs.label }}
       server_id: ${{ steps.create-amd64-runner.outputs.server_id }}
     steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
       - name: Create runner with Intel or AMD CPU
         id: create-amd64-runner
         uses: Cyclenerd/gce-github-runner@master
@@ -112,6 +139,7 @@ jobs:
           disk_type: pd-ssd
           disk_size: 25
           image_family: ubuntu-2604-lts-amd64
+          max_run_duration: 1h
 
 
   amd64:
@@ -154,6 +182,15 @@ jobs:
     runs-on: ubuntu-24.04
     if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
     steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
       - name: Delete runner
         uses: Cyclenerd/gce-github-runner@master
         with:
