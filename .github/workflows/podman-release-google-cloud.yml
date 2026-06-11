@@ -10,7 +10,7 @@ permissions:
 
 env:
   MY_GCP_PROJECT: nkn-it-github
-  MY_GCP_ZONE: us-central1-b
+  MY_GCP_ZONE: us-central1-f
   MY_GCP_NETWORK: vpc-gce-github-runners
   MY_GCP_SUBNET: subnet-gce-github-runners-uc1
   MY_GCP_VM_SERVICE_ACCOUNT: gce-github-runner-vms@nkn-it-github.iam.gserviceaccount.com
