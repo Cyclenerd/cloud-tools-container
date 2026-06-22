@@ -65,7 +65,7 @@ jobs:
       - name: Hardware platform 🐧
         run: uname -m
       - name: Checkout 🛎️
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Login to GitHub container registry 🏭
         run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
       # Build
@@ -152,7 +152,7 @@ jobs:
       - name: Hardware platform 🐧
         run: uname -m
       - name: Checkout 🛎️
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Login to GitHub container registry 🏭
         run: podman login ghcr.io -u "${{ github.repository_owner }}" -p "${{ secrets.github_token }}"
       # Build
@@ -263,7 +263,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       # Pull
       - name: Pull test container image 💿
         run: |
@@ -302,7 +302,7 @@ jobs:
     needs: [test-docker, test-podman]
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       # Scan with Grype vulnerability scanner
       # https://github.com/anchore/scan-action
       - name: Scan 🧐
@@ -358,6 +358,6 @@ jobs:
       - github-registry-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Update 📰
         run: bash readme.sh
