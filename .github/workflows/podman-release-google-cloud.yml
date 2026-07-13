@@ -3,7 +3,7 @@ name: "Release via Google Cloud"
 on:
   workflow_dispatch:
   schedule:
-    - cron: '32 4 * * 1' # At 04:32 on Monday.
+    - cron: '32 4 15 * *'
 
 permissions:
   id-token: write # required for Workload Identity Federation
@@ -13,9 +13,8 @@ permissions:
 
 env:
   MY_GCP_PROJECT: nkn-it-github
-  MY_GCP_ZONE: europe-north2-b
+  MY_GCP_ZONE: "europe-west1-b, europe-west1-c, europe-west1-d, europe-west4-a, europe-west4-b, europe-west4-c, europe-west3-a, europe-west3-b, europe-west3-c, europe-north2-a, europe-north2-b, europe-north2-c"
   MY_GCP_NETWORK: vpc-gce-github-runners
-  MY_GCP_SUBNET: subnet-gce-github-runners-en2
   MY_GCP_VM_SERVICE_ACCOUNT: gce-github-runner-vms@nkn-it-github.iam.gserviceaccount.com
   MY_DISK_SIZE_GB: 64
   MY_ARTIFACT_NAME: 'cyclenerd/cloud-tools-container'
@@ -49,7 +48,6 @@ jobs:
           project: ${{ env.MY_GCP_PROJECT }}
           zone: ${{ env.MY_GCP_ZONE }}
           network: ${{ env.MY_GCP_NETWORK }}
-          subnet: ${{ env.MY_GCP_SUBNET }}
           service_account: ${{ env.MY_GCP_VM_SERVICE_ACCOUNT }}
           machine_type: c4a-standard-1
           disk_type: hyperdisk-balanced
@@ -113,7 +111,6 @@ jobs:
           mode: delete
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           project: ${{ env.MY_GCP_PROJECT }}
-          zone: ${{ env.MY_GCP_ZONE }}
           name: ${{ needs.create-arm64-runner.outputs.label }}
 
   create-amd64-runner:
@@ -141,7 +138,6 @@ jobs:
           project: ${{ env.MY_GCP_PROJECT }}
           zone: ${{ env.MY_GCP_ZONE }}
           network: ${{ env.MY_GCP_NETWORK }}
-          subnet: ${{ env.MY_GCP_SUBNET }}
           service_account: ${{ env.MY_GCP_VM_SERVICE_ACCOUNT }}
           machine_type: e2-medium
           disk_type: pd-ssd
@@ -206,7 +202,6 @@ jobs:
           mode: delete
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           project: ${{ env.MY_GCP_PROJECT }}
-          zone: ${{ env.MY_GCP_ZONE }}
           name: ${{ needs.create-amd64-runner.outputs.label }}
 
   multi:
