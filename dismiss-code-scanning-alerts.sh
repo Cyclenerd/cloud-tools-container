@@ -40,7 +40,7 @@ echo ""
 # Fetch all open alerts
 echo "Fetching open code scanning alerts..."
 TEMP_FILE=$(mktemp)
-trap "rm -f $TEMP_FILE" EXIT
+trap 'rm -f "$TEMP_FILE"' EXIT
 
 gh api repos/"$OWNER"/"$REPO"/code-scanning/alerts --paginate 2>/dev/null | \
   jq -r '.[] | select(.state == "open") | .number' > "$TEMP_FILE"
