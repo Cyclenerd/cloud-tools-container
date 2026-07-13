@@ -20,7 +20,7 @@ ARG TARGETARCH
 
 # Ubuntu Development Containers container image with Git and other common utilities installed
 # https://github.com/devcontainers/images/tree/main/src/base-ubuntu
-FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04 AS base
+FROM mcr.microsoft.com/devcontainers/base:resolute AS base
 
 # Set environment variables
 ENV LANG="C.UTF-8" \

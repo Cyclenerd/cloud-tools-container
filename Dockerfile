@@ -18,11 +18,11 @@ ARG TARGETARCH
 
 # See supported Ubuntu version of HashiCorp:
 #   https://www.hashicorp.com/official-packaging-guide?product_intent=terraform
-# The ubuntu:noble tag points to the 24.04 release:
-#   https://releases.ubuntu.com/noble/
+# The ubuntu:resolute tag points to the 26.04 release:
+#   https://releases.ubuntu.com/resolute/
 # Use same Ubuntu version as development container:
 #   https://github.com/devcontainers/images/tree/main/src/base-ubuntu
-FROM docker.io/library/ubuntu:noble AS base
+FROM docker.io/library/ubuntu:resolute AS base
 
 # Set environment variables
 ENV LANG="C.UTF-8" \

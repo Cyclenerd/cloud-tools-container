@@ -46,7 +46,7 @@ cyclenerd/cloud-tools-container:latest
 
 ## Software
 
-This [Docker container image](https://hub.docker.com/r/cyclenerd/cloud-tools-container) is based on the **Ubuntu 24.04** release (`ubuntu:noble`).
+This [Docker container image](https://hub.docker.com/r/cyclenerd/cloud-tools-container) is based on the **Ubuntu 26.04** release (`ubuntu:resolute`).
 
 The following software is included and tested:
 
