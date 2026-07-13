@@ -31,13 +31,13 @@ ENV LANG="C.UTF-8" \
 # https://github.com/aquasecurity/tfsec/releases
 	TFSEC_VERSION="1.28.14" \
 # https://open-vsx.org/extension/GitLab/gitlab-workflow
-	VSX_GITLAB_VERSION="5.15.0" \
+	VSX_GITLAB_VERSION="6.85.3" \
 # https://open-vsx.org/extension/hashicorp/terraform
-	VSX_TERRAFORM_VERSION="2.32.3" \
+	VSX_TERRAFORM_VERSION="2.39.4" \
 # https://open-vsx.org/extension/vscode-icons-team/vscode-icons
-	VSX_ICONS_VERSION="12.9.0" \
+	VSX_ICONS_VERSION="12.19.0" \
 # https://open-vsx.org/extension/ms-azuretools/vscode-docker
-	VSX_DOCKER_VERSION="1.29.3"
+	VSX_DOCKER_VERSION="2.0.0"
 
 # Download URLs for AMD64 (X86/64)
 ENV AWS_CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
