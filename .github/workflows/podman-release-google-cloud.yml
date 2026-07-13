@@ -140,6 +140,7 @@ jobs:
           project: ${{ env.MY_GCP_PROJECT }}
           zone: ${{ env.MY_GCP_ZONE }}
           network: ${{ env.MY_GCP_NETWORK }}
+          subnet: ${{ env.MY_GCP_SUBNET }}
           service_account: ${{ env.MY_GCP_VM_SERVICE_ACCOUNT }}
           machine_type: e2-medium
           disk_type: pd-ssd
