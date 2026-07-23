@@ -27,6 +27,7 @@ MY_COMMANDS=(
 	"node -v"
 	"npm -v"
 	"opa version"
+	"opencode -v"
 	"openssl version"
 	"packer --version"
 	"perl --version"

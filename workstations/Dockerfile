@@ -180,6 +180,8 @@ RUN uname -m && \
 	echo "yq URL: '$YQ_URL'"           && \
 	curl -L "$YQ_URL" -o "/usr/bin/yq" && \
 	chmod +x "/usr/bin/yq"             && \
+# OpenCode (https://opencode.ai/)
+	npm i -g "opencode-ai" && \
 # Code OSS extensions
 # Terraform
 	curl -L "$VSX_TERRAFORM_URL" -o "hashicorp.terraform.vsix" && \
@@ -219,8 +221,8 @@ RUN uname -m && \
 	echo "Versions..."         && \
 	ansible --version          && \
 	ansible-lint --version     && \
-	ansible-playbook --version && \
 	ansible-lint --version     && \
+	ansible-playbook --version && \
 	aws --version              && \
 	bash --version             && \
 	cpanm --version            && \
@@ -230,9 +232,9 @@ RUN uname -m && \
 	flake8 --version           && \
 	fuego --version            && \
 	gcloud --version           && \
-	golangci-lint --version    && \
 	git --version              && \
 	go version                 && \
+	golangci-lint --version    && \
 	hcloud version             && \
 	helm version               && \
 	jq --version               && \
@@ -243,6 +245,7 @@ RUN uname -m && \
 	node -v                    && \
 	npm -v                     && \
 	opa version                && \
+	opencode -v                && \
 	openssl version            && \
 	packer --version           && \
 	perl --version             && \

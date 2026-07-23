@@ -213,6 +213,8 @@ RUN uname -m && \
 	echo "yq URL: '$YQ_URL'"           && \
 	curl -L "$YQ_URL" -o "/usr/bin/yq" && \
 	chmod +x "/usr/bin/yq"             && \
+# OpenCode (https://opencode.ai/)
+	npm i -g "opencode-ai" && \
 # Delete caches
 	echo "Clean up..." && \
 	apt-get clean               && \
@@ -243,9 +245,9 @@ RUN uname -m && \
 	flake8 --version           && \
 	fuego --version            && \
 	gcloud --version           && \
-	golangci-lint --version    && \
 	git --version              && \
 	go version                 && \
+	golangci-lint --version    && \
 	hcloud version             && \
 	helm version               && \
 	jq --version               && \
@@ -256,6 +258,7 @@ RUN uname -m && \
 	node -v                    && \
 	npm -v                     && \
 	opa version                && \
+	opencode -v                && \
 	openssl version            && \
 	packer --version           && \
 	perl --version             && \
